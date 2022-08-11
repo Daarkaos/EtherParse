@@ -91,7 +91,7 @@
           const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
 
           // draw text label (with background rect)
-          
+
           ctx.save();
           ctx.translate(textPos.x, textPos.y);
           ctx.rotate(textAngle);
@@ -105,6 +105,13 @@
           ctx.fillText(label, 0, -3);
           ctx.restore();
         });
+
+        // Zoom
+
+      //.onNodeClick(node => {
+        //Graph.centerAt(node.x, node.y, 1000);
+        //Graph.zoom(8, 2000);
+      //});
   });
 </script>
 </body>
