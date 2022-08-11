@@ -3,7 +3,7 @@ import os
 class Server(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == '/':
-            self.path = '/index.php'
+            self.path = '/index.html'
         try:
             split_path = os.path.splitext(self.path)
             request_extension = split_path[1]
