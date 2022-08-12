@@ -86,3 +86,37 @@ def Get_tokens_transfered_from_tx(EtherHTML):
     del tokens_transf[0]
     return (tokens_transf)
 
+##### Create json to Web
+def Transform_data_to_web(tx_info_clean):
+    internal = {}
+    list_nodes = []
+    list_links = []
+    if not tx_info_clean['internal_tx']:
+        print ('no data')
+    else:
+        for element in tx_info_clean['internal_tx']:
+            added = False
+            for p in list_nodes:
+                if (p["id"] == element["from"]):
+                    added = True
+            if not added:
+                new_node = { "id": element["from"]}
+                list_nodes.append(new_node)
+            added = False    
+            for p in list_nodes:  
+                if (p["id"] == element["to"]):
+                    added = True
+            if not added:
+                new_node = { "id": element["to"]}
+                list_nodes.append(new_node)
+
+            new_link = {"source": element['from'], "target": element['to'], "value": element['value']}
+            list_links.append(new_link)
+
+        internal["nodes"] = list_nodes
+        internal["links"] = list_links
+
+        print (internal)
+        
+
+    return (0)

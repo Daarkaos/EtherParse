@@ -14,55 +14,27 @@
   fetch('json/internaltx/test1.json').then(res => res.json()).then(data => {
     const elem = document.getElementById('graph');
 
-    let selfLoopLinks = {};
-    let sameNodesLinks = {};
-    const curvatureMinMax = 0.25;
-
-    // 1. assign each link a nodePairId that combines their source and target independent of the links direction
-    // 2. group links together that share the same two nodes or are self-loops
-    data.links.forEach(link => {
-      link.nodePairId = link.source <= link.target ? (link.source + "_" + link.target) : (link.target + "_" + link.source);
-      let map = link.source === link.target ? selfLoopLinks : sameNodesLinks;
-      if (!map[link.nodePairId]) {
-        map[link.nodePairId] = [];
+    const rename = (nodeOrLink, type) => {
+      let value = prompt('Name this ' + type + ':', nodeOrLink.name);
+      if (!value) {
+        return;
       }
-      map[link.nodePairId].push(link);
-    });
-
-    // Compute the curvature for self-loop links to avoid overlaps
-    Object.keys(selfLoopLinks).forEach(id => {
-      let links = selfLoopLinks[id];
-      let lastIndex = links.length - 1;
-      links[lastIndex].curvature = 1;
-      let delta = (1 - curvatureMinMax) / lastIndex;
-      for (let i = 0; i < lastIndex; i++) {
-        links[i].curvature = curvatureMinMax + i * delta;
-      }
-    });
-
-    // Compute the curvature for links sharing the same two nodes to avoid overlaps
-    Object.keys(sameNodesLinks).filter(nodePairId => sameNodesLinks[nodePairId].length > 1).forEach(nodePairId => {
-      let links = sameNodesLinks[nodePairId];
-      let lastIndex = links.length - 1;
-      let lastLink = links[lastIndex];
-      lastLink.curvature = curvatureMinMax;
-      let delta = 2 * curvatureMinMax / lastIndex;
-      for (let i = 0; i < lastIndex; i++) {
-        links[i].curvature = - curvatureMinMax + i * delta;
-        if (lastLink.source !== links[i].source) {
-          links[i].curvature *= -1; // flip it around, otherwise they overlap
-        }
-      }
-    });
-
-    const Graph = ForceGraph()(elem)
+      nodeOrLink.name = value;
+      updateGraphData();
+      };
+    
       
+    const Graph = ForceGraph()(elem)
       .graphData(data)
-      .nodeLabel('id')
+      //.nodeLabel('id')
       .nodeAutoColorBy('group')
-      .linkCurvature('curvature')
-      .linkDirectionalArrowLength(6)
+      .linkColor(() => 'rgba(255,255,255, 1)')
+      //.linkLabel('value')
+      .linkWidth(2)
+      .linkDirectionalArrowLength(5)
       .linkDirectionalArrowRelPos(1)
+      
+      .onNodeClick((node, event) => rename(node, 'node'))
       
       // Modify Node
        
@@ -120,7 +92,7 @@
 
           let textAngle = Math.atan2(relLink.y, relLink.x);
           // maintain label vertical orientation for legibility
-          if (textAngle > Math.PI / 0.5) textAngle = -(Math.PI - textAngle);
+          if (textAngle > Math.PI / 2) textAngle = -(Math.PI - textAngle);
           if (textAngle < -Math.PI / 2) textAngle = -(-Math.PI - textAngle);
 
           const label = `${link.value}`;
@@ -143,15 +115,13 @@
           //ctx.fillRect(- bckgDimensions[0] / 2, - bckgDimensions[1] / 2, ...bckgDimensions);
 
           ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
+          ctx.textBaseline = 'bottom';
           ctx.fillStyle = 'black';
-          ctx.fillText(label, 0, 0);
+          ctx.fillText(label, 0, -3);
           ctx.restore();
         })
 
-
-  })
-
-  
+      
+  });
 </script>
 </body>

@@ -98,3 +98,6 @@ else:
 #tx_info_clean_json = json.dumps(tx_info_clean)
 with open("webserver/json/" + hashtx + '.json', 'w') as json_file:
   json.dump(tx_info_clean, json_file)
+
+
+test = Transform_data_to_web(tx_info_clean = tx_info_clean)
