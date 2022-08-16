@@ -3,15 +3,21 @@
 
   <script src="//unpkg.com/force-graph"></script>
   <link rel="stylesheet" href="dist/css/style.css">
+  <script>
+    const txhash = localStorage.getItem('txhash');
+    console.log(txhash);
+
+  </script>
 </head>
 
 <body>
 
 <h1> InternalTX </h1>
+<span id="txhash"></span>
 <div id="graph"></div>
 
 <script>
-  fetch('json/internaltx/0xab486012f21be741c9e674ffda227e30518e8a1e37a5f1d58d0b0d41f6e76530.json').then(res => res.json()).then(data => {
+  fetch('json/internaltx/' + txhash).then(res => res.json()).then(data => {
     const elem = document.getElementById('graph');
 
     let selfLoopLinks = {};
