@@ -108,7 +108,7 @@ if data_arg[2] == True:
     if "Decompile ByteCode" in info_addr[2]:
         EtherHTML_from_contract = Get_contract_from_etherscan(addrcontract = from_clean)
         contract1 = Get_contract_from_addr(EtherContractHTML = EtherHTML_from_contract)
-        f = open("webserver/contracts/" + from_clean + ".bytecode", "w")
+        f = open("contracts/" + from_clean + ".bytecode", "w")
         f.write(contract1)
         f.close()
         print(colored('CONTRACT \'FROM\' detected, downloading...!', 'green'))
@@ -119,7 +119,7 @@ if data_arg[2] == True:
     if "Decompile ByteCode" in info_addr[3]:
         EtherHTML_from_contract = Get_contract_from_etherscan(addrcontract = to_clean)
         contract2 = Get_contract_from_addr(EtherContractHTML = EtherHTML_from_contract)
-        f = open("webserver/contracts/" + to_clean + ".bytecode", "w")
+        f = open("contracts/" + to_clean + ".bytecode", "w")
         f.write(contract2)
         f.close()
         print(colored('CONTRACT \'TO\' detected, downloading...!', 'green'))
