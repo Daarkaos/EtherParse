@@ -1,7 +1,7 @@
 # MSC
 # Import data from Ethereum TX.
 import argparse
-import colorama
+import getopt
 import sys
 import json
 from config import EtherKey, AlchemyKey
@@ -10,18 +10,41 @@ from web3 import Web3, HTTPProvider
 from etherscanextractor import *
 from termcolor import colored
 
-##### Declare function to define command-line arguments.
-def readOptions(args=sys.argv[1:]):
-  parser = argparse.ArgumentParser(description="The parsing commands lists.")
-  parser.add_argument("-t", "--tx", help="Type the transaction hash.")
-  opts = parser.parse_args(args)
-  return opts 
+def main(argv):
+   tx = ''
+   web = False
+   contract = False
+   api = True
+   try:
+      opts, args = getopt.getopt(argv,"ht:wca",["tx=","web","contract","api"])
+   except getopt.GetoptError:
+      print ('parseether.py -tx <hashtx> -w (optional) -c (optional)')
+      sys.exit(2)
+   for opt, arg in opts:
+      if opt == '-h':
+         print ('parseether.py -tx <hashtx> -w (optional) -c (optional) -a (optional')
+         print ('if you want parse data to web server use -w/--web')
+         print ('if you want download the contracts use -c/--contract')
+         print ('if you dont want to get the data from transacction use -a/--api')
+         sys.exit()
+      elif opt in ("-t", "--tx"):
+         tx = arg
+      elif opt in ("-w", "--web"):
+         web = True
+      elif opt in ("-c", "--contract"):
+         contract = True
+      elif opt in ("-a", "--api"):
+         api = False
+
+   return (tx, web, contract, api)
 
 # Call functions to read arguments
-options = readOptions(sys.argv[1:])
-hashtx = sys.argv[2]
 
-#Get data from Web3:
+data_arg = main(sys.argv[1:])
+hashtx = data_arg[0]
+
+# Get data from Web3:
+
 apiKey = AlchemyKey  # From Alchemy
 eth = Etherscan(EtherKey)  # From Etherscan
 web3 = Web3(Web3.HTTPProvider('https://eth-mainnet.alchemyapi.io/v2/'+apiKey))
@@ -32,7 +55,7 @@ except:
     print(colored('Check the indicated hash and the API key.', 'red'))
     sys.exit()
 
-print(colored('Getting info about the transaction...', 'green'))
+print(colored('[*] Getting information about the transaction...', 'green'))
 tx_info_clean = {}
 tx_info_clean['link'] = "https://etherscan.io/tx/" + hashtx
 for element in transaction:
@@ -47,7 +70,8 @@ del tx_info_clean['blockHash']
 from_clean = tx_info_clean['from']
 to_clean = tx_info_clean['to']
 
-#Execute functions from local file.
+# Execute functions from local file.
+
 EtherHTML = Get_tx_from_etherscan(hashtx = hashtx)
 time = Get_time_from_tx(EtherHTML = EtherHTML)
 EtherAddrfromHTML = Get_addr_from_etherscan(addrtx = tx_info_clean['from'])
@@ -55,6 +79,7 @@ EtherAddrtoHTML = Get_addr_from_etherscan(addrtx = tx_info_clean['to'])
 info_addr = Get_info_addr(EtherAddrfromHTML = EtherAddrfromHTML, EtherAddrtoHTML = EtherAddrtoHTML)
 
 # Getting info from internal tx
+
 try:
     tx_internal = eth.get_internal_txs_by_txhash(txhash = hashtx)
     timestamp = tx_internal[0]['timeStamp']
@@ -66,38 +91,62 @@ try:
 except:
     zero = "zero"
 
-#Parse data
+# Parse data
+
 tx_info_clean['from'] = info_addr[0]
 tx_info_clean['to'] = info_addr[1]
 tx_info_clean['time'] = time
 
 # Getting info from tokens transfered
+
 tokens = Get_tokens_transfered_from_tx(EtherHTML = EtherHTML)
 tx_info_clean['tokens'] = tokens
 
-# Test if contract exist and write it into a file.
-if "Decompile ByteCode" in info_addr[2]:
-    EtherHTML_from_contract = Get_contract_from_etherscan(addrcontract = from_clean)
-    contract1 = Get_contract_from_addr(EtherContractHTML = EtherHTML_from_contract)
-    f = open("webserver/contracts/" + from_clean + ".bytecode", "w")
-    f.write(contract1)
-    f.close()
-    print(colored('CONTRACT \'FROM\' detected, downloading...!', 'green'))
+# Test if contract exit and download it --- ONLY CONTRACT
 
-elif "Decompile ByteCode" in info_addr[3]:
-    EtherHTML_from_contract = Get_contract_from_etherscan(addrcontract = to_clean)
-    contract2 = Get_contract_from_addr(EtherContractHTML = EtherHTML_from_contract)
-    f = open("webserver/contracts/" + to_clean + ".bytecode", "w")
-    f.write(contract2)
-    f.close()
-    print(colored('CONTRACT \'TO\' detected, downloading...!', 'green'))
+if data_arg[2] == True:
+    if "Decompile ByteCode" in info_addr[2]:
+        EtherHTML_from_contract = Get_contract_from_etherscan(addrcontract = from_clean)
+        contract1 = Get_contract_from_addr(EtherContractHTML = EtherHTML_from_contract)
+        f = open("webserver/contracts/" + from_clean + ".bytecode", "w")
+        f.write(contract1)
+        f.close()
+        print(colored('CONTRACT \'FROM\' detected, downloading...!', 'green'))
 
-else:
-    print(colored('NO contract detected!', 'red'))
+    else:
+        print(colored('NO contract \'FROM\' detected!', 'red'))
+
+    if "Decompile ByteCode" in info_addr[3]:
+        EtherHTML_from_contract = Get_contract_from_etherscan(addrcontract = to_clean)
+        contract2 = Get_contract_from_addr(EtherContractHTML = EtherHTML_from_contract)
+        f = open("webserver/contracts/" + to_clean + ".bytecode", "w")
+        f.write(contract2)
+        f.close()
+        print(colored('CONTRACT \'TO\' detected, downloading...!', 'green'))
+
+    else:
+        print(colored('NO contract \'TO\' detected!', 'red'))
 
 #tx_info_clean_json = json.dumps(tx_info_clean)
-with open("webserver/json/" + hashtx + '.json', 'w') as json_file:
-  json.dump(tx_info_clean, json_file)
 
+# Parse data to create graphs --- ONLY WEB.
 
-test = Transform_data_to_web(tx_info_clean = tx_info_clean)
+if data_arg[1] == True:
+
+    print(colored('[*] Starting to parse data to web server...', 'green'))
+
+    web_data = Transform_data_to_web(tx_info_clean = tx_info_clean)
+
+    with open("webserver/json/internaltx/" + hashtx + '.json', 'w') as json_file:
+        json.dump(web_data[0], json_file)
+
+    with open("webserver/json/tokens/" + hashtx + '.json', 'w') as json_file:
+        json.dump(web_data[1], json_file)
+    
+    with open("webserver/json/" + hashtx + '.json', 'w') as json_file:
+        json.dump(tx_info_clean, json_file)
+
+if data_arg[3] == True:
+    tx_info_clean_json = json.dumps(tx_info_clean)
+    print (tx_info_clean_json)
+        

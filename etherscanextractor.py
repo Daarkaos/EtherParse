@@ -89,34 +89,59 @@ def Get_tokens_transfered_from_tx(EtherHTML):
 ##### Create json to Web
 def Transform_data_to_web(tx_info_clean):
     internal = {}
-    list_nodes = []
-    list_links = []
+    list_nodes_internal = []
+    list_links_internal = []
+    tokens = {}
+    list_nodes_tokens = []
+    list_links_tokens = []
     if not tx_info_clean['internal_tx']:
-        print ('no data')
+        print ('No internal transactions')
     else:
         for element in tx_info_clean['internal_tx']:
             added = False
-            for p in list_nodes:
+            for p in list_nodes_internal:
                 if (p["id"] == element["from"]):
                     added = True
             if not added:
                 new_node = { "id": element["from"]}
-                list_nodes.append(new_node)
+                list_nodes_internal.append(new_node)
             added = False    
-            for p in list_nodes:  
+            for p in list_nodes_internal:  
                 if (p["id"] == element["to"]):
                     added = True
             if not added:
                 new_node = { "id": element["to"]}
-                list_nodes.append(new_node)
+                list_nodes_internal.append(new_node)
 
             new_link = {"source": element['from'], "target": element['to'], "value": element['value']}
-            list_links.append(new_link)
+            list_links_internal.append(new_link)
 
-        internal["nodes"] = list_nodes
-        internal["links"] = list_links
+        internal["nodes"] = list_nodes_internal
+        internal["links"] = list_links_internal
 
-        print (internal)
-        
+    if not tx_info_clean['tokens']:
+        print ('No tokens')
+    else:
+        for element in tx_info_clean['tokens']:
+            added = False
+            for p in list_nodes_tokens:
+                if (p["id"] == element["from"]):
+                    added = True
+            if not added:
+                new_node = { "id": element["from"]}
+                list_nodes_tokens.append(new_node)
+            added = False    
+            for p in list_nodes_tokens:  
+                if (p["id"] == element["to"]):
+                    added = True
+            if not added:
+                new_node = { "id": element["to"]}
+                list_nodes_tokens.append(new_node)
 
-    return (0)
+            new_link = {"source": element['from'], "target": element['to'], "value": element['for']}
+            list_links_tokens.append(new_link)
+
+        tokens["nodes"] = list_nodes_tokens
+        tokens["links"] = list_links_tokens
+
+    return (internal, tokens)
