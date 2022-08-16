@@ -6,7 +6,12 @@
   
     <script src="//unpkg.com/3d-force-graph"></script>
     <!--<script src="../../dist/3d-force-graph.js"></script>-->
-  </head>
+    <!--Import data from localStorage-->
+    <script>
+      const txhash = localStorage.getItem('txhash');
+      console.log(txhash);
+    </script>
+</head>
   
   <body>
     <div id="3d-graph"></div>

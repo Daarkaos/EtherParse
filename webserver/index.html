@@ -6,6 +6,7 @@
   <title>Dashboard TX_Parse</title>
   <!-- STYLESHEET -->
   <link rel="stylesheet" href="dist/css/style.css">
+  <!--JS to import var to other files-->
   <script type="text/javascript">
     function GetFileSizeNameAndType()
         {
@@ -15,12 +16,28 @@
         {
                 //Acces the name of var   
                 const txhash = fi.files.item(0).name;
-                localStorage.setItem('txhash', txhash);
-                
+                localStorage.setItem('txhash', txhash);    
                 //window.location.href = "internaltx.html";
         }
     }
-</script>
+  </script>
+  <script>
+    $(function() {
+
+
+var people = [];
+
+$.getJSON('people.json', function(data) {
+    $.each(data.person, function(i, f) {
+       var tblRow = "<tr>" + "<td>" + f.firstName + "</td>" +
+        "<td>" + f.lastName + "</td>" + "<td>" + f.job + "</td>" + "<td>" + f.roll + "</td>" + "</tr>"
+        $(tblRow).appendTo("#userdata tbody");
+  });
+
+});
+
+});
+  </script>
 </head>
 
 <body>
@@ -85,6 +102,22 @@
     <label for="TX">Go to webserver/json/data and select the txhash.json:</label><br>
     <input type="file" id="file" onchange="GetFileSizeNameAndType()" />
 
+    <div class="wrapper">
+      <div class="profile">
+         <table id= "userdata" border="2">
+        <thead>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Email Address</th>
+                  <th>City</th>
+              </thead>
+            <tbody>
+      
+             </tbody>
+         </table>
+      
+      </div>
+      </div>
 
 </body>
 </html>

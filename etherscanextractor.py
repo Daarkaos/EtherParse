@@ -13,7 +13,7 @@ def Get_tx_from_etherscan(hashtx):
     if soup.title.string == "Etherscan Error Page":
         print(colored("Could not connect to Etherscan", "red"))
         sys.exit()
-    print(colored("Getting info from Etherscan...", "green"))
+    print(colored("[*] Getting information from Etherscan...", "green"))
     return soup
 
 ##### Get addr from Etherscan
