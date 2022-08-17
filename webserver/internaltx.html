@@ -1,6 +1,9 @@
+<html>
 <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible"
+  content="IE-edge">
   <style> body { margin: 0; } </style>
-
   <script src="//unpkg.com/force-graph"></script>
   <link rel="stylesheet" href="dist/css/style.css">
   <!--Import data from localStorage-->
@@ -10,15 +13,28 @@
   </script>
 </head>
 
+<header>
+
+    <h1> InternalTX </h1><img src="dist/images/git.png">
+
+</header>
+
 <body>
 
-<h1> InternalTX </h1>
-<span id="txhash"></span>
-<div id="graph"></div>
+<div id="graph">
 
 <script>
   fetch('json/internaltx/' + txhash).then(res => res.json()).then(data => {
     const elem = document.getElementById('graph');
+   
+    const rename = (nodeOrLink, type) => {
+      let value = prompt('Name this ' + type + ':', nodeOrLink.name);
+      if (!value) {
+        return;
+      }
+      nodeOrLink.name = value;
+      updateGraphData();
+    };
 
     let selfLoopLinks = {};
     let sameNodesLinks = {};
@@ -65,99 +81,40 @@
       
       .graphData(data)
       .nodeLabel('id')
-      .nodeAutoColorBy('group')
+      .nodeRelSize([5])
       .linkCurvature('curvature')
       .linkDirectionalArrowLength(6)
-      .linkDirectionalArrowRelPos(1)
-      
-      // Modify Node
-       
-      .nodeCanvasObject((node, ctx, globalScale) => {
-          const label = node.id;
-          const fontSize = 10/globalScale;
-          ctx.font = `${fontSize}px Sans-Serif`;
-          const textWidth = ctx.measureText(label).width;
-          const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.5); // some padding
+      .linkLabel('value')
+      .onNodeClick((node, event) => rename(node, 'node'))
+    
 
-          ctx.fillStyle = 'rgb(0, 0, 0)';
-          ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
-
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillStyle = node.color;
-          ctx.fillText(label, node.x, node.y);
-
-          node.__bckgDimensions = bckgDimensions; // to re-use in nodePointerAreaPaint
-      })
-      .nodePointerAreaPaint((node, color, ctx) => {
-          ctx.fillStyle = color;
-          const bckgDimensions = node.__bckgDimensions;
-          bckgDimensions && ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
-      })
-
-      // Dont move the nodes
-      
-      .onNodeDragEnd(node => {
-        node.fx = node.x;
-        node.fy = node.y;
-      })
-
-      // Modify Link text.
-
-      .linkCanvasObjectMode(() => 'after')
-      .linkCanvasObject((link, ctx) => {
-          const MAX_FONT_SIZE = 5;
-          const LABEL_NODE_MARGIN = Graph.nodeRelSize() * 1.5;
-
-          const start = link.source;
-          const end = link.target;
-
-          // ignore unbound links
-          if (typeof start !== 'object' || typeof end !== 'object') return;
-
-          // calculate label positioning
-          const textPos = Object.assign(...['x', 'y'].map(c => ({
-            [c]: start[c] + (end[c] - start[c]) / 2 // calc middle point
-          })));
-
-          const relLink = { x: end.x - start.x, y: end.y - start.y };
-
-          const maxTextLength = Math.sqrt(Math.pow(relLink.x, 2) + Math.pow(relLink.y, 2)) - LABEL_NODE_MARGIN * 2;
-
-          let textAngle = Math.atan2(relLink.y, relLink.x);
-          // maintain label vertical orientation for legibility
-          if (textAngle > Math.PI / 0.5) textAngle = -(Math.PI - textAngle);
-          if (textAngle < -Math.PI / 2) textAngle = -(-Math.PI - textAngle);
-
-          const label = `${link.value}`;
-
-          // estimate fontSize to fit in link length
-
-          ctx.font = '1px Sans-Serif';
-          const fontSize = Math.min(MAX_FONT_SIZE, maxTextLength / ctx.measureText(label).width);
-          ctx.font = `${fontSize}px Sans-Serif`;
-          //const textWidth = ctx.measureText(label).width;
-          //const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
-
-          // draw text label (with background rect)
-
-          ctx.save();
-          ctx.translate(textPos.x, textPos.y);
-          ctx.rotate(textAngle);
-
-          //ctx.fillStyle = 'rgba(255, 255, 255, 1)';
-          //ctx.fillRect(- bckgDimensions[0] / 2, - bckgDimensions[1] / 2, ...bckgDimensions);
-
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillStyle = 'black';
-          ctx.fillText(label, 0, 0);
-          ctx.restore();
-        })
-
-
-  })
+    });
 
   
 </script>
+</div>
+
 </body>
+
+<hr>
+<p class="InfoAux">This project is made possible by the data from the EtherScan and Alchemy. For more information/accuracy checkout the official sites below.</p>
+<footer>
+ <br>
+    <div class="git">
+      <a href="https://github.com/Daarkaos/TX_Ether/"><img src="git.png" ></a>
+      <br>
+    </div>
+
+    <div class = "etherScan">
+      <a href="https://etherscan.io/"><img src="etherscan-500.png"></a>
+      <br> 
+    </div>
+    
+    <div class = "alchemylogo">
+      <a href="https://dashboard.alchemyapi.io/"><img src="alchemy2.png" ></a>
+      <br>
+    </div>
+
+</footer>
+
+</html>

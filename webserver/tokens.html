@@ -1,62 +1,96 @@
+<html>
 <head>
-    <style> body { margin: 0; } </style>
-  
-    <script src="//unpkg.com/three"></script>
-    <script src="//unpkg.com/three-spritetext"></script>
-  
-    <script src="//unpkg.com/3d-force-graph"></script>
-    <!--<script src="../../dist/3d-force-graph.js"></script>-->
-    <!--Import data from localStorage-->
-    <script>
-      const txhash = localStorage.getItem('txhash');
-      console.log(txhash);
-    </script>
+  <style> body { margin: 0; } </style>
+
+  <script src="//unpkg.com/force-graph"></script>
+  <link rel="stylesheet" href="dist/css/style.css">
+  <!--Import data from localStorage-->
+  <script>
+    const txhash = localStorage.getItem('txhash');
+    console.log(txhash);
+  </script>
 </head>
-  
-  <body>
-    <div id="3d-graph"></div>
-  
-    <script>
-      const Graph = ForceGraph3D()
-        (document.getElementById('3d-graph'))
-          .jsonUrl('json/internaltx/test1.json')
-          .nodeAutoColorBy('group')
-          .nodeThreeObject(node => {
-            const sprite = new SpriteText(node.id);
-            sprite.material.depthWrite = false; // make sprite background transparent
-            sprite.color = node.color;
-            sprite.textHeight = 5;
-            return sprite;
-          })
 
-          .onNodeDragEnd(node => {
-            node.fx = node.x;
-            node.fy = node.y;
-            node.fz = node.z;
-          })
-          .linkDirectionalArrowLength(8)
-          .linkDirectionalArrowRelPos(1)
-          .linkCurvature(0.25)
-          .linkThreeObjectExtend(true)
-          .linkThreeObject(link => {
-            // extend link with text sprite
-            const sprite = new SpriteText(`${link.value}`);
-            sprite.color = 'lightgrey';
-            sprite.textHeight = 5;
-            return sprite;
-          })
-          .linkPositionUpdate((sprite, { start, end }) => {
-            const middlePos = Object.assign(...['x', 'y', 'z'].map(c => ({
-                [c]: start[c] + (end[c] - start[c]) / 1.3 // calc middle point
-            })));
+<body>
 
-          // Position sprite
-            Object.assign(sprite.position, middlePos);
-          });
+<h1> Tokens </h1>
+<span id="txhash"></span>
+
+
+<div id="graph">
+
+<script>
+  fetch('json/tokens/' + txhash).then(res => res.json()).then(data => {
+    const elem = document.getElementById('graph');
+   
+    const rename = (nodeOrLink, type) => {
+      let value = prompt('Name this ' + type + ':', nodeOrLink.name);
+      if (!value) {
+        return;
+      }
+      nodeOrLink.name = value;
+      updateGraphData();
+    };
+
+    let selfLoopLinks = {};
+    let sameNodesLinks = {};
+    const curvatureMinMax = 0.25;
+
+    // 1. assign each link a nodePairId that combines their source and target independent of the links direction
+    // 2. group links together that share the same two nodes or are self-loops
+    data.links.forEach(link => {
+      link.nodePairId = link.source <= link.target ? (link.source + "_" + link.target) : (link.target + "_" + link.source);
+      let map = link.source === link.target ? selfLoopLinks : sameNodesLinks;
+      if (!map[link.nodePairId]) {
+        map[link.nodePairId] = [];
+      }
+      map[link.nodePairId].push(link);
+    });
+
+    // Compute the curvature for self-loop links to avoid overlaps
+    Object.keys(selfLoopLinks).forEach(id => {
+      let links = selfLoopLinks[id];
+      let lastIndex = links.length - 1;
+      links[lastIndex].curvature = 1;
+      let delta = (1 - curvatureMinMax) / lastIndex;
+      for (let i = 0; i < lastIndex; i++) {
+        links[i].curvature = curvatureMinMax + i * delta;
+      }
+    });
+
+    // Compute the curvature for links sharing the same two nodes to avoid overlaps
+    Object.keys(sameNodesLinks).filter(nodePairId => sameNodesLinks[nodePairId].length > 1).forEach(nodePairId => {
+      let links = sameNodesLinks[nodePairId];
+      let lastIndex = links.length - 1;
+      let lastLink = links[lastIndex];
+      lastLink.curvature = curvatureMinMax;
+      let delta = 2 * curvatureMinMax / lastIndex;
+      for (let i = 0; i < lastIndex; i++) {
+        links[i].curvature = - curvatureMinMax + i * delta;
+        if (lastLink.source !== links[i].source) {
+          links[i].curvature *= -1; // flip it around, otherwise they overlap
+        }
+      }
+    });
+
+    const Graph = ForceGraph()(elem)
+      
+      .cooldownTicks(100)
+      .graphData(data)
+      .nodeLabel('id')
+      .nodeRelSize([5])
+      .linkCurvature('curvature')
+      .linkDirectionalArrowLength(6)
+      .linkLabel('value')
+      .onNodeClick((node, event) => rename(node, 'node'))  
+
+    Graph.d3Force('center', null);
+    Graph.onEngineStop(() => Graph.zoomToFit(400));
+    });
 
   
-      // Spread nodes a little wider
-      Graph.d3Force('charge').strength(-120);
-  
-    </script>
-  </body>
+</script>
+
+</div>
+</body>
+</html>

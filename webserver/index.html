@@ -6,7 +6,7 @@
   <title>Dashboard TX_Parse</title>
   <!-- STYLESHEET -->
   <link rel="stylesheet" href="dist/css/style.css">
-  <!--JS to import var to other files-->
+  <!--JS to save var in localstorage-->
   <script type="text/javascript">
     function GetFileSizeNameAndType()
         {
@@ -51,38 +51,8 @@
         </a>
       </button>
   </div>
-
-  <div class="container info-box">
-    <div class="info-section-title">
-      <p>More Information</p>
-        <hr>
-    </div>
-    <small>This project is made possible by the data from the EtherScan and Alchemy. For more information/accuracy checkout the official sites below.</small>
-    <div class="more-information">
-      <p>Official EtherScan Page</p>
-          
-      <button class="btn-ether">
-        <a id="set-mitre-link" target="_blank" href="https://etherscan.io/">
-          <h4>EtherScan<span id="set-mitre-id"></span></h4>
-        </a>
-      </button>
-          
-      <p>Official Alchemy Page</p>
-          
-      <button class="btn-ether">
-        <a id="set-mitre-link" target="_blank" href="https://dashboard.alchemyapi.io/">
-          <h4>Alchemy<span id="set-mitre-id"></span></h4>
-        </a>
-      </button>
-    </div>
-
-    <div class="more-information">
-      <a target="_blank" id="btn-about" class="link-outline-primary" href="https://github.com/Daarkaos/TX_Ether">
-        <i class="fab fa-github"></i>
-        View on GitHub
-      </a>
-    </div>
-
+  <br>
+  <br>
     <label for="TX">Go to webserver/json/data and select the txhash.json:</label><br>
     <input type="file" id="file" onchange="GetFileSizeNameAndType()" />
 
