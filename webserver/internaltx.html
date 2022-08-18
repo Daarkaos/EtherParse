@@ -5,26 +5,23 @@
   content="IE-edge">
   <style> body { margin: 0; } </style>
   <script src="//unpkg.com/force-graph"></script>
+  <title>Internal TX</title>
   <link rel="stylesheet" href="dist/css/style.css">
   <!--Import data from localStorage-->
   <script>
     const txhash = localStorage.getItem('txhash');
-    console.log(txhash);
   </script>
 </head>
 
-<header>
-
-    <h1> InternalTX </h1><img src="dist/images/git.png">
-
-</header>
-
 <body>
+<div id="header">
+  <img src="dist/images/TestTitle.png">
+</div>
 
 <div id="graph">
 
 <script>
-  fetch('json/internaltx/' + txhash).then(res => res.json()).then(data => {
+  fetch('json/internaltx/0xab486012f21be741c9e674ffda227e30518e8a1e37a5f1d58d0b0d41f6e76530.json').then(res => res.json()).then(data => {
     const elem = document.getElementById('graph');
    
     const rename = (nodeOrLink, type) => {
@@ -79,42 +76,27 @@
 
     const Graph = ForceGraph()(elem)
       
+      .cooldownTicks(100)
       .graphData(data)
       .nodeLabel('id')
       .nodeRelSize([5])
       .linkCurvature('curvature')
       .linkDirectionalArrowLength(6)
       .linkLabel('value')
-      .onNodeClick((node, event) => rename(node, 'node'))
-    
-
+      // Modify it
+      .width([1825])
+      .height([700])
+    Graph.onEngineStop(() => Graph.zoomToFit(400));
+      
     });
 
-  
 </script>
 </div>
 
+<div id="footer">
+Test
+</div>
+
 </body>
-
-<hr>
-<p class="InfoAux">This project is made possible by the data from the EtherScan and Alchemy. For more information/accuracy checkout the official sites below.</p>
-<footer>
- <br>
-    <div class="git">
-      <a href="https://github.com/Daarkaos/TX_Ether/"><img src="git.png" ></a>
-      <br>
-    </div>
-
-    <div class = "etherScan">
-      <a href="https://etherscan.io/"><img src="etherscan-500.png"></a>
-      <br> 
-    </div>
-    
-    <div class = "alchemylogo">
-      <a href="https://dashboard.alchemyapi.io/"><img src="alchemy2.png" ></a>
-      <br>
-    </div>
-
-</footer>
 
 </html>

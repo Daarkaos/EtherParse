@@ -2,6 +2,7 @@
 # Import data from Ethereum TX.
 import argparse
 import getopt
+import os
 import sys
 import json
 from config import EtherKey, AlchemyKey
@@ -145,6 +146,9 @@ if data_arg[1] == True:
     
     with open("webserver/json/" + hashtx + '.json', 'w') as json_file:
         json.dump(tx_info_clean, json_file)
+
+    print(colored('[*] Starting the web server...', 'green'))
+    os.system('python2 webserver/webserver.py')
 
 if data_arg[3] == True:
     tx_info_clean_json = json.dumps(tx_info_clean)

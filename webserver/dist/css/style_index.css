@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans+Condensed:100,200,300,400');
+
+
+html{
+   margin: 0;
+   padding: 0;
+   background-color:  black;
+   text-align: center;
+   font: 1em Candara;
+}
+
+.Header{
+    color:white;
+    text-align:center;
+    padding:0px;
+    margin-left: 2px;
+    padding-left: 20px;
+}  
+
+.container{
+  
+    padding-left: 0px;
+    
+}  
+
+.containerinfo-box{
+  
+    padding-top: 80px;
+    margin-top: 30px;
+    height: 25%;
+    
+}  
+.more-information {
+    margin-top:80px;
+}
+.infoText{
+
+    text-align: center;
+    padding-right: 50px;
+    margin-right: 40px;
+}  
+.InfoAux{
+  
+    text-align: center;
+    
+}  
+
+
+.tx_information{
+
+    display: flex;
+    justify-content: center;
+    padding: 45px;
+}
+
+.btn-ether{
+
+   margin-top: 20px;
+   height: 50px;
+   cursor: pointer;
+   background-color: #0020d3;
+   border: none;
+   color: #fff;
+   font-size: 14px;
+   border-radius: 5px;
+   margin-right: 40px;
+}
+.btn-Token{
+    margin-top: 20px;
+    height: 50px;
+    cursor: pointer;
+    background-color: #0020d3;
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 5px;
+    margin-right: 40px;
+    
+}
+
+body{
+
+    width:100%;
+    height: 100%;
+    float:left;
+    margin: 0;
+    padding: 0;
+    color:#fff;
+} 
+.more-information{
+    display: flex;
+    justify-content: center;
+    padding: 35px;
+
+}  
+
+.git{
+    margin-right: 40px;
+}
+.etherScan{
+    margin-right: 40px;
+}
+.alchemylogo{
+    margin-right: 40px;}
+
+
+footer{
+ 
+    bottom:0;
+    width: 100%;
+    height: 50px;
+    margin-top: 30;
+    padding: 0;
+    background-color: black;
+    color:white;
+    text-align:center;
+    display: flex;
+    justify-content: center;
+
+
+}  
+
+
+
+
+

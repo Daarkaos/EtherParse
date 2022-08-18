@@ -12,9 +12,7 @@ class Server(BaseHTTPRequestHandler):
                 self.send_response(200)
                 self.end_headers()
                 self.wfile.write(bytes(f, 'utf-8'))
-            else:
-                f = "File not found"
-                self.send_error(404,f)
+
         except:
             f = "File not found"
             self.send_error(404,f)

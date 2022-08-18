@@ -1,36 +1,28 @@
 <html>
 <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible"
+  content="IE-edge">
   <style> body { margin: 0; } </style>
-
   <script src="//unpkg.com/force-graph"></script>
+  <title>Tokens</title>
   <link rel="stylesheet" href="dist/css/style.css">
   <!--Import data from localStorage-->
   <script>
     const txhash = localStorage.getItem('txhash');
-    console.log(txhash);
   </script>
 </head>
 
 <body>
-
-<h1> Tokens </h1>
-<span id="txhash"></span>
-
+<div id="header">
+Test
+</div>
 
 <div id="graph">
 
 <script>
   fetch('json/tokens/' + txhash).then(res => res.json()).then(data => {
     const elem = document.getElementById('graph');
-   
-    const rename = (nodeOrLink, type) => {
-      let value = prompt('Name this ' + type + ':', nodeOrLink.name);
-      if (!value) {
-        return;
-      }
-      nodeOrLink.name = value;
-      updateGraphData();
-    };
 
     let selfLoopLinks = {};
     let sameNodesLinks = {};
@@ -82,15 +74,19 @@
       .linkCurvature('curvature')
       .linkDirectionalArrowLength(6)
       .linkLabel('value')
-      .onNodeClick((node, event) => rename(node, 'node'))  
-
-    Graph.d3Force('center', null);
+      .width([1900])
+      .height([700])
     Graph.onEngineStop(() => Graph.zoomToFit(400));
+      
     });
 
-  
 </script>
-
 </div>
+
+<div id="footer">
+Test
+</div>
+
 </body>
+
 </html>
