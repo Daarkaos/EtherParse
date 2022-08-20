@@ -74,7 +74,7 @@ def Get_tokens_transfered_from_tx(EtherHTML):
             tokens = tokens[0].text
     else:
         print(colored("NO tokens detected!", "red"))
-        return ("no")
+        return (False)
     tokens = tokens.replace("To"," To=").replace("From",";From=").replace("For","For=").split(";")
     for token in tokens:
         token_from = token[token.find('From=')+6:token.find('To=')]
@@ -94,9 +94,8 @@ def Transform_data_to_web(tx_info_clean):
     tokens = {}
     list_nodes_tokens = []
     list_links_tokens = []
-    if not tx_info_clean['internal_tx']:
-        print ('No internal transactions')
-    else:
+    if tx_info_clean['internal_tx'] != False:
+        
         for element in tx_info_clean['internal_tx']:
             added = False
             for p in list_nodes_internal:
@@ -119,9 +118,8 @@ def Transform_data_to_web(tx_info_clean):
         internal["nodes"] = list_nodes_internal
         internal["links"] = list_links_internal
 
-    if not tx_info_clean['tokens']:
-        print ('No tokens')
-    else:
+    if tx_info_clean['tokens'] != False:
+        
         for element in tx_info_clean['tokens']:
             added = False
             for p in list_nodes_tokens:

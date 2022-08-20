@@ -90,7 +90,8 @@ try:
     tx_info_clean['internal_tx'] = tx_internal
     tx_info_clean['timestamp'] = timestamp
 except:
-    zero = "zero"
+    print(colored("NO internal transacction detected!", "red"))
+    tx_info_clean['internal_tx'] = False
 
 # Parse data
 
@@ -130,6 +131,10 @@ if data_arg[2] == True:
 
 #tx_info_clean_json = json.dumps(tx_info_clean)
 
+if data_arg[3] == True:
+    tx_info_clean_json = json.dumps(tx_info_clean)
+    print (tx_info_clean_json)
+
 # Parse data to create graphs --- ONLY WEB.
 
 if data_arg[1] == True:
@@ -150,7 +155,5 @@ if data_arg[1] == True:
     print(colored('[*] Starting the web server...', 'green'))
     os.system('python2 webserver/webserver.py')
 
-if data_arg[3] == True:
-    tx_info_clean_json = json.dumps(tx_info_clean)
-    print (tx_info_clean_json)
+
         
