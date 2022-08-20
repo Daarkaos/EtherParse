@@ -7,6 +7,20 @@
   <title>Dashboard ETHERPARSE</title>
   <!-- STYLESHEET -->
   <link rel= "stylesheet" href="dist/css/style_index.css">
+  <script type="text/javascript">
+    function GetFileSizeNameAndType()
+        {
+        var fi = document.getElementById('file'); // GET THE FILE INPUT AS VARIABLE.
+        // VALIDATE OR CHECK IF ANY FILE IS SELECTED.
+        if (fi.files.length > 0)
+        {
+                //Acces the name of var   
+                const txhash = fi.files.item(0).name;
+                localStorage.setItem('txhash', txhash);    
+                //window.location.href = "internaltx.html";
+        }
+    }
+  </script>
 </head>
 
 
@@ -24,6 +38,8 @@
     </div>
     <div class="tx_information">
     
+      <label for="TX">Go to webserver/json/data and select the txhash.json:</label><br>
+      <input type="file" id="file" onchange="GetFileSizeNameAndType()" />
 
       <button class="btn-ether">
         <a href="/internaltx.html"><font color="white"> See Internal Tx</font>

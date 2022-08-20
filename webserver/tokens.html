@@ -22,7 +22,7 @@
   <div id="graph">
 
 <script>
-  fetch('json/internaltx/0xab486012f21be741c9e674ffda227e30518e8a1e37a5f1d58d0b0d41f6e76530.json').then(res => res.json()).then(data => {
+  fetch('json/tokens/'+ txhash).then(res => res.json()).then(data => {
     const elem = document.getElementById('graph');
    
     const rename = (nodeOrLink, type) => {
