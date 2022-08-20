@@ -5,7 +5,7 @@
   content="IE-edge">
   <style> body { margin: 0; } </style>
   <script src="//unpkg.com/force-graph"></script>
-  <title>Tokens</title>
+  <title>Internal TX</title>
   <link rel="stylesheet" href="dist/css/style.css">
   <!--Import data from localStorage-->
   <script>
@@ -14,15 +14,25 @@
 </head>
 
 <body>
-<div id="header">
-Test
-</div>
+  <div class="Header">
+    <img src="dist/images/TestTitle.png">
+  </div>
+  <hr>
 
-<div id="graph">
+  <div id="graph">
 
 <script>
-  fetch('json/tokens/' + txhash).then(res => res.json()).then(data => {
+  fetch('json/internaltx/0xab486012f21be741c9e674ffda227e30518e8a1e37a5f1d58d0b0d41f6e76530.json').then(res => res.json()).then(data => {
     const elem = document.getElementById('graph');
+   
+    const rename = (nodeOrLink, type) => {
+      let value = prompt('Name this ' + type + ':', nodeOrLink.name);
+      if (!value) {
+        return;
+      }
+      nodeOrLink.name = value;
+      updateGraphData();
+    };
 
     let selfLoopLinks = {};
     let sameNodesLinks = {};
@@ -74,7 +84,10 @@ Test
       .linkCurvature('curvature')
       .linkDirectionalArrowLength(6)
       .linkLabel('value')
-      .width([1900])
+      .nodeAutoColorBy('id')
+      .linkAutoColorBy('source')
+      // Modify it
+      .width([1825])
       .height([700])
     Graph.onEngineStop(() => Graph.zoomToFit(400));
       
@@ -83,10 +96,29 @@ Test
 </script>
 </div>
 
-<div id="footer">
-Test
-</div>
-
 </body>
+
+<hr>
+<p class="InfoAux">This project is made possible by the data from the EtherScan and Alchemy. For more information/accuracy checkout the official sites below.</p>
+<footer>
+ <br>
+    <div class="git">
+    <a href="https://github.com/Daarkaos/TX_Ether/"><img src="dist/images/git.png"/>
+    <br>
+   
+    </div>
+
+    <div class = "etherScan">
+      <a href="https://etherscan.io/"><img src="dist/images/etherscan-500.png"></a>
+      <br>
+      
+    </div>
+    
+    <div class = "alchemylogo">
+      <a href="https://dashboard.alchemyapi.io/"><img src="dist/images/alchemy2.png" ></a>
+      <br>
+    </div>
+      
+</footer>
 
 </html>

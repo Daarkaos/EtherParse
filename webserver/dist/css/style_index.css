@@ -12,6 +12,7 @@ html{
 .Header{
     color:white;
     text-align:center;
+    height: 10%;
     padding:0px;
     margin-left: 2px;
     padding-left: 20px;
@@ -20,6 +21,7 @@ html{
 .container{
   
     padding-left: 0px;
+    height: 70.5%;
     
 }  
 

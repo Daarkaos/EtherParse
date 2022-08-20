@@ -1,37 +1,70 @@
 @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans+Condensed:100,200,300,400');
 
 
-html,body {
-    margin: 0px;
-    padding: 0px;
-    border: 0px;
-    left: 0px;
-    top: 0px;
-}
-
-#header {
-    background-color: rgb(0, 0, 0);
-    font-size: .75em;
-    clear: both;
-    width: 100%;
-    height: 7%;
+html{
+    margin: 0;
+    padding: 0;
+    background-color:  black;
     text-align: center;
-}
+    font: 1em Candara;
+ }
+ 
+ .Header{
+     color:white;
+     text-align:center;
+     height: 10%;
+     padding:0px;
+     margin-left: 2px;
+     padding-left: 20px;
+ }  
 
 #graph {
-    background-color: rgb(202, 243, 21);
-    font-size: .75em;
-    clear: both;
-    width: 100%;
-
-    text-align: center;
-}
-
-#footer {
     background-color: rgb(0, 0, 0);
     font-size: .75em;
     clear: both;
     width: 100%;
-    height: 7%;
+    height: 75%;
+
     text-align: center;
+}
+
+body{
+
+    width:100%;
+    height: 100%;
+    float:left;
+    margin: 0;
+    padding: 0;
+    color:#fff;
+} 
+.more-information{
+    display: flex;
+    justify-content: center;
+    padding: 35px;
+
+}  
+
+.git{
+    margin-right: 40px;
+}
+.etherScan{
+    margin-right: 40px;
+}
+.alchemylogo{
+    margin-right: 40px;}
+
+
+footer{
+ 
+    bottom:0;
+    width: 100%;
+    margin-top: 30;
+    padding: 0;
+    background-color: black;
+    color:white;
+    text-align:center;
+    display: flex;
+    justify-content: center;
+
+
 }
