@@ -2,13 +2,15 @@
 	<img src="/webserver/dist/images/TestTitle.png" height="150px"/>
 </p>
 
-Tested with:
+This program allows you to obtain information about the Ethereum transactions that have been carried out, thus minimizing the time spent studying them.
 
-Operating System: <b>Ubuntu 22.04 LTS</b>
+This tool was tested with:
 
-Python3 version: <b>Python 3.10.4</b>
+* Operating System: <b>Ubuntu 22.04 LTS</b>
 
-Python2 version: <b>Python 2.7.18</b>
+* Python3 version: <b>Python 3.10.4</b>
+
+* Python2 version: <b>Python 2.7.18</b>
 
 
 ## Installation
