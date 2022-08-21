@@ -18,7 +18,7 @@ def main(argv):
    contract = False
    api = True
    try:
-      opts, args = getopt.getopt(argv,"ht:wca",["tx=","web","contract","api"])
+      opts, args = getopt.getopt(argv,"ht:wca",["tx=","web","contract","quiet"])
    except getopt.GetoptError:
       print ('parseether.py -tx <hashtx> -w (optional) -c (optional)')
       sys.exit(2)
@@ -35,7 +35,7 @@ def main(argv):
          web = True
       elif opt in ("-c", "--contract"):
          contract = True
-      elif opt in ("-a", "--api"):
+      elif opt in ("-q", "--quiet"):
          api = False
 
    return (tx, web, contract, api)
@@ -176,8 +176,6 @@ if data_arg[2] == True:
         print(colored('[*] Doing static analysis', 'green'))
 
         os.system('evm-cfg-builder contracts/' + to_clean + '/' + to_clean + '.bytecode --export-dot contracts/' + to_clean)
-
-        
 
 #tx_info_clean_json = json.dumps(tx_info_clean)
 

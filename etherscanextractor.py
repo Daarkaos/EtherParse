@@ -24,14 +24,6 @@ def Get_addr_from_etherscan(addrtx):
     soupaddr = BeautifulSoup(page.content, "html.parser")
     return soupaddr
 
-##### Get contract from Etherscan
-def Get_contract_from_etherscan(addrcontract):
-    url = "https://etherscan.io/bytecode-decompiler?a=" + addrcontract
-    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
-    page = requests.get (url, headers=headers)
-    soupcontract = BeautifulSoup(page.content, "html.parser")
-    return soupcontract
-
 ##### Function to get the time from Etherscan transaction
 def Get_time_from_tx(EtherHTML):
     parsetime = EtherHTML.find(id="ContentPlaceHolder1_divTimeStamp")
@@ -39,12 +31,6 @@ def Get_time_from_tx(EtherHTML):
     timestamp = timestamp.text.replace("\n","")
     timestamp = timestamp[timestamp.find('(')+1:timestamp.find(')')]
     return (timestamp)
-
-##### Function to get the from from Etherscan transaction
-#def Get_participants_from_tx(EtherHTML):
-#    fromtx = EtherHTML.find(id="spanFromAdd")
-#    totx = EtherHTML.find(id="contractCopy")
-#    return (fromtx.text, totx.text)
 
 ##### Get info from addr
 def Get_info_addr(EtherAddrfromHTML, EtherAddrtoHTML):
@@ -57,11 +43,6 @@ def Get_info_addr(EtherAddrfromHTML, EtherAddrtoHTML):
     type_addr_from_contract = EtherAddrfromHTML.find(id="code").text
     type_addr_to_contract = EtherAddrtoHTML.find(id="code").text
     return (type_addr_from, type_addr_to, type_addr_from_contract, type_addr_to_contract)
-
-##### Import contract
-def Get_contract_from_addr(EtherContractHTML):
-    contract = EtherContractHTML.find(id="ContentPlaceHolder1_txtByteCode").text
-    return (contract)
 
 ##### Tokens transfered
 def Get_tokens_transfered_from_tx(EtherHTML):
