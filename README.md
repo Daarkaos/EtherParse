@@ -6,7 +6,8 @@ Tested with:
 
 Operating System: <b>Ubuntu 22.04 LTS</b>
 
-Python version: <b>Python 3.10.4</b>
+Python3 version: <b>Python 3.10.4</b>
+Python2 version: <b>Python 2.7.18</b>
 
 
 ## Installation
