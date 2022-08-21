@@ -191,6 +191,14 @@ if data_arg[1] == True:
 
     web_data = Transform_data_to_web(tx_info_clean = tx_info_clean)
 
+    for element in web_data[0]['links']:
+
+        if int(element['value']) != 0:
+            value = int(element['value']) / 1000000000000000000000
+            element['value'] = str(value)[0:3] + 'K Ether'
+
+        print (element)
+
     if internal_tx_valid:
         print(colored('[*] Parsing internal tx...', 'green'))
         with open("webserver/json/internaltx/" + hashtx + '.json', 'w') as json_file:
@@ -205,5 +213,5 @@ if data_arg[1] == True:
 
     print(colored('[*] Starting the web server...', 'green'))
     
-    os.system('python2 webserver/webserver.py')
+   # os.system('python2 webserver/webserver.py')
 
