@@ -9,6 +9,7 @@ from config import EtherKey, AlchemyKey
 from etherscan import Etherscan
 from web3 import Web3, HTTPProvider
 from etherscanextractor import *
+from alchemy_API import *
 from termcolor import colored
 
 def main(argv):
@@ -80,7 +81,7 @@ EtherAddrtoHTML = Get_addr_from_etherscan(addrtx = tx_info_clean['to'])
 info_addr = Get_info_addr(EtherAddrfromHTML = EtherAddrfromHTML, EtherAddrtoHTML = EtherAddrtoHTML)
 
 # Getting info from internal tx
-
+internal_tx_valid = False
 try:
     tx_internal = eth.get_internal_txs_by_txhash(txhash = hashtx)
     timestamp = tx_internal[0]['timeStamp']
@@ -89,6 +90,8 @@ try:
         del element['blockNumber']
     tx_info_clean['internal_tx'] = tx_internal
     tx_info_clean['timestamp'] = timestamp
+    internal_tx_valid = True
+
 except:
     print(colored("NO internal transacction detected!", "red"))
     tx_info_clean['internal_tx'] = False
@@ -100,34 +103,81 @@ tx_info_clean['to'] = info_addr[1]
 tx_info_clean['time'] = time
 
 # Getting info from tokens transfered
-
+tokens_valid = False
 tokens = Get_tokens_transfered_from_tx(EtherHTML = EtherHTML)
 tx_info_clean['tokens'] = tokens
 
-# Test if contract exit and download it --- ONLY CONTRACT
+if tokens == "":
+    tokens_valid = True
+
+# Test if contract exit 
+
+code_from_valid = False
+code_to_valid = False
+code_from = eth_getCode(addrtx=from_clean, apiKey=apiKey)
+
+if code_from != "0x":
+    code_from_valid = True
+    print(colored('CONTRACT \'FROM\' detected!', 'green'))
+
+else:
+    print(colored('CONTRACT \'FROM\' NO detected!', 'red'))
+
+code_to = eth_getCode(addrtx=to_clean, apiKey=apiKey)
+if code_to != "0x":
+    code_to_valid = True
+    print(colored('CONTRACT \'TO\' detected!', 'green'))
+
+else:
+    print(colored('CONTRACT \'TO\' NO detected!', 'red'))
+
+# Download and "study" the contracts --- ONLY CONTRACT
 
 if data_arg[2] == True:
-    if "Decompile ByteCode" in info_addr[2]:
-        EtherHTML_from_contract = Get_contract_from_etherscan(addrcontract = from_clean)
-        contract1 = Get_contract_from_addr(EtherContractHTML = EtherHTML_from_contract)
-        f = open("contracts/" + from_clean + ".bytecode", "w")
-        f.write(contract1)
+
+    if code_from_valid:
+
+        isdir = os.path.isdir("contracts/" + from_clean)
+
+        if not isdir:
+            os.mkdir("contracts/" + from_clean)
+
+        print(colored('[*] Writting code in Contracts/' + from_clean + '/', 'green'))
+        f = open('contracts/' + from_clean + '/' + to_clean + '.bytecode', "w")
+        f.write(code_from)
         f.close()
-        print(colored('CONTRACT \'FROM\' detected, downloading...!', 'green'))
+        print (colored('Done *', 'green'))
 
-    else:
-        print(colored('NO contract \'FROM\' detected!', 'red'))
+        print(colored('[*] Doing decompilation', 'green'))
 
-    if "Decompile ByteCode" in info_addr[3]:
-        EtherHTML_from_contract = Get_contract_from_etherscan(addrcontract = to_clean)
-        contract2 = Get_contract_from_addr(EtherContractHTML = EtherHTML_from_contract)
-        f = open("contracts/" + to_clean + ".bytecode", "w")
-        f.write(contract2)
+        os.system('panoramix ' + code_from + '> contracts/' + from_clean + '/decompiled_' + from_clean)
+
+        print(colored('[*] Doing static analysis', 'green'))
+
+        os.system('evm-cfg-builder contracts/' + from_clean + '/' + from_clean + '.bytecode --export-dot contracts/' + from_clean)
+    
+    if code_to_valid:
+
+        isdir = os.path.isdir("contracts/" + to_clean)
+        
+        if not isdir:
+            os.mkdir("contracts/" + to_clean)
+
+        print(colored('[*] Writting code in Contracts/' + to_clean + '/', 'green'))
+        f = open('contracts/' + to_clean + '/' + to_clean + '.bytecode', "w")
+        f.write(code_to)
         f.close()
-        print(colored('CONTRACT \'TO\' detected, downloading...!', 'green'))
+        print (colored('Done *', 'green'))
 
-    else:
-        print(colored('NO contract \'TO\' detected!', 'red'))
+        print(colored('[*] Doing decompilation', 'green'))
+
+        os.system('panoramix ' + code_to + '> contracts/' + to_clean + '/decompiled_' + to_clean)
+
+        print(colored('[*] Doing static analysis', 'green'))
+
+        os.system('evm-cfg-builder contracts/' + to_clean + '/' + to_clean + '.bytecode --export-dot contracts/' + to_clean)
+
+        
 
 #tx_info_clean_json = json.dumps(tx_info_clean)
 
@@ -143,17 +193,19 @@ if data_arg[1] == True:
 
     web_data = Transform_data_to_web(tx_info_clean = tx_info_clean)
 
-    with open("webserver/json/internaltx/" + hashtx + '.json', 'w') as json_file:
-        json.dump(web_data[0], json_file)
-
-    with open("webserver/json/tokens/" + hashtx + '.json', 'w') as json_file:
-        json.dump(web_data[1], json_file)
+    if internal_tx_valid:
+        print ('internal detected')
+        with open("webserver/json/internaltx/" + hashtx + '.json', 'w') as json_file:
+            json.dump(web_data[0], json_file)
+    if tokens_valid:
+        print ('tokens detected')
+        with open("webserver/json/tokens/" + hashtx + '.json', 'w') as json_file:
+            json.dump(web_data[1], json_file)
     
     with open("webserver/json/" + hashtx + '.json', 'w') as json_file:
         json.dump(tx_info_clean, json_file)
 
     print(colored('[*] Starting the web server...', 'green'))
+    
     os.system('python2 webserver/webserver.py')
 
-
-        

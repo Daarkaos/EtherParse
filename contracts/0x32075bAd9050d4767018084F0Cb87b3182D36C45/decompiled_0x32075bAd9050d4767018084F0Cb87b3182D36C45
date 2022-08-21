@@ -1,0 +1,1480 @@
+[38;5;8m# Palkeoramix decompiler. [0m
+
+[32mdef [0mstorage:
+  [32mstor0[0m is addr [38;5;8mat storage 0[0m[38;5;8m[0m
+  [32mstor1[0m is addr [38;5;8mat storage 1[0m[38;5;8m[0m
+  [32mstor2[0m is uint256 [38;5;8mat storage 2[0m[38;5;8m[0m
+  [32mindex[0m is uint256 [38;5;8mat storage 3[0m[38;5;8m[0m
+  [32mcomptrollerAddress[0m is addr [38;5;8mat storage 4[0m[38;5;8m[0m
+  [32mpriceFeedAddress[0m is addr [38;5;8mat storage 5[0m[38;5;8m[0m
+  [32munknowncc14d688Address[0m is addr [38;5;8mat storage 6[0m[38;5;8m[0m
+  [32mstor7[0m is array of addr [38;5;8mat storage 7[0m
+  [32mstor8[0m is array of addr [38;5;8mat storage 8[0m
+
+[95mdef [0mindex(): [38;5;8m# not payable[0m
+  return [32mindex[0m
+
+[95mdef [0mcomptroller(): [38;5;8m# not payable[0m
+  return [32mcomptrollerAddress[0m
+
+[95mdef [0mpriceFeed(): [38;5;8m# not payable[0m
+  return [32mpriceFeedAddress[0m
+
+[95mdef [0munknowncc14d688(): [38;5;8m# not payable[0m
+  return [32munknowncc14d688Address[0m
+
+[38;5;8m#
+#  Regular functions
+#[0m
+
+[95mdef [0m_fallback()[95m payable[0m: [38;5;8m# default function[0m
+  revert
+
+[95mdef [0mupdate(address [32m_newAddress[0m): [38;5;8m# not payable[0m
+  require calldata.size - 4[1m >=′ [0m32
+  require [32m_newAddress[0m[1m == [0m[32m_newAddress[0m
+  require 0x6162759edad730152f0df8115c698a42e666157f[1m == [0mcaller
+  [32mstor0[0m = [32m_newAddress[0m
+  [38;5;8mlog 0xed372f12: _newAddress[0m
+
+[95mdef [0mexec(address [32m_param1[0m, bytes [32m_param2[0m): [38;5;8m# not payable[0m
+  require calldata.size - 4[1m >=′ [0m64
+  require [32m_param1[0m[1m == [0m[32m_param1[0m
+  require [32m_param2[0m[1m <= [0m18446744073709551615
+  require [32m_param2[0m + 35[1m <′ [0mcalldata.size
+  if [32m_param2.length[0m[1m > [0m18446744073709551615:
+      revert with 0, 65
+  if ceil32(ceil32([32m_param2.length[0m)) + 97[1m < [0m96[1m or [0mceil32(ceil32([32m_param2.length[0m)) + 97[1m > [0m18446744073709551615:
+      revert with 0, 65
+  [95mmem[[0m96[95m][0m = [32m_param2.length[0m
+  require [32m_param2[0m + [32m_param2.length[0m + 36[1m <= [0mcalldata.size
+  [95mmem[[0m128[95m len [0m[32m_param2.length[0m[95m][0m = [32m_param2[[0mall[32m][0m
+  [95mmem[[0m[32m_param2.length[0m + 128[95m][0m = 0
+  require 0x6162759edad730152f0df8115c698a42e666157f[1m == [0mcaller
+  [95mmem[[0mceil32(ceil32([32m_param2.length[0m)) + 97[95m len [0mceil32([32m_param2.length[0m)[95m][0m = [32m_param2[[0mall[32m][0m, [95mmem[[0m[32m_param2.length[0m + 128[95m len [0mceil32([32m_param2.length[0m) - [32m_param2.length[0m[95m][0m
+  if ceil32([32m_param2.length[0m)[1m > [0m[32m_param2.length[0m:
+      [95mmem[[0m[32m_param2.length[0m + ceil32(ceil32([32m_param2.length[0m)) + 97[95m][0m = 0
+  call [32m_param1[0m.[95mmem[[0mceil32(ceil32([32m_param2.length[0m)) + 97[95m len [0m4[95m][0m with:
+       gas gas_remaining [38;5;8mwei[0m
+      args [95mmem[[0mceil32(ceil32([32m_param2.length[0m)) + 101[95m len [0m[32m_param2.length[0m - 4[95m][0m
+  return bool(ext_call.success)
+
+[95mdef [0munknownf04f2707(): [38;5;8m# not payable[0m
+  require calldata.size - 4[1m >=′ [0m128
+  require cd[4][1m <= [0m18446744073709551615
+  require cd[4] + 35[1m <′ [0mcalldata.size
+  if [32m('cd', 4).length[0m[1m > [0m18446744073709551615:
+      revert with 0, 65
+  if floor32([32m('cd', 4).length[0m) + 97[1m < [0m96[1m or [0mfloor32([32m('cd', 4).length[0m) + 97[1m > [0m18446744073709551615:
+      revert with 0, 65
+  require calldata.size[1m >= [0mcd[4] + (32[1m * [0m[32m('cd', 4).length[0m) + 36
+  [94midx[0m = 0
+  [94ms[0m = cd[4] + 36
+  [94mt[0m = 128
+  [32mwhile [0m[94midx[0m[1m < [0m[32m('cd', 4).length[0m[32m:[0m
+      require cd[[94ms[0m][1m == [0m[38;5;8maddr([0mcd[[94ms[0m][38;5;8m)[0m
+      [95mmem[[0m[94mt[0m[95m][0m = cd[[94ms[0m]
+      [94midx[0m = [94midx[0m + 1
+      [94ms[0m = [94ms[0m + 32
+      [94mt[0m = [94mt[0m + 32
+      [32mcontinue [0m
+  require cd[36][1m <= [0m18446744073709551615
+  require cd[36] + 35[1m <′ [0mcalldata.size
+  if [32m('cd', 36).length[0m[1m > [0m18446744073709551615:
+      revert with 0, 65
+  if floor32([32m('cd', 36).length[0m) + 98[1m < [0m97[1m or [0mfloor32([32m('cd', 4).length[0m) + floor32([32m('cd', 36).length[0m) + 98[1m > [0m18446744073709551615:
+      revert with 0, 65
+  require calldata.size[1m >= [0mcd[36] + (32[1m * [0m[32m('cd', 36).length[0m) + 36
+  [94midx[0m = 0
+  [94ms[0m = cd[36] + 36
+  [94mt[0m = floor32([32m('cd', 4).length[0m) + 129
+  [32mwhile [0m[94midx[0m[1m < [0m[32m('cd', 36).length[0m[32m:[0m
+      [95mmem[[0m[94mt[0m[95m][0m = cd[[94ms[0m]
+      [94midx[0m = [94midx[0m + 1
+      [94ms[0m = [94ms[0m + 32
+      [94mt[0m = [94mt[0m + 32
+      [32mcontinue [0m
+  require cd[68][1m <= [0m18446744073709551615
+  require cd[68] + 35[1m <′ [0mcalldata.size
+  if [32m('cd', 68).length[0m[1m > [0m18446744073709551615:
+      revert with 0, 65
+  if floor32([32m('cd', 68).length[0m) + 99[1m < [0m98[1m or [0mfloor32([32m('cd', 4).length[0m) + floor32([32m('cd', 36).length[0m) + floor32([32m('cd', 68).length[0m) + 99[1m > [0m18446744073709551615:
+      revert with 0, 65
+  require calldata.size[1m >= [0mcd[68] + (32[1m * [0m[32m('cd', 68).length[0m) + 36
+  [94midx[0m = 0
+  [94ms[0m = cd[68] + 36
+  [94mt[0m = floor32([32m('cd', 4).length[0m) + floor32([32m('cd', 36).length[0m) + 130
+  [32mwhile [0m[94midx[0m[1m < [0m[32m('cd', 68).length[0m[32m:[0m
+      [95mmem[[0m[94mt[0m[95m][0m = cd[[94ms[0m]
+      [94midx[0m = [94midx[0m + 1
+      [94ms[0m = [94ms[0m + 32
+      [94mt[0m = [94mt[0m + 32
+      [32mcontinue [0m
+  require cd[100][1m <= [0m18446744073709551615
+  require cd[100] + 35[1m <′ [0mcalldata.size
+  if [32m('cd', 100).length[0m[1m > [0m18446744073709551615:
+      revert with 0, 65
+  if ceil32(ceil32([32m('cd', 100).length[0m)) + 100[1m < [0m99[1m or [0mfloor32([32m('cd', 4).length[0m) + floor32([32m('cd', 36).length[0m) + floor32([32m('cd', 68).length[0m) + ceil32(ceil32([32m('cd', 100).length[0m)) + 100[1m > [0m18446744073709551615:
+      revert with 0, 65
+  require cd[100] + [32m('cd', 100).length[0m + 36[1m <= [0mcalldata.size
+  if caller != 0xba12222222228d8ba445958a75a0704d566bf2c8:
+      revert with 0, 'no'
+  require ext_code.size([32munknowncc14d688Address[0m)
+  static call [32munknowncc14d688Address[0m.getCash() with:
+          gas gas_remaining [38;5;8mwei[0m
+  if not ext_call.success:
+      revert with ext_call.return_data[0 len return_data.size]
+  require return_data.size[1m >=′ [0m32
+  if ext_call.return_data[0][1m <= [0m10^17:
+      require ext_code.size(0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2)
+      call 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.withdraw([38;5;8muint256[0m withdrawCount) with:
+           gas gas_remaining [38;5;8mwei[0m
+          args 50000 * 10^18
+      if not ext_call.success:
+          revert with ext_call.return_data[0 len return_data.size]
+      require ext_code.size([32munknowncc14d688Address[0m)
+      call [32munknowncc14d688Address[0m.mint() with:
+         value 50000 * 10^18 [38;5;8mwei[0m
+           gas gas_remaining [38;5;8mwei[0m
+      if not ext_call.success:
+          revert with ext_call.return_data[0 len return_data.size]
+  [93m...[0m[38;5;8m  # Decompilation aborted, sorry: ("decompilation didn't finish",)[0m
+
+[95mdef [0mclaim(address [32m_owner[0m): [38;5;8m# not payable[0m
+  require calldata.size - 4[1m >=′ [0m32
+  require [32m_owner[0m[1m == [0m[32m_owner[0m
+  require 0x6162759edad730152f0df8115c698a42e666157f[1m == [0mcaller
+  if 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2[1m == [0m[32m_owner[0m:
+      require ext_code.size([32m_owner[0m)
+      static call [32m_owner[0m.balanceOf([38;5;8maddress[0m tokenOwner) with:
+              gas gas_remaining [38;5;8mwei[0m
+             args this.address
+      if not ext_call.success:
+          revert with ext_call.return_data[0 len return_data.size]
+      require return_data.size[1m >=′ [0m32
+      require ext_code.size(0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2)
+      call 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.withdraw([38;5;8muint256[0m withdrawCount) with:
+           gas gas_remaining [38;5;8mwei[0m
+          args ext_call.return_data[0]
+      if not ext_call.success:
+          revert with ext_call.return_data[0 len return_data.size]
+      call caller with:
+         value eth.balance(this.address) [38;5;8mwei[0m
+           gas 2300 * is_zero(value) [38;5;8mwei[0m
+  else:
+      [95mmem[[0m100[95m][0m = this.address
+      require ext_code.size([32m_owner[0m)
+      static call [32m_owner[0m.balanceOf([38;5;8maddress[0m tokenOwner) with:
+              gas gas_remaining [38;5;8mwei[0m
+             args this.address
+      [95mmem[[0m96[95m][0m = ext_call.return_data[0]
+      if not ext_call.success:
+          revert with ext_call.return_data[0 len return_data.size]
+      require return_data.size[1m >=′ [0m32
+      [95mmem[[0mceil32(return_data.size) + 132[95m][0m = caller
+      [95mmem[[0mceil32(return_data.size) + 164[95m][0m = ext_call.return_data[0]
+      [95mmem[[0mceil32(return_data.size) + 96[95m][0m = 68
+      [95mmem[[0mceil32(return_data.size) + 132[95m len [0m28[95m][0m = Mask(224, 32, caller)[1m >> [0m32
+      [95mmem[[0mceil32(return_data.size) + 128[95m len [0m4[95m][0m = transfer([38;5;8maddress[0m to, [38;5;8muint256[0m tokens)
+      [95mmem[[0mceil32(return_data.size) + 196[95m][0m = 32
+      [95mmem[[0mceil32(return_data.size) + 228[95m][0m = 'SafeERC20: low-level call failed'
+      if eth.balance(this.address)[1m < [0m0:
+          revert with 0, 'Address: insufficient balance for call'
+      if not ext_code.size([32m_owner[0m):
+          revert with 0, 'Address: call to non-contract'
+      [95mmem[[0mceil32(return_data.size) + 260[95m len [0m96[95m][0m = transfer([38;5;8maddress[0m to, [38;5;8muint256[0m tokens), caller, ext_call.return_data[0], 0
+      [95mmem[[0mceil32(return_data.size) + 328[95m][0m = 0
+      call [32m_owner[0m with:
+         funct Mask(32, 224, transfer([38;5;8maddress[0m to, [38;5;8muint256[0m tokens), caller, ext_call.return_data[0], 0)[1m >> [0m224
+           gas gas_remaining [38;5;8mwei[0m
+          args (Mask(512, -288, transfer([38;5;8maddress[0m to, [38;5;8muint256[0m tokens), caller, ext_call.return_data[0], 0)[1m << [0m288)
+      if not return_data.size:
+          if not ext_call.success:
+              if ext_call.return_data[0]:
+                  revert with memory
+                    from 128
+                     [93mlen[0m ext_call.return_data[0]
+              revert with 0, 'SafeERC20: low-level call failed'
+          if ext_call.return_data[0]:
+              require ext_call.return_data[0][1m >=′ [0m32
+              require 0, [95mmem[[0m132[95m len [0m28[95m][0m[1m == [0mbool(0, [95mmem[[0m132[95m len [0m28[95m][0m)
+              if not 0, [95mmem[[0m132[95m len [0m28[95m][0m:
+                  revert with 0, 'SafeERC20: ERC20 operation did not succeed'
+      else:
+          [95mmem[[0mceil32(return_data.size) + 292[95m len [0mreturn_data.size[95m][0m = ext_call.return_data[0 len return_data.size]
+          if not ext_call.success:
+              if return_data.size:
+                  revert with ext_call.return_data[0 len return_data.size]
+              revert with 0, 'SafeERC20: low-level call failed'
+          if return_data.size:
+              require return_data.size[1m >=′ [0m32
+              require [95mmem[[0mceil32(return_data.size) + 292[95m][0m[1m == [0mbool([95mmem[[0mceil32(return_data.size) + 292[95m][0m)
+              if not [95mmem[[0mceil32(return_data.size) + 292[95m][0m:
+                  revert with 0, 'SafeERC20: ERC20 operation did not succeed'
+
+[95mdef [0munknown349b4736(uint256 [32m_param1[0m, uint256 [32m_param2[0m, uint256 [32m_param3[0m): [38;5;8m# not payable[0m
+  require calldata.size - 4[1m >=′ [0m96
+  require [32m_param1[0m[1m == [0m[38;5;8maddr([0m[32m_param1[0m[38;5;8m)[0m
+  require [32m_param2[0m[1m == [0m[38;5;8maddr([0m[32m_param2[0m[38;5;8m)[0m
+  require [32m_param3[0m[1m == [0m[38;5;8maddr([0m[32m_param3[0m[38;5;8m)[0m
+  return 32, 6940, 
+         0xfe60a06040523480156200001157600080fd5b5060405162001abc38038062001abc833981016040819052620000349162000097565b60609290921b6001600160601b031916608052600080546001600160a01b03199081166001600160a01b03938416179091556001805490911691909216179055620000e0565b80516001600160a01b03811681146200009257600080fd5b919050565b600080600060608486031215620000ac578283fd5b620000b7846200007a565b9250620000c7602085016200007a565b9150620000d7604085016200007a565b90509250925092565b60805160601c61199362000129600039600081816103190152818161073101528181610adb01528181610b0801528181610c1c01528181610f040152610fa001526119936000f3fe6080604052600436106100955760003560e01c8063ad5c464811610059578063ad5c464814610277578063bd5b853b1461028c578063be6002c2146102ac578063c5ebeaec146102d9578063cc14d688146102f9576101e8565b80631249c58b146101ed5780632f4350c2146102025780635fe3b567146102175780638da5cb5b14610242578063a9059cbb14610257576101e8565b366101e8573373c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2146101e6576000600280548060200260200160405190810160405280929190818152602001828054801561010d57602002820191906000526020600020905b81546001600160a01b031681526001909101906020018083116100ef575b5050505050905060005b81518110156101e3576000805483516001600160a01b039091169063ede4edd09085908590811061015857634e487b7160e01b600052603260045260246000fd5b60200260200101516040518263ffffffff1660e01b815260040161017c9190611647565b602060405180830381600087803b15801561019657600080fd5b505af11580156101aa573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906101ce9190611613565b508190506101db81611908565b915050610117565b50505b005b600080fd5b3480156101f957600080fd5b506101e661030e565b34801561020e57600080fd5b506101e6610726565b34801561022357600080fd5b5061022c610aca565b6040516102399190611647565b60405180910390f35b34801561024e57600080fd5b5061022c610ad9565b34801561026357600080fd5b506101e661027236600461148e565b610afd565b34801561028357600080fd5b5061022c610bf9565b34801561029857600080fd5b506101e66102a73660046114b9565b610c11565b3480156102b857600080fd5b506102cc6102c73660046113ec565b610ef7565b60405161023991906116db565b3480156102e557600080fd5b506101e66102f43660046115fb565b610f95565b34801561030557600080fd5b5061022c61104c565b336001600160a01b037f0000000000000000000000000000000000000000000000000000000000000000161461034357600080fd5b6000600280548060200260200160405190810160405280929190818152602001828054801561039b57602002820191906000526020600020905b81546001600160a01b0316815260019091019060200180831161037d575b50505050509050600060038054806020026020016040519081016040528092919081815260200182805480156103fa57602002820191906000526020600020905b81546001600160a01b031681526001909101906020018083116103dc575b505050505090506000825167ffffffffffffffff81111561042b57634e487b7160e01b600052604160045260246000fd5b604051908082528060200260200182016040528015610454578160200160208202803683370190505b50905060005b835181101561070c57600083828151811061048557634e487b7160e01b600052603260045260246000fd5b602002602001015190506104d68583815181106104b257634e487b7160e01b600052603260045260246000fd5b6020026020010151600019836001600160a01b031661105b9092919063ffffffff16565b6040516370a0823160e01b81526000906001600160a01b038316906370a0823190610505903090600401611647565b60206040518083038186803b15801561051d57600080fd5b505afa158015610531573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105559190611613565b905085838151811061057757634e487b7160e01b600052603260045260246000fd5b60200260200101516001600160a01b031663a6afed956040518163ffffffff1660e01b8152600401602060405180830381600087803b1580156105b957600080fd5b505af11580156105cd573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105f19190611613565b5080156106f757600086848151811061061a57634e487b7160e01b600052603260045260246000fd5b60200260200101516001600160a01b031663a0712d68836040518263ffffffff1660e01b815260040161064d919061187e565b602060405180830381600087803b15801561066757600080fd5b505af115801561067b573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061069f9190611613565b905080156106c85760405162461bcd60e51b81526004016106bf9061185b565b60405180910390fd5b818585815181106106e957634e487b7160e01b600052603260045260246000fd5b602002602001018181525050505b5050808061070490611908565b91505061045a565b50805161072090600490602084019061131b565b50505050565b336001600160a01b037f0000000000000000000000000000000000000000000000000000000000000000161461075b57600080fd5b600060028054806020026020016040519081016040528092919081815260200182805480156107b357602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311610795575b505050505090506000600380548060200260200160405190810160405280929190818152602001828054801561081257602002820191906000526020600020905b81546001600160a01b031681526001909101906020018083116107f4575b505050505090506000600480548060200260200160405190810160405280929190818152602001828054801561086757602002820191906000526020600020905b815481526020019060010190808311610853575b5050505050905060005b835181101561072057600084828151811061089c57634e487b7160e01b600052603260045260246000fd5b6020026020010151905060008483815181106108c857634e487b7160e01b600052603260045260246000fd5b602002602001015190506108f282600019846001600160a01b031661105b9092919063ffffffff16565b600084848151811061091457634e487b7160e01b600052603260045260246000fd5b602002602001015111156109eb576000826001600160a01b031663852a12e386868151811061095357634e487b7160e01b600052603260045260246000fd5b60200260200101516040518263ffffffff1660e01b8152600401610977919061187e565b602060405180830381600087803b15801561099157600080fd5b505af11580156109a5573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906109c99190611613565b905080156109e95760405162461bcd60e51b81526004016106bf9061175f565b505b6040516370a0823160e01b81526000906001600160a01b038316906370a0823190610a1a903090600401611647565b60206040518083038186803b158015610a3257600080fd5b505afa158015610a46573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610a6a9190611613565b9050610a806001600160a01b0383163383611155565b4715610ab45760405133904780156108fc02916000818181858888f19350505050158015610ab2573d6000803e3d6000fd5b505b5050508080610ac290611908565b915050610871565b6000546001600160a01b031681565b7f000000000000000000000000000000000000000000000000000000000000000081565b336001600160a01b037f00000000000000000000000000000000000000000000000000000000000000001614610b3257600080fd5b6001600160a01b038216610b7357604051339082156108fc029083906000818181858888f19350505050158015610b6d573d6000803e3d6000fd5b50610bf5565b60405163a9059cbb60e01b81526001600160a01b0383169063a9059cbb90610ba19033908590600401611675565b602060405180830381600087803b158015610bbb57600080fd5b505af1158015610bcf573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610bf391906115db565b505b5050565b73c02aaa39b223fe8d0a0e5c4f27ead9083c756cc281565b336001600160a01b037f00000000000000000000000000000000000000000000000000000000000000001614610c4657600080fd5b6000815167ffffffffffffffff811115610c7057634e487b7160e01b600052604160045260246000fd5b604051908082528060200260200182016040528015610c99578160200160208202803683370190505b5090506000825167ffffffffffffffff811115610cc657634e487b7160e01b600052604160045260246000fd5b604051908082528060200260200182016040528015610cef578160200160208202803683370190505b50905060005b8351811015610e4857838181518110610d1e57634e487b7160e01b600052603260045260246000fd5b6020026020010151838281518110610d4657634e487b7160e01b600052603260045260246000fd5b60200260200101906001600160a01b031690816001600160a01b031681525050838181518110610d8657634e487b7160e01b600052603260045260246000fd5b60200260200101516001600160a01b0316636f307dc36040518163ffffffff1660e01b815260040160206040518083038186803b158015610dc657600080fd5b505afa158015610dda573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610dfe91906113d0565b828281518110610e1e57634e487b7160e01b600052603260045260246000fd5b6001600160a01b039092166020928302919091019091015280610e4081611908565b915050610cf5565b508151610e5c906002906020850190611366565b508051610e70906003906020840190611366565b50600054604051631853304760e31b81526001600160a01b039091169063c299823890610ea190869060040161168e565b600060405180830381600087803b158015610ebb57600080fd5b505af1158015610ecf573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f191682016040526107209190810190611557565b6000336001600160a01b037f00000000000000000000000000000000000000000000000000000000000000001614610f2e57600080fd5b6000836001600160a01b031683604051610f48919061162b565b6000604051808303816000865af19150503d8060008114610f85576040519150601f19603f3d011682016040523d82523d6000602084013e610f8a565b606091505b509095945050505050565b336001600160a01b037f00000000000000000000000000000000000000000000000000000000000000001614610fca57600080fd5b60015460405163317afabb60e21b81526001600160a01b039091169063c5ebeaec90610ffa90849060040161187e565b602060405180830381600087803b15801561101457600080fd5b505af1158015611028573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610bf59190611613565b6001546001600160a01b031681565b8015806110e35750604051636eb1769f60e11b81526001600160a01b0384169063dd62ed3e90611091903090869060040161165b565b60206040518083038186803b1580156110a957600080fd5b505afa1580156110bd573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906110e19190611613565b155b6110ff5760405162461bcd60e51b81526004016106bf90611805565b610bf38363095ea7b360e01b848460405160240161111e929190611675565b60408051601f198184030181529190526020810180516001600160e01b03166001600160e01b031990931692909217909152611174565b610bf38363a9059cbb60e01b848460405160240161111e929190611675565b60006111c9826040518060400160405280602081526020017f5361666545524332303a206c6f772d6c6576656c2063616c6c206661696c6564815250856001600160a01b03166112039092919063ffffffff16565b805190915015610bf357808060200190518101906111e791906115db565b610bf35760405162461bcd60e51b81526004016106bf906117bb565b6060611212848460008561121c565b90505b9392505050565b60608247101561123e5760405162461bcd60e51b81526004016106bf90611719565b611247856112dc565b6112635760405162461bcd60e51b81526004016106bf90611784565b600080866001600160a01b0316858760405161127f919061162b565b60006040518083038185875af1925050503d80600081146112bc576040519150601f19603f3d011682016040523d82523d6000602084013e6112c1565b606091505b50915091506112d18282866112e2565b979650505050505050565b3b151590565b606083156112f1575081611215565b8251156113015782518084602001fd5b8160405162461bcd60e51b81526004016106bf91906116e6565b828054828255906000526020600020908101928215611356579160200282015b8281111561135657825182559160200191906001019061133b565b506113629291506113bb565b5090565b828054828255906000526020600020908101928215611356579160200282015b8281111561135657825182546001600160a01b0319166001600160a01b03909116178255602090920191600190910190611386565b5b8082111561136257600081556001016113bc565b6000602082840312156113e1578081fd5b815161121581611945565b600080604083850312156113fe578081fd5b823561140981611945565b915060208381013567ffffffffffffffff80821115611426578384fd5b818601915086601f830112611439578384fd5b81358181111561144b5761144b61192f565b61145d601f8201601f19168501611887565b91508082528784828501011115611472578485fd5b8084840185840137810190920192909252919491935090915050565b600080604083850312156114a0578182fd5b82356114ab81611945565b946020939093013593505050565b600060208083850312156114cb578182fd5b823567ffffffffffffffff8111156114e1578283fd5b8301601f810185136114f1578283fd5b80356115046114ff826118b8565b611887565b8181528381019083850185840285018601891015611520578687fd5b8694505b8385101561154b57803561153781611945565b835260019490940193918501918501611524565b50979650505050505050565b60006020808385031215611569578182fd5b825167ffffffffffffffff81111561157f578283fd5b8301601f8101851361158f578283fd5b805161159d6114ff826118b8565b81815283810190838501858402850186018910156115b9578687fd5b8694505b8385101561154b5780518352600194909401939185019185016115bd565b6000602082840312156115ec578081fd5b81518015158114611215578182fd5b60006020828403121561160c578081fd5b5035919050565b600060208284031215611624578081fd5b5051919050565b6000825161163d8184602087016118dc565b9190910192915050565b6001600160a01b0391909116815260200190565b6001600160a01b0392831681529116602082015260400190565b6001600160a01b03929092168252602082015260400190565b6020808252825182820181905260009190848201906040850190845b818110156116cf5783516001600160a01b0316835292840192918401916001016116aa565b50909695505050505050565b901515815260200190565b60006020825282518060208401526117058160408501602087016118dc565b601f01601f19169190910160400192915050565b60208082526026908201527f416464726573733a20696e73756666696369656e742062616c616e636520666f6040820152651c8818d85b1b60d21b606082015260800190565b6020808252600b908201526a1c995919595b4819985a5b60aa1b604082015260600190565b6020808252601d908201527f416464726573733a2063616c6c20746f206e6f6e2d636f6e7472616374000000604082015260600190565b6020808252602a908201527f5361666545524332303a204552433230206f7065726174696f6e20646964206e6040820152691bdd081cdd58d8d9595960b21b606082015260800190565b60208082526036908201527f5361666545524332303a20617070726f76652066726f6d206e6f6e2d7a65726f60408201527520746f206e6f6e2d7a65726f20616c6c6f77616e636560501b606082015260800190565b6020808252600990820152681b5a5b9d0819985a5b60ba1b604082015260600190565b90815260200190565b604051601f8201601f1916810167ffffffffffffffff811182821017156118b0576118b061192f565b604052919050565b600067ffffffffffffffff8211156118d2576118d261192f565b5060209081020190565b60005b838110156118f75781810151838201526020016118df565b838111156107205750506000910152565b600060001982141561192857634e487b7160e01b81526011600452602481fd5b5060010190565b634e487b7160e01b600052604160045260246000fd5b6001600160a01b038116811461195a57600080fd5b5056fea26469706673582212202d5196c0488c5ce698d76e2a3bf0488acbfc83ed44c3093809d810c6438f1d5064736f6c634300080100, [95mmem[[0m6972[95m len [0m4[95m][0m[1m >> [0m54496, [38;5;8maddr([0m[32m_param1[0m[38;5;8m)[0m, [38;5;8maddr([0m[32m_param2[0m[38;5;8m)[0m, [38;5;8maddr([0m[32m_param3[0m[38;5;8m)[0m, 0[1m >> [0m55264,
+         0
+
+[95mdef [0munknown34930754(): [38;5;8m# not payable[0m
+  require calldata.size - 4[1m >=′ [0m160
+  require cd[4][1m == [0m[38;5;8maddr([0mcd[4][38;5;8m)[0m
+  require cd[36][1m == [0m[38;5;8maddr([0mcd[36][38;5;8m)[0m
+  require cd[68][1m == [0m[38;5;8maddr([0mcd[68][38;5;8m)[0m
+  require cd[132][1m <= [0m18446744073709551615
+  require cd[132] + 35[1m <′ [0mcalldata.size
+  if [32m('cd', 132).length[0m[1m > [0m18446744073709551615:
+      revert with 0, 65
+  if floor32([32m('cd', 132).length[0m) + 97[1m < [0m96[1m or [0mfloor32([32m('cd', 132).length[0m) + 97[1m > [0m18446744073709551615:
+      revert with 0, 65
+  [95mmem[[0m96[95m][0m = [32m('cd', 132).length[0m
+  require calldata.size[1m >= [0mcd[132] + (32[1m * [0m[32m('cd', 132).length[0m) + 36
+  [94midx[0m = 0
+  [94ms[0m = cd[132] + 36
+  [94mt[0m = 128
+  [32mwhile [0m[94midx[0m[1m < [0m[32m('cd', 132).length[0m[32m:[0m
+      require cd[[94ms[0m][1m == [0m[38;5;8maddr([0mcd[[94ms[0m][38;5;8m)[0m
+      [95mmem[[0m[94mt[0m[95m][0m = cd[[94ms[0m]
+      [94midx[0m = [94midx[0m + 1
+      [94ms[0m = [94ms[0m + 32
+      [94mt[0m = [94mt[0m + 32
+      [32mcontinue [0m
+  require 0x6162759edad730152f0df8115c698a42e666157f[1m == [0mcaller
+  if not [32mstor0[0m:
+      revert with 0, 'no receiver'
+  [32mcomptrollerAddress[0m = [38;5;8maddr([0mcd[4][38;5;8m)[0m
+  require ext_code.size([38;5;8maddr([0mcd[4][38;5;8m)[0m)
+  static call [38;5;8maddr([0mcd[4][38;5;8m)[0m.oracle() with:
+          gas gas_remaining [38;5;8mwei[0m
+  [95mmem[[0mfloor32([32m('cd', 132).length[0m) + 97[95m][0m = ext_call.return_data[0]
+  if not ext_call.success:
+      revert with ext_call.return_data[0 len return_data.size]
+  require return_data.size[1m >=′ [0m32
+  require ext_call.return_data[0][1m == [0mext_call.return_data[12 len 20]
+  [32mpriceFeedAddress[0m = ext_call.return_data[12 len 20]
+  [32munknowncc14d688Address[0m = [38;5;8maddr([0mcd[36][38;5;8m)[0m
+  if [32m('cd', 132).length[0m[1m > [0m18446744073709551615:
+      revert with 0, 65
+  [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m = [32m('cd', 132).length[0m
+  if not [32m('cd', 132).length[0m:
+      if [32m('cd', 132).length[0m[1m > [0m18446744073709551615:
+          revert with 0, 65
+      [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m = [32m('cd', 132).length[0m
+      [95mmem[[0m64[95m][0m = floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (64[1m * [0m[32m('cd', 132).length[0m) + 161
+      if not [32m('cd', 132).length[0m:
+          [94midx[0m = 0
+          [32mwhile [0m[94midx[0m[1m < [0m[32m('cd', 132).length[0m[32m:[0m
+              if [94midx[0m[1m >= [0m[95mmem[[0m96[95m][0m:
+                  revert with 0, 50
+              if [94midx[0m[1m >= [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m:
+                  revert with 0, 50
+              [95mmem[[0m(32[1m * [0m[94midx[0m) + floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 129[95m][0m = [95mmem[[0m(32[1m * [0m[94midx[0m) + 140[95m len [0m20[95m][0m
+              if [94midx[0m[1m >= [0m[95mmem[[0m96[95m][0m:
+                  revert with 0, 50
+              require ext_code.size([95mmem[[0m(32[1m * [0m[94midx[0m) + 140[95m len [0m20[95m][0m)
+              static call [95mmem[[0m(32[1m * [0m[94midx[0m) + 140[95m len [0m20[95m][0m.underlying() with:
+                      gas gas_remaining [38;5;8mwei[0m
+              [95mmem[[0m[95mmem[[0m64[95m][0m[95m][0m = ext_call.return_data[0]
+              if not ext_call.success:
+                  revert with ext_call.return_data[0 len return_data.size]
+              [94m_934[0m = [95mmem[[0m64[95m][0m
+              [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + ceil32(return_data.size)
+              require return_data.size[1m >=′ [0m32
+              require [95mmem[[0m[94m_934[0m[95m][0m[1m == [0m[95mmem[[0m[94m_934[0m + 12[95m len [0m20[95m][0m
+              if [94midx[0m[1m >= [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m:
+                  revert with 0, 50
+              [95mmem[[0m(32[1m * [0m[94midx[0m) + floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 161[95m][0m = [95mmem[[0m[94m_934[0m + 12[95m len [0m20[95m][0m
+              if [94midx[0m[1m == [0m-1:
+                  revert with 0, 17
+              [94midx[0m = [94midx[0m + 1
+              [32mcontinue [0m
+          [32mstor7[0m[32m.length[0m = [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m
+          [95mmem[[0m0[95m][0m = 7
+          if not [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m:
+              [94midx[0m = 0
+              [32mwhile [0m[32mstor7[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                  [38;5;8muint256([0m[32mstor7[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                  [94midx[0m = [94midx[0m + 1
+                  [32mcontinue [0m
+              [32mstor8[0m[32m.length[0m = [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m
+              [95mmem[[0m0[95m][0m = 8
+              if not [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m:
+                  [94midx[0m = 0
+                  [32mwhile [0m[32mstor8[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8muint256([0m[32mstor8[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                      [94midx[0m = [94midx[0m + 1
+                      [32mcontinue [0m
+                  [32mstor1[0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                  [32mstor2[0m = cd[100]
+                  [94m_1706[0m = [95mmem[[0m64[95m][0m
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 32[95m len [0m64[95m][0m = call.data[calldata.size len 64]
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 96[95m][0m = 2
+                  [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + 192
+                  if 0[1m >= [0m[95mmem[[0m[94m_1706[0m[95m][0m:
+                      revert with 0, 50
+                  if [38;5;8maddr([0mcd[68][38;5;8m)[0m[1m < [0m0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2:
+                      [95mmem[[0m[94m_1706[0m + 32[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 1[1m >= [0m[95mmem[[0m[94m_1706[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1706[0m + 64[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 0[1m >= [0m[95mmem[[0m[94m_1706[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1706[0m + 128[95m][0m = cd[100]
+                      if 1[1m >= [0m[95mmem[[0m[94m_1706[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1706[0m + 160[95m][0m = 50000 * 10^18
+                  else:
+                      [95mmem[[0m[94m_1706[0m + 32[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 1[1m >= [0m[95mmem[[0m[94m_1706[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1706[0m + 64[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 0[1m >= [0m[95mmem[[0m[94m_1706[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1706[0m + 128[95m][0m = 50000 * 10^18
+                      if 1[1m >= [0m[95mmem[[0m[94m_1706[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1706[0m + 160[95m][0m = cd[100]
+                  [95mmem[[0m[94m_1706[0m + 192[95m][0m = 0x5c38449e00000000000000000000000000000000000000000000000000000000
+                  [95mmem[[0m[94m_1706[0m + 196[95m][0m = this.address
+                  [95mmem[[0m[94m_1706[0m + 228[95m][0m = 128
+                  [95mmem[[0m[94m_1706[0m + 324[95m][0m = [95mmem[[0m[94m_1706[0m[95m][0m
+                  [94midx[0m = 0
+                  [94ms[0m = [94m_1706[0m + 32
+                  [94mt[0m = [94m_1706[0m + 356
+                  [32mwhile [0m[94midx[0m[1m < [0m[95mmem[[0m[94m_1706[0m[95m][0m[32m:[0m
+                      [95mmem[[0m[94mt[0m[95m][0m = [95mmem[[0m[94ms[0m + 12[95m len [0m20[95m][0m
+                      [94midx[0m = [94midx[0m + 1
+                      [94ms[0m = [94ms[0m + 32
+                      [94mt[0m = [94mt[0m + 32
+                      [32mcontinue [0m
+                  [95mmem[[0m[94m_1706[0m + 260[95m][0m = (32[1m * [0m[95mmem[[0m[94m_1706[0m[95m][0m) + 160
+                  [95mmem[[0m[94m_1706[0m + (32[1m * [0m[95mmem[[0m[94m_1706[0m[95m][0m) + 356[95m][0m = [95mmem[[0m[94m_1706[0m + 96[95m][0m
+                  [95mmem[[0m[94m_1706[0m + (32[1m * [0m[95mmem[[0m[94m_1706[0m[95m][0m) + 388[95m len [0m32[1m * [0m[95mmem[[0m[94m_1706[0m + 96[95m][0m[95m][0m = [95mmem[[0m[94m_1706[0m + 128[95m len [0m32[1m * [0m[95mmem[[0m[94m_1706[0m + 96[95m][0m[95m][0m
+                  [94mvar77001[0m = [95mmem[[0m[94m_1706[0m + 96[95m][0m
+                  [95mmem[[0m[94m_1706[0m + 292[95m][0m = (32[1m * [0m[95mmem[[0m[94m_1706[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_1706[0m + 96[95m][0m) + 192
+                  [95mmem[[0m[94m_1706[0m + (32[1m * [0m[95mmem[[0m[94m_1706[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_1706[0m + 96[95m][0m) + 388[95m][0m = 0
+                  require ext_code.size(0xba12222222228d8ba445958a75a0704d566bf2c8)
+                  call 0xba12222222228d8ba445958a75a0704d566bf2c8.[95mmem[[0m[95mmem[[0m64[95m][0m[95m len [0m4[95m][0m with:
+                       gas gas_remaining [38;5;8mwei[0m
+                      args [95mmem[[0m[95mmem[[0m64[95m][0m + 4[95m len [0m[94m_1706[0m + (32[1m * [0m[95mmem[[0m[94m_1706[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_1706[0m + 96[95m][0m) + -[95mmem[[0m64[95m][0m + 416[95m][0m
+              else:
+                  [94ms[0m = 0
+                  [94midx[0m = floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 161
+                  [32mwhile [0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m) + 161[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8maddr([0m[32mstor8[0m[32m[[0m[94ms[0m[32m][0m[38;5;8m)[0m = [95mmem[[0m[94midx[0m + 12[95m len [0m20[95m][0m
+                      [94ms[0m = [94ms[0m + 1
+                      [94midx[0m = [94midx[0m + 32
+                      [32mcontinue [0m
+                  [94midx[0m = Mask(251, 0, (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m) + 31)[1m >> [0m5
+                  [32mwhile [0m[32mstor8[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8muint256([0m[32mstor8[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                      [94midx[0m = [94midx[0m + 1
+                      [32mcontinue [0m
+                  [32mstor1[0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                  [32mstor2[0m = cd[100]
+                  [94m_2090[0m = [95mmem[[0m64[95m][0m
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 32[95m len [0m64[95m][0m = call.data[calldata.size len 64]
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 96[95m][0m = 2
+                  [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + 192
+                  if 0[1m >= [0m[95mmem[[0m[94m_2090[0m[95m][0m:
+                      revert with 0, 50
+                  if [38;5;8maddr([0mcd[68][38;5;8m)[0m[1m < [0m0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2:
+                      [95mmem[[0m[94m_2090[0m + 32[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 1[1m >= [0m[95mmem[[0m[94m_2090[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2090[0m + 64[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 0[1m >= [0m[95mmem[[0m[94m_2090[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2090[0m + 128[95m][0m = cd[100]
+                      if 1[1m >= [0m[95mmem[[0m[94m_2090[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2090[0m + 160[95m][0m = 50000 * 10^18
+                  else:
+                      [95mmem[[0m[94m_2090[0m + 32[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 1[1m >= [0m[95mmem[[0m[94m_2090[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2090[0m + 64[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 0[1m >= [0m[95mmem[[0m[94m_2090[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2090[0m + 128[95m][0m = 50000 * 10^18
+                      if 1[1m >= [0m[95mmem[[0m[94m_2090[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2090[0m + 160[95m][0m = cd[100]
+                  [95mmem[[0m[94m_2090[0m + 192[95m][0m = 0x5c38449e00000000000000000000000000000000000000000000000000000000
+                  [95mmem[[0m[94m_2090[0m + 196[95m][0m = this.address
+                  [95mmem[[0m[94m_2090[0m + 228[95m][0m = 128
+                  [95mmem[[0m[94m_2090[0m + 324[95m][0m = [95mmem[[0m[94m_2090[0m[95m][0m
+                  [94midx[0m = 0
+                  [94ms[0m = [94m_2090[0m + 32
+                  [94mt[0m = [94m_2090[0m + 356
+                  [32mwhile [0m[94midx[0m[1m < [0m[95mmem[[0m[94m_2090[0m[95m][0m[32m:[0m
+                      [95mmem[[0m[94mt[0m[95m][0m = [95mmem[[0m[94ms[0m + 12[95m len [0m20[95m][0m
+                      [94midx[0m = [94midx[0m + 1
+                      [94ms[0m = [94ms[0m + 32
+                      [94mt[0m = [94mt[0m + 32
+                      [32mcontinue [0m
+                  [95mmem[[0m[94m_2090[0m + 260[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2090[0m[95m][0m) + 160
+                  [95mmem[[0m[94m_2090[0m + (32[1m * [0m[95mmem[[0m[94m_2090[0m[95m][0m) + 356[95m][0m = [95mmem[[0m[94m_2090[0m + 96[95m][0m
+                  [95mmem[[0m[94m_2090[0m + (32[1m * [0m[95mmem[[0m[94m_2090[0m[95m][0m) + 388[95m len [0m32[1m * [0m[95mmem[[0m[94m_2090[0m + 96[95m][0m[95m][0m = [95mmem[[0m[94m_2090[0m + 128[95m len [0m32[1m * [0m[95mmem[[0m[94m_2090[0m + 96[95m][0m[95m][0m
+                  [94mvar80001[0m = [95mmem[[0m[94m_2090[0m + 96[95m][0m
+                  [95mmem[[0m[94m_2090[0m + 292[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2090[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2090[0m + 96[95m][0m) + 192
+                  [95mmem[[0m[94m_2090[0m + (32[1m * [0m[95mmem[[0m[94m_2090[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2090[0m + 96[95m][0m) + 388[95m][0m = 0
+                  require ext_code.size(0xba12222222228d8ba445958a75a0704d566bf2c8)
+                  call 0xba12222222228d8ba445958a75a0704d566bf2c8.[95mmem[[0m[95mmem[[0m64[95m][0m[95m len [0m4[95m][0m with:
+                       gas gas_remaining [38;5;8mwei[0m
+                      args [95mmem[[0m[95mmem[[0m64[95m][0m + 4[95m len [0m[94m_2090[0m + (32[1m * [0m[95mmem[[0m[94m_2090[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2090[0m + 96[95m][0m) + -[95mmem[[0m64[95m][0m + 416[95m][0m
+          else:
+              [94ms[0m = 0
+              [94midx[0m = floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 129
+              [32mwhile [0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m) + 129[1m > [0m[94midx[0m[32m:[0m
+                  [38;5;8maddr([0m[32mstor7[0m[32m[[0m[94ms[0m[32m][0m[38;5;8m)[0m = [95mmem[[0m[94midx[0m + 12[95m len [0m20[95m][0m
+                  [94ms[0m = [94ms[0m + 1
+                  [94midx[0m = [94midx[0m + 32
+                  [32mcontinue [0m
+              [94midx[0m = Mask(251, 0, (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m) + 31)[1m >> [0m5
+              [32mwhile [0m[32mstor7[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                  [38;5;8muint256([0m[32mstor7[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                  [94midx[0m = [94midx[0m + 1
+                  [32mcontinue [0m
+              [32mstor8[0m[32m.length[0m = [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m
+              [95mmem[[0m0[95m][0m = 8
+              if not [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m:
+                  [94midx[0m = 0
+                  [32mwhile [0m[32mstor8[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8muint256([0m[32mstor8[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                      [94midx[0m = [94midx[0m + 1
+                      [32mcontinue [0m
+                  [32mstor1[0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                  [32mstor2[0m = cd[100]
+                  [94m_2092[0m = [95mmem[[0m64[95m][0m
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 32[95m len [0m64[95m][0m = call.data[calldata.size len 64]
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 96[95m][0m = 2
+                  [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + 192
+                  if 0[1m >= [0m[95mmem[[0m[94m_2092[0m[95m][0m:
+                      revert with 0, 50
+                  if [38;5;8maddr([0mcd[68][38;5;8m)[0m[1m < [0m0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2:
+                      [95mmem[[0m[94m_2092[0m + 32[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 1[1m >= [0m[95mmem[[0m[94m_2092[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2092[0m + 64[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 0[1m >= [0m[95mmem[[0m[94m_2092[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2092[0m + 128[95m][0m = cd[100]
+                      if 1[1m >= [0m[95mmem[[0m[94m_2092[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2092[0m + 160[95m][0m = 50000 * 10^18
+                  else:
+                      [95mmem[[0m[94m_2092[0m + 32[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 1[1m >= [0m[95mmem[[0m[94m_2092[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2092[0m + 64[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 0[1m >= [0m[95mmem[[0m[94m_2092[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2092[0m + 128[95m][0m = 50000 * 10^18
+                      if 1[1m >= [0m[95mmem[[0m[94m_2092[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2092[0m + 160[95m][0m = cd[100]
+                  [95mmem[[0m[94m_2092[0m + 192[95m][0m = 0x5c38449e00000000000000000000000000000000000000000000000000000000
+                  [95mmem[[0m[94m_2092[0m + 196[95m][0m = this.address
+                  [95mmem[[0m[94m_2092[0m + 228[95m][0m = 128
+                  [95mmem[[0m[94m_2092[0m + 324[95m][0m = [95mmem[[0m[94m_2092[0m[95m][0m
+                  [94midx[0m = 0
+                  [94ms[0m = [94m_2092[0m + 32
+                  [94mt[0m = [94m_2092[0m + 356
+                  [32mwhile [0m[94midx[0m[1m < [0m[95mmem[[0m[94m_2092[0m[95m][0m[32m:[0m
+                      [95mmem[[0m[94mt[0m[95m][0m = [95mmem[[0m[94ms[0m + 12[95m len [0m20[95m][0m
+                      [94midx[0m = [94midx[0m + 1
+                      [94ms[0m = [94ms[0m + 32
+                      [94mt[0m = [94mt[0m + 32
+                      [32mcontinue [0m
+                  [95mmem[[0m[94m_2092[0m + 260[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2092[0m[95m][0m) + 160
+                  [95mmem[[0m[94m_2092[0m + (32[1m * [0m[95mmem[[0m[94m_2092[0m[95m][0m) + 356[95m][0m = [95mmem[[0m[94m_2092[0m + 96[95m][0m
+                  [95mmem[[0m[94m_2092[0m + (32[1m * [0m[95mmem[[0m[94m_2092[0m[95m][0m) + 388[95m len [0m32[1m * [0m[95mmem[[0m[94m_2092[0m + 96[95m][0m[95m][0m = [95mmem[[0m[94m_2092[0m + 128[95m len [0m32[1m * [0m[95mmem[[0m[94m_2092[0m + 96[95m][0m[95m][0m
+                  [94mvar80001[0m = [95mmem[[0m[94m_2092[0m + 96[95m][0m
+                  [95mmem[[0m[94m_2092[0m + 292[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2092[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2092[0m + 96[95m][0m) + 192
+                  [95mmem[[0m[94m_2092[0m + (32[1m * [0m[95mmem[[0m[94m_2092[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2092[0m + 96[95m][0m) + 388[95m][0m = 0
+                  require ext_code.size(0xba12222222228d8ba445958a75a0704d566bf2c8)
+                  call 0xba12222222228d8ba445958a75a0704d566bf2c8.[95mmem[[0m[95mmem[[0m64[95m][0m[95m len [0m4[95m][0m with:
+                       gas gas_remaining [38;5;8mwei[0m
+                      args [95mmem[[0m[95mmem[[0m64[95m][0m + 4[95m len [0m[94m_2092[0m + (32[1m * [0m[95mmem[[0m[94m_2092[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2092[0m + 96[95m][0m) + -[95mmem[[0m64[95m][0m + 416[95m][0m
+              else:
+                  [94ms[0m = 0
+                  [94midx[0m = floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 161
+                  [32mwhile [0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m) + 161[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8maddr([0m[32mstor8[0m[32m[[0m[94ms[0m[32m][0m[38;5;8m)[0m = [95mmem[[0m[94midx[0m + 12[95m len [0m20[95m][0m
+                      [94ms[0m = [94ms[0m + 1
+                      [94midx[0m = [94midx[0m + 32
+                      [32mcontinue [0m
+                  [94midx[0m = Mask(251, 0, (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m) + 31)[1m >> [0m5
+                  [32mwhile [0m[32mstor8[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8muint256([0m[32mstor8[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                      [94midx[0m = [94midx[0m + 1
+                      [32mcontinue [0m
+                  [32mstor1[0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                  [32mstor2[0m = cd[100]
+                  [94m_2418[0m = [95mmem[[0m64[95m][0m
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 32[95m len [0m64[95m][0m = call.data[calldata.size len 64]
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 96[95m][0m = 2
+                  [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + 192
+                  if 0[1m >= [0m[95mmem[[0m[94m_2418[0m[95m][0m:
+                      revert with 0, 50
+                  if [38;5;8maddr([0mcd[68][38;5;8m)[0m[1m < [0m0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2:
+                      [95mmem[[0m[94m_2418[0m + 32[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 1[1m >= [0m[95mmem[[0m[94m_2418[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2418[0m + 64[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 0[1m >= [0m[95mmem[[0m[94m_2418[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2418[0m + 128[95m][0m = cd[100]
+                      if 1[1m >= [0m[95mmem[[0m[94m_2418[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2418[0m + 160[95m][0m = 50000 * 10^18
+                  else:
+                      [95mmem[[0m[94m_2418[0m + 32[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 1[1m >= [0m[95mmem[[0m[94m_2418[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2418[0m + 64[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 0[1m >= [0m[95mmem[[0m[94m_2418[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2418[0m + 128[95m][0m = 50000 * 10^18
+                      if 1[1m >= [0m[95mmem[[0m[94m_2418[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2418[0m + 160[95m][0m = cd[100]
+                  [95mmem[[0m[94m_2418[0m + 192[95m][0m = 0x5c38449e00000000000000000000000000000000000000000000000000000000
+                  [95mmem[[0m[94m_2418[0m + 196[95m][0m = this.address
+                  [95mmem[[0m[94m_2418[0m + 228[95m][0m = 128
+                  [95mmem[[0m[94m_2418[0m + 324[95m][0m = [95mmem[[0m[94m_2418[0m[95m][0m
+                  [94midx[0m = 0
+                  [94ms[0m = [94m_2418[0m + 32
+                  [94mt[0m = [94m_2418[0m + 356
+                  [32mwhile [0m[94midx[0m[1m < [0m[95mmem[[0m[94m_2418[0m[95m][0m[32m:[0m
+                      [95mmem[[0m[94mt[0m[95m][0m = [95mmem[[0m[94ms[0m + 12[95m len [0m20[95m][0m
+                      [94midx[0m = [94midx[0m + 1
+                      [94ms[0m = [94ms[0m + 32
+                      [94mt[0m = [94mt[0m + 32
+                      [32mcontinue [0m
+                  [95mmem[[0m[94m_2418[0m + 260[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2418[0m[95m][0m) + 160
+                  [95mmem[[0m[94m_2418[0m + (32[1m * [0m[95mmem[[0m[94m_2418[0m[95m][0m) + 356[95m][0m = [95mmem[[0m[94m_2418[0m + 96[95m][0m
+                  [95mmem[[0m[94m_2418[0m + (32[1m * [0m[95mmem[[0m[94m_2418[0m[95m][0m) + 388[95m len [0m32[1m * [0m[95mmem[[0m[94m_2418[0m + 96[95m][0m[95m][0m = [95mmem[[0m[94m_2418[0m + 128[95m len [0m32[1m * [0m[95mmem[[0m[94m_2418[0m + 96[95m][0m[95m][0m
+                  [95mmem[[0m[94m_2418[0m + 292[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2418[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2418[0m + 96[95m][0m) + 192
+                  [95mmem[[0m[94m_2418[0m + (32[1m * [0m[95mmem[[0m[94m_2418[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2418[0m + 96[95m][0m) + 388[95m][0m = 0
+                  require ext_code.size(0xba12222222228d8ba445958a75a0704d566bf2c8)
+                  call 0xba12222222228d8ba445958a75a0704d566bf2c8.[95mmem[[0m[95mmem[[0m64[95m][0m[95m len [0m4[95m][0m with:
+                       gas gas_remaining [38;5;8mwei[0m
+                      args [95mmem[[0m[95mmem[[0m64[95m][0m + 4[95m len [0m[94m_2418[0m + (32[1m * [0m[95mmem[[0m[94m_2418[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2418[0m + 96[95m][0m) + -[95mmem[[0m64[95m][0m + 416[95m][0m
+      else:
+          [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 161[95m len [0m32[1m * [0m[32m('cd', 132).length[0m[95m][0m = call.data[calldata.size len 32[1m * [0m[32m('cd', 132).length[0m]
+          [94midx[0m = 0
+          [32mwhile [0m[94midx[0m[1m < [0m[32m('cd', 132).length[0m[32m:[0m
+              if [94midx[0m[1m >= [0m[95mmem[[0m96[95m][0m:
+                  revert with 0, 50
+              if [94midx[0m[1m >= [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m:
+                  revert with 0, 50
+              [95mmem[[0m(32[1m * [0m[94midx[0m) + floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 129[95m][0m = [95mmem[[0m(32[1m * [0m[94midx[0m) + 140[95m len [0m20[95m][0m
+              if [94midx[0m[1m >= [0m[95mmem[[0m96[95m][0m:
+                  revert with 0, 50
+              require ext_code.size([95mmem[[0m(32[1m * [0m[94midx[0m) + 140[95m len [0m20[95m][0m)
+              static call [95mmem[[0m(32[1m * [0m[94midx[0m) + 140[95m len [0m20[95m][0m.underlying() with:
+                      gas gas_remaining [38;5;8mwei[0m
+              [95mmem[[0m[95mmem[[0m64[95m][0m[95m][0m = ext_call.return_data[0]
+              if not ext_call.success:
+                  revert with ext_call.return_data[0 len return_data.size]
+              [94m_935[0m = [95mmem[[0m64[95m][0m
+              [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + ceil32(return_data.size)
+              require return_data.size[1m >=′ [0m32
+              require [95mmem[[0m[94m_935[0m[95m][0m[1m == [0m[95mmem[[0m[94m_935[0m + 12[95m len [0m20[95m][0m
+              if [94midx[0m[1m >= [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m:
+                  revert with 0, 50
+              [95mmem[[0m(32[1m * [0m[94midx[0m) + floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 161[95m][0m = [95mmem[[0m[94m_935[0m + 12[95m len [0m20[95m][0m
+              if [94midx[0m[1m == [0m-1:
+                  revert with 0, 17
+              [94midx[0m = [94midx[0m + 1
+              [32mcontinue [0m
+          [32mstor7[0m[32m.length[0m = [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m
+          [95mmem[[0m0[95m][0m = 7
+          if not [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m:
+              [94midx[0m = 0
+              [32mwhile [0m[32mstor7[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                  [38;5;8muint256([0m[32mstor7[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                  [94midx[0m = [94midx[0m + 1
+                  [32mcontinue [0m
+              [32mstor8[0m[32m.length[0m = [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m
+              [95mmem[[0m0[95m][0m = 8
+              if not [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m:
+                  [94midx[0m = 0
+                  [32mwhile [0m[32mstor8[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8muint256([0m[32mstor8[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                      [94midx[0m = [94midx[0m + 1
+                      [32mcontinue [0m
+                  [32mstor1[0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                  [32mstor2[0m = cd[100]
+                  [94m_1709[0m = [95mmem[[0m64[95m][0m
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 32[95m len [0m64[95m][0m = call.data[calldata.size len 64]
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 96[95m][0m = 2
+                  [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + 192
+                  if 0[1m >= [0m[95mmem[[0m[94m_1709[0m[95m][0m:
+                      revert with 0, 50
+                  if [38;5;8maddr([0mcd[68][38;5;8m)[0m[1m < [0m0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2:
+                      [95mmem[[0m[94m_1709[0m + 32[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 1[1m >= [0m[95mmem[[0m[94m_1709[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1709[0m + 64[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 0[1m >= [0m[95mmem[[0m[94m_1709[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1709[0m + 128[95m][0m = cd[100]
+                      if 1[1m >= [0m[95mmem[[0m[94m_1709[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1709[0m + 160[95m][0m = 50000 * 10^18
+                  else:
+                      [95mmem[[0m[94m_1709[0m + 32[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 1[1m >= [0m[95mmem[[0m[94m_1709[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1709[0m + 64[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 0[1m >= [0m[95mmem[[0m[94m_1709[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1709[0m + 128[95m][0m = 50000 * 10^18
+                      if 1[1m >= [0m[95mmem[[0m[94m_1709[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1709[0m + 160[95m][0m = cd[100]
+                  [95mmem[[0m[94m_1709[0m + 192[95m][0m = 0x5c38449e00000000000000000000000000000000000000000000000000000000
+                  [95mmem[[0m[94m_1709[0m + 196[95m][0m = this.address
+                  [95mmem[[0m[94m_1709[0m + 228[95m][0m = 128
+                  [95mmem[[0m[94m_1709[0m + 324[95m][0m = [95mmem[[0m[94m_1709[0m[95m][0m
+                  [94midx[0m = 0
+                  [94ms[0m = [94m_1709[0m + 32
+                  [94mt[0m = [94m_1709[0m + 356
+                  [32mwhile [0m[94midx[0m[1m < [0m[95mmem[[0m[94m_1709[0m[95m][0m[32m:[0m
+                      [95mmem[[0m[94mt[0m[95m][0m = [95mmem[[0m[94ms[0m + 12[95m len [0m20[95m][0m
+                      [94midx[0m = [94midx[0m + 1
+                      [94ms[0m = [94ms[0m + 32
+                      [94mt[0m = [94mt[0m + 32
+                      [32mcontinue [0m
+                  [95mmem[[0m[94m_1709[0m + 260[95m][0m = (32[1m * [0m[95mmem[[0m[94m_1709[0m[95m][0m) + 160
+                  [95mmem[[0m[94m_1709[0m + (32[1m * [0m[95mmem[[0m[94m_1709[0m[95m][0m) + 356[95m][0m = [95mmem[[0m[94m_1709[0m + 96[95m][0m
+                  [95mmem[[0m[94m_1709[0m + (32[1m * [0m[95mmem[[0m[94m_1709[0m[95m][0m) + 388[95m len [0m32[1m * [0m[95mmem[[0m[94m_1709[0m + 96[95m][0m[95m][0m = [95mmem[[0m[94m_1709[0m + 128[95m len [0m32[1m * [0m[95mmem[[0m[94m_1709[0m + 96[95m][0m[95m][0m
+                  [94mvar78001[0m = [95mmem[[0m[94m_1709[0m + 96[95m][0m
+                  [95mmem[[0m[94m_1709[0m + 292[95m][0m = (32[1m * [0m[95mmem[[0m[94m_1709[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_1709[0m + 96[95m][0m) + 192
+                  [95mmem[[0m[94m_1709[0m + (32[1m * [0m[95mmem[[0m[94m_1709[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_1709[0m + 96[95m][0m) + 388[95m][0m = 0
+                  require ext_code.size(0xba12222222228d8ba445958a75a0704d566bf2c8)
+                  call 0xba12222222228d8ba445958a75a0704d566bf2c8.[95mmem[[0m[95mmem[[0m64[95m][0m[95m len [0m4[95m][0m with:
+                       gas gas_remaining [38;5;8mwei[0m
+                      args [95mmem[[0m[95mmem[[0m64[95m][0m + 4[95m len [0m[94m_1709[0m + (32[1m * [0m[95mmem[[0m[94m_1709[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_1709[0m + 96[95m][0m) + -[95mmem[[0m64[95m][0m + 416[95m][0m
+              else:
+                  [94ms[0m = 0
+                  [94midx[0m = floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 161
+                  [32mwhile [0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m) + 161[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8maddr([0m[32mstor8[0m[32m[[0m[94ms[0m[32m][0m[38;5;8m)[0m = [95mmem[[0m[94midx[0m + 12[95m len [0m20[95m][0m
+                      [94ms[0m = [94ms[0m + 1
+                      [94midx[0m = [94midx[0m + 32
+                      [32mcontinue [0m
+                  [94midx[0m = Mask(251, 0, (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m) + 31)[1m >> [0m5
+                  [32mwhile [0m[32mstor8[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8muint256([0m[32mstor8[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                      [94midx[0m = [94midx[0m + 1
+                      [32mcontinue [0m
+                  [32mstor1[0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                  [32mstor2[0m = cd[100]
+                  [94m_2094[0m = [95mmem[[0m64[95m][0m
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 32[95m len [0m64[95m][0m = call.data[calldata.size len 64]
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 96[95m][0m = 2
+                  [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + 192
+                  if 0[1m >= [0m[95mmem[[0m[94m_2094[0m[95m][0m:
+                      revert with 0, 50
+                  if [38;5;8maddr([0mcd[68][38;5;8m)[0m[1m < [0m0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2:
+                      [95mmem[[0m[94m_2094[0m + 32[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 1[1m >= [0m[95mmem[[0m[94m_2094[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2094[0m + 64[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 0[1m >= [0m[95mmem[[0m[94m_2094[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2094[0m + 128[95m][0m = cd[100]
+                      if 1[1m >= [0m[95mmem[[0m[94m_2094[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2094[0m + 160[95m][0m = 50000 * 10^18
+                  else:
+                      [95mmem[[0m[94m_2094[0m + 32[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 1[1m >= [0m[95mmem[[0m[94m_2094[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2094[0m + 64[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 0[1m >= [0m[95mmem[[0m[94m_2094[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2094[0m + 128[95m][0m = 50000 * 10^18
+                      if 1[1m >= [0m[95mmem[[0m[94m_2094[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2094[0m + 160[95m][0m = cd[100]
+                  [95mmem[[0m[94m_2094[0m + 192[95m][0m = 0x5c38449e00000000000000000000000000000000000000000000000000000000
+                  [95mmem[[0m[94m_2094[0m + 196[95m][0m = this.address
+                  [95mmem[[0m[94m_2094[0m + 228[95m][0m = 128
+                  [95mmem[[0m[94m_2094[0m + 324[95m][0m = [95mmem[[0m[94m_2094[0m[95m][0m
+                  [94midx[0m = 0
+                  [94ms[0m = [94m_2094[0m + 32
+                  [94mt[0m = [94m_2094[0m + 356
+                  [32mwhile [0m[94midx[0m[1m < [0m[95mmem[[0m[94m_2094[0m[95m][0m[32m:[0m
+                      [95mmem[[0m[94mt[0m[95m][0m = [95mmem[[0m[94ms[0m + 12[95m len [0m20[95m][0m
+                      [94midx[0m = [94midx[0m + 1
+                      [94ms[0m = [94ms[0m + 32
+                      [94mt[0m = [94mt[0m + 32
+                      [32mcontinue [0m
+                  [95mmem[[0m[94m_2094[0m + 260[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2094[0m[95m][0m) + 160
+                  [95mmem[[0m[94m_2094[0m + (32[1m * [0m[95mmem[[0m[94m_2094[0m[95m][0m) + 356[95m][0m = [95mmem[[0m[94m_2094[0m + 96[95m][0m
+                  [95mmem[[0m[94m_2094[0m + (32[1m * [0m[95mmem[[0m[94m_2094[0m[95m][0m) + 388[95m len [0m32[1m * [0m[95mmem[[0m[94m_2094[0m + 96[95m][0m[95m][0m = [95mmem[[0m[94m_2094[0m + 128[95m len [0m32[1m * [0m[95mmem[[0m[94m_2094[0m + 96[95m][0m[95m][0m
+                  [94mvar81001[0m = [95mmem[[0m[94m_2094[0m + 96[95m][0m
+                  [95mmem[[0m[94m_2094[0m + 292[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2094[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2094[0m + 96[95m][0m) + 192
+                  [95mmem[[0m[94m_2094[0m + (32[1m * [0m[95mmem[[0m[94m_2094[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2094[0m + 96[95m][0m) + 388[95m][0m = 0
+                  require ext_code.size(0xba12222222228d8ba445958a75a0704d566bf2c8)
+                  call 0xba12222222228d8ba445958a75a0704d566bf2c8.[95mmem[[0m[95mmem[[0m64[95m][0m[95m len [0m4[95m][0m with:
+                       gas gas_remaining [38;5;8mwei[0m
+                      args [95mmem[[0m[95mmem[[0m64[95m][0m + 4[95m len [0m[94m_2094[0m + (32[1m * [0m[95mmem[[0m[94m_2094[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2094[0m + 96[95m][0m) + -[95mmem[[0m64[95m][0m + 416[95m][0m
+          else:
+              [94ms[0m = 0
+              [94midx[0m = floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 129
+              [32mwhile [0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m) + 129[1m > [0m[94midx[0m[32m:[0m
+                  [38;5;8maddr([0m[32mstor7[0m[32m[[0m[94ms[0m[32m][0m[38;5;8m)[0m = [95mmem[[0m[94midx[0m + 12[95m len [0m20[95m][0m
+                  [94ms[0m = [94ms[0m + 1
+                  [94midx[0m = [94midx[0m + 32
+                  [32mcontinue [0m
+              [94midx[0m = Mask(251, 0, (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m) + 31)[1m >> [0m5
+              [32mwhile [0m[32mstor7[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                  [38;5;8muint256([0m[32mstor7[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                  [94midx[0m = [94midx[0m + 1
+                  [32mcontinue [0m
+              [32mstor8[0m[32m.length[0m = [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m
+              [95mmem[[0m0[95m][0m = 8
+              if not [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m:
+                  [94midx[0m = 0
+                  [32mwhile [0m[32mstor8[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8muint256([0m[32mstor8[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                      [94midx[0m = [94midx[0m + 1
+                      [32mcontinue [0m
+                  [32mstor1[0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                  [32mstor2[0m = cd[100]
+                  [94m_2096[0m = [95mmem[[0m64[95m][0m
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 32[95m len [0m64[95m][0m = call.data[calldata.size len 64]
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 96[95m][0m = 2
+                  [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + 192
+                  if 0[1m >= [0m[95mmem[[0m[94m_2096[0m[95m][0m:
+                      revert with 0, 50
+                  if [38;5;8maddr([0mcd[68][38;5;8m)[0m[1m < [0m0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2:
+                      [95mmem[[0m[94m_2096[0m + 32[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 1[1m >= [0m[95mmem[[0m[94m_2096[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2096[0m + 64[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 0[1m >= [0m[95mmem[[0m[94m_2096[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2096[0m + 128[95m][0m = cd[100]
+                      if 1[1m >= [0m[95mmem[[0m[94m_2096[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2096[0m + 160[95m][0m = 50000 * 10^18
+                  else:
+                      [95mmem[[0m[94m_2096[0m + 32[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 1[1m >= [0m[95mmem[[0m[94m_2096[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2096[0m + 64[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 0[1m >= [0m[95mmem[[0m[94m_2096[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2096[0m + 128[95m][0m = 50000 * 10^18
+                      if 1[1m >= [0m[95mmem[[0m[94m_2096[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2096[0m + 160[95m][0m = cd[100]
+                  [95mmem[[0m[94m_2096[0m + 192[95m][0m = 0x5c38449e00000000000000000000000000000000000000000000000000000000
+                  [95mmem[[0m[94m_2096[0m + 196[95m][0m = this.address
+                  [95mmem[[0m[94m_2096[0m + 228[95m][0m = 128
+                  [95mmem[[0m[94m_2096[0m + 324[95m][0m = [95mmem[[0m[94m_2096[0m[95m][0m
+                  [94midx[0m = 0
+                  [94ms[0m = [94m_2096[0m + 32
+                  [94mt[0m = [94m_2096[0m + 356
+                  [32mwhile [0m[94midx[0m[1m < [0m[95mmem[[0m[94m_2096[0m[95m][0m[32m:[0m
+                      [95mmem[[0m[94mt[0m[95m][0m = [95mmem[[0m[94ms[0m + 12[95m len [0m20[95m][0m
+                      [94midx[0m = [94midx[0m + 1
+                      [94ms[0m = [94ms[0m + 32
+                      [94mt[0m = [94mt[0m + 32
+                      [32mcontinue [0m
+                  [95mmem[[0m[94m_2096[0m + 260[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2096[0m[95m][0m) + 160
+                  [95mmem[[0m[94m_2096[0m + (32[1m * [0m[95mmem[[0m[94m_2096[0m[95m][0m) + 356[95m][0m = [95mmem[[0m[94m_2096[0m + 96[95m][0m
+                  [95mmem[[0m[94m_2096[0m + (32[1m * [0m[95mmem[[0m[94m_2096[0m[95m][0m) + 388[95m len [0m32[1m * [0m[95mmem[[0m[94m_2096[0m + 96[95m][0m[95m][0m = [95mmem[[0m[94m_2096[0m + 128[95m len [0m32[1m * [0m[95mmem[[0m[94m_2096[0m + 96[95m][0m[95m][0m
+                  [94mvar81001[0m = [95mmem[[0m[94m_2096[0m + 96[95m][0m
+                  [95mmem[[0m[94m_2096[0m + 292[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2096[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2096[0m + 96[95m][0m) + 192
+                  [95mmem[[0m[94m_2096[0m + (32[1m * [0m[95mmem[[0m[94m_2096[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2096[0m + 96[95m][0m) + 388[95m][0m = 0
+                  require ext_code.size(0xba12222222228d8ba445958a75a0704d566bf2c8)
+                  call 0xba12222222228d8ba445958a75a0704d566bf2c8.[95mmem[[0m[95mmem[[0m64[95m][0m[95m len [0m4[95m][0m with:
+                       gas gas_remaining [38;5;8mwei[0m
+                      args [95mmem[[0m[95mmem[[0m64[95m][0m + 4[95m len [0m[94m_2096[0m + (32[1m * [0m[95mmem[[0m[94m_2096[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2096[0m + 96[95m][0m) + -[95mmem[[0m64[95m][0m + 416[95m][0m
+              else:
+                  [94ms[0m = 0
+                  [94midx[0m = floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 161
+                  [32mwhile [0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m) + 161[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8maddr([0m[32mstor8[0m[32m[[0m[94ms[0m[32m][0m[38;5;8m)[0m = [95mmem[[0m[94midx[0m + 12[95m len [0m20[95m][0m
+                      [94ms[0m = [94ms[0m + 1
+                      [94midx[0m = [94midx[0m + 32
+                      [32mcontinue [0m
+                  [94midx[0m = Mask(251, 0, (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m) + 31)[1m >> [0m5
+                  [32mwhile [0m[32mstor8[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8muint256([0m[32mstor8[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                      [94midx[0m = [94midx[0m + 1
+                      [32mcontinue [0m
+                  [32mstor1[0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                  [32mstor2[0m = cd[100]
+                  [94m_2420[0m = [95mmem[[0m64[95m][0m
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 32[95m len [0m64[95m][0m = call.data[calldata.size len 64]
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 96[95m][0m = 2
+                  [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + 192
+                  if 0[1m >= [0m[95mmem[[0m[94m_2420[0m[95m][0m:
+                      revert with 0, 50
+                  if [38;5;8maddr([0mcd[68][38;5;8m)[0m[1m < [0m0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2:
+                      [95mmem[[0m[94m_2420[0m + 32[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 1[1m >= [0m[95mmem[[0m[94m_2420[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2420[0m + 64[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 0[1m >= [0m[95mmem[[0m[94m_2420[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2420[0m + 128[95m][0m = cd[100]
+                      if 1[1m >= [0m[95mmem[[0m[94m_2420[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2420[0m + 160[95m][0m = 50000 * 10^18
+                  else:
+                      [95mmem[[0m[94m_2420[0m + 32[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 1[1m >= [0m[95mmem[[0m[94m_2420[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2420[0m + 64[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 0[1m >= [0m[95mmem[[0m[94m_2420[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2420[0m + 128[95m][0m = 50000 * 10^18
+                      if 1[1m >= [0m[95mmem[[0m[94m_2420[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2420[0m + 160[95m][0m = cd[100]
+                  [95mmem[[0m[94m_2420[0m + 192[95m][0m = 0x5c38449e00000000000000000000000000000000000000000000000000000000
+                  [95mmem[[0m[94m_2420[0m + 196[95m][0m = this.address
+                  [95mmem[[0m[94m_2420[0m + 228[95m][0m = 128
+                  [95mmem[[0m[94m_2420[0m + 324[95m][0m = [95mmem[[0m[94m_2420[0m[95m][0m
+                  [94midx[0m = 0
+                  [94ms[0m = [94m_2420[0m + 32
+                  [94mt[0m = [94m_2420[0m + 356
+                  [32mwhile [0m[94midx[0m[1m < [0m[95mmem[[0m[94m_2420[0m[95m][0m[32m:[0m
+                      [95mmem[[0m[94mt[0m[95m][0m = [95mmem[[0m[94ms[0m + 12[95m len [0m20[95m][0m
+                      [94midx[0m = [94midx[0m + 1
+                      [94ms[0m = [94ms[0m + 32
+                      [94mt[0m = [94mt[0m + 32
+                      [32mcontinue [0m
+                  [95mmem[[0m[94m_2420[0m + 260[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2420[0m[95m][0m) + 160
+                  [95mmem[[0m[94m_2420[0m + (32[1m * [0m[95mmem[[0m[94m_2420[0m[95m][0m) + 356[95m][0m = [95mmem[[0m[94m_2420[0m + 96[95m][0m
+                  [95mmem[[0m[94m_2420[0m + (32[1m * [0m[95mmem[[0m[94m_2420[0m[95m][0m) + 388[95m len [0m32[1m * [0m[95mmem[[0m[94m_2420[0m + 96[95m][0m[95m][0m = [95mmem[[0m[94m_2420[0m + 128[95m len [0m32[1m * [0m[95mmem[[0m[94m_2420[0m + 96[95m][0m[95m][0m
+                  [95mmem[[0m[94m_2420[0m + 292[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2420[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2420[0m + 96[95m][0m) + 192
+                  [95mmem[[0m[94m_2420[0m + (32[1m * [0m[95mmem[[0m[94m_2420[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2420[0m + 96[95m][0m) + 388[95m][0m = 0
+                  require ext_code.size(0xba12222222228d8ba445958a75a0704d566bf2c8)
+                  call 0xba12222222228d8ba445958a75a0704d566bf2c8.[95mmem[[0m[95mmem[[0m64[95m][0m[95m len [0m4[95m][0m with:
+                       gas gas_remaining [38;5;8mwei[0m
+                      args [95mmem[[0m[95mmem[[0m64[95m][0m + 4[95m len [0m[94m_2420[0m + (32[1m * [0m[95mmem[[0m[94m_2420[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2420[0m + 96[95m][0m) + -[95mmem[[0m64[95m][0m + 416[95m][0m
+  else:
+      [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 129[95m len [0m32[1m * [0m[32m('cd', 132).length[0m[95m][0m = call.data[calldata.size len 32[1m * [0m[32m('cd', 132).length[0m]
+      if [32m('cd', 132).length[0m[1m > [0m18446744073709551615:
+          revert with 0, 65
+      [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m = [32m('cd', 132).length[0m
+      [95mmem[[0m64[95m][0m = floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (64[1m * [0m[32m('cd', 132).length[0m) + 161
+      if not [32m('cd', 132).length[0m:
+          [94midx[0m = 0
+          [32mwhile [0m[94midx[0m[1m < [0m[32m('cd', 132).length[0m[32m:[0m
+              if [94midx[0m[1m >= [0m[95mmem[[0m96[95m][0m:
+                  revert with 0, 50
+              if [94midx[0m[1m >= [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m:
+                  revert with 0, 50
+              [95mmem[[0m(32[1m * [0m[94midx[0m) + floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 129[95m][0m = [95mmem[[0m(32[1m * [0m[94midx[0m) + 140[95m len [0m20[95m][0m
+              if [94midx[0m[1m >= [0m[95mmem[[0m96[95m][0m:
+                  revert with 0, 50
+              require ext_code.size([95mmem[[0m(32[1m * [0m[94midx[0m) + 140[95m len [0m20[95m][0m)
+              static call [95mmem[[0m(32[1m * [0m[94midx[0m) + 140[95m len [0m20[95m][0m.underlying() with:
+                      gas gas_remaining [38;5;8mwei[0m
+              [95mmem[[0m[95mmem[[0m64[95m][0m[95m][0m = ext_call.return_data[0]
+              if not ext_call.success:
+                  revert with ext_call.return_data[0 len return_data.size]
+              [94m_936[0m = [95mmem[[0m64[95m][0m
+              [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + ceil32(return_data.size)
+              require return_data.size[1m >=′ [0m32
+              require [95mmem[[0m[94m_936[0m[95m][0m[1m == [0m[95mmem[[0m[94m_936[0m + 12[95m len [0m20[95m][0m
+              if [94midx[0m[1m >= [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m:
+                  revert with 0, 50
+              [95mmem[[0m(32[1m * [0m[94midx[0m) + floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 161[95m][0m = [95mmem[[0m[94m_936[0m + 12[95m len [0m20[95m][0m
+              if [94midx[0m[1m == [0m-1:
+                  revert with 0, 17
+              [94midx[0m = [94midx[0m + 1
+              [32mcontinue [0m
+          [32mstor7[0m[32m.length[0m = [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m
+          if not [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m:
+              [94midx[0m = 0
+              [32mwhile [0m[32mstor7[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                  [38;5;8muint256([0m[32mstor7[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                  [94midx[0m = [94midx[0m + 1
+                  [32mcontinue [0m
+              [32mstor8[0m[32m.length[0m = [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m
+              [95mmem[[0m0[95m][0m = 8
+              if not [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m:
+                  [94midx[0m = 0
+                  [32mwhile [0m[32mstor8[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8muint256([0m[32mstor8[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                      [94midx[0m = [94midx[0m + 1
+                      [32mcontinue [0m
+                  [32mstor1[0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                  [32mstor2[0m = cd[100]
+                  [94m_1712[0m = [95mmem[[0m64[95m][0m
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 32[95m len [0m64[95m][0m = call.data[calldata.size len 64]
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 96[95m][0m = 2
+                  [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + 192
+                  if 0[1m >= [0m[95mmem[[0m[94m_1712[0m[95m][0m:
+                      revert with 0, 50
+                  if [38;5;8maddr([0mcd[68][38;5;8m)[0m[1m < [0m0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2:
+                      [95mmem[[0m[94m_1712[0m + 32[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 1[1m >= [0m[95mmem[[0m[94m_1712[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1712[0m + 64[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 0[1m >= [0m[95mmem[[0m[94m_1712[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1712[0m + 128[95m][0m = cd[100]
+                      if 1[1m >= [0m[95mmem[[0m[94m_1712[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1712[0m + 160[95m][0m = 50000 * 10^18
+                  else:
+                      [95mmem[[0m[94m_1712[0m + 32[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 1[1m >= [0m[95mmem[[0m[94m_1712[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1712[0m + 64[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 0[1m >= [0m[95mmem[[0m[94m_1712[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1712[0m + 128[95m][0m = 50000 * 10^18
+                      if 1[1m >= [0m[95mmem[[0m[94m_1712[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1712[0m + 160[95m][0m = cd[100]
+                  [95mmem[[0m[94m_1712[0m + 192[95m][0m = 0x5c38449e00000000000000000000000000000000000000000000000000000000
+                  [95mmem[[0m[94m_1712[0m + 196[95m][0m = this.address
+                  [95mmem[[0m[94m_1712[0m + 228[95m][0m = 128
+                  [95mmem[[0m[94m_1712[0m + 324[95m][0m = [95mmem[[0m[94m_1712[0m[95m][0m
+                  [94midx[0m = 0
+                  [94ms[0m = [94m_1712[0m + 32
+                  [94mt[0m = [94m_1712[0m + 356
+                  [32mwhile [0m[94midx[0m[1m < [0m[95mmem[[0m[94m_1712[0m[95m][0m[32m:[0m
+                      [95mmem[[0m[94mt[0m[95m][0m = [95mmem[[0m[94ms[0m + 12[95m len [0m20[95m][0m
+                      [94midx[0m = [94midx[0m + 1
+                      [94ms[0m = [94ms[0m + 32
+                      [94mt[0m = [94mt[0m + 32
+                      [32mcontinue [0m
+                  [95mmem[[0m[94m_1712[0m + 260[95m][0m = (32[1m * [0m[95mmem[[0m[94m_1712[0m[95m][0m) + 160
+                  [95mmem[[0m[94m_1712[0m + (32[1m * [0m[95mmem[[0m[94m_1712[0m[95m][0m) + 356[95m][0m = [95mmem[[0m[94m_1712[0m + 96[95m][0m
+                  [95mmem[[0m[94m_1712[0m + (32[1m * [0m[95mmem[[0m[94m_1712[0m[95m][0m) + 388[95m len [0m32[1m * [0m[95mmem[[0m[94m_1712[0m + 96[95m][0m[95m][0m = [95mmem[[0m[94m_1712[0m + 128[95m len [0m32[1m * [0m[95mmem[[0m[94m_1712[0m + 96[95m][0m[95m][0m
+                  [94mvar78001[0m = [95mmem[[0m[94m_1712[0m + 96[95m][0m
+                  [95mmem[[0m[94m_1712[0m + 292[95m][0m = (32[1m * [0m[95mmem[[0m[94m_1712[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_1712[0m + 96[95m][0m) + 192
+                  [95mmem[[0m[94m_1712[0m + (32[1m * [0m[95mmem[[0m[94m_1712[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_1712[0m + 96[95m][0m) + 388[95m][0m = 0
+                  require ext_code.size(0xba12222222228d8ba445958a75a0704d566bf2c8)
+                  call 0xba12222222228d8ba445958a75a0704d566bf2c8.[95mmem[[0m[95mmem[[0m64[95m][0m[95m len [0m4[95m][0m with:
+                       gas gas_remaining [38;5;8mwei[0m
+                      args [95mmem[[0m[95mmem[[0m64[95m][0m + 4[95m len [0m[94m_1712[0m + (32[1m * [0m[95mmem[[0m[94m_1712[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_1712[0m + 96[95m][0m) + -[95mmem[[0m64[95m][0m + 416[95m][0m
+              else:
+                  [94ms[0m = 0
+                  [94midx[0m = floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 161
+                  [32mwhile [0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m) + 161[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8maddr([0m[32mstor8[0m[32m[[0m[94ms[0m[32m][0m[38;5;8m)[0m = [95mmem[[0m[94midx[0m + 12[95m len [0m20[95m][0m
+                      [94ms[0m = [94ms[0m + 1
+                      [94midx[0m = [94midx[0m + 32
+                      [32mcontinue [0m
+                  [94midx[0m = Mask(251, 0, (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m) + 31)[1m >> [0m5
+                  [32mwhile [0m[32mstor8[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8muint256([0m[32mstor8[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                      [94midx[0m = [94midx[0m + 1
+                      [32mcontinue [0m
+                  [32mstor1[0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                  [32mstor2[0m = cd[100]
+                  [94m_2098[0m = [95mmem[[0m64[95m][0m
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 32[95m len [0m64[95m][0m = call.data[calldata.size len 64]
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 96[95m][0m = 2
+                  [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + 192
+                  if 0[1m >= [0m[95mmem[[0m[94m_2098[0m[95m][0m:
+                      revert with 0, 50
+                  if [38;5;8maddr([0mcd[68][38;5;8m)[0m[1m < [0m0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2:
+                      [95mmem[[0m[94m_2098[0m + 32[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 1[1m >= [0m[95mmem[[0m[94m_2098[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2098[0m + 64[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 0[1m >= [0m[95mmem[[0m[94m_2098[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2098[0m + 128[95m][0m = cd[100]
+                      if 1[1m >= [0m[95mmem[[0m[94m_2098[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2098[0m + 160[95m][0m = 50000 * 10^18
+                  else:
+                      [95mmem[[0m[94m_2098[0m + 32[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 1[1m >= [0m[95mmem[[0m[94m_2098[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2098[0m + 64[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 0[1m >= [0m[95mmem[[0m[94m_2098[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2098[0m + 128[95m][0m = 50000 * 10^18
+                      if 1[1m >= [0m[95mmem[[0m[94m_2098[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2098[0m + 160[95m][0m = cd[100]
+                  [95mmem[[0m[94m_2098[0m + 192[95m][0m = 0x5c38449e00000000000000000000000000000000000000000000000000000000
+                  [95mmem[[0m[94m_2098[0m + 196[95m][0m = this.address
+                  [95mmem[[0m[94m_2098[0m + 228[95m][0m = 128
+                  [95mmem[[0m[94m_2098[0m + 324[95m][0m = [95mmem[[0m[94m_2098[0m[95m][0m
+                  [94midx[0m = 0
+                  [94ms[0m = [94m_2098[0m + 32
+                  [94mt[0m = [94m_2098[0m + 356
+                  [32mwhile [0m[94midx[0m[1m < [0m[95mmem[[0m[94m_2098[0m[95m][0m[32m:[0m
+                      [95mmem[[0m[94mt[0m[95m][0m = [95mmem[[0m[94ms[0m + 12[95m len [0m20[95m][0m
+                      [94midx[0m = [94midx[0m + 1
+                      [94ms[0m = [94ms[0m + 32
+                      [94mt[0m = [94mt[0m + 32
+                      [32mcontinue [0m
+                  [95mmem[[0m[94m_2098[0m + 260[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2098[0m[95m][0m) + 160
+                  [95mmem[[0m[94m_2098[0m + (32[1m * [0m[95mmem[[0m[94m_2098[0m[95m][0m) + 356[95m][0m = [95mmem[[0m[94m_2098[0m + 96[95m][0m
+                  [95mmem[[0m[94m_2098[0m + (32[1m * [0m[95mmem[[0m[94m_2098[0m[95m][0m) + 388[95m len [0m32[1m * [0m[95mmem[[0m[94m_2098[0m + 96[95m][0m[95m][0m = [95mmem[[0m[94m_2098[0m + 128[95m len [0m32[1m * [0m[95mmem[[0m[94m_2098[0m + 96[95m][0m[95m][0m
+                  [94mvar81001[0m = [95mmem[[0m[94m_2098[0m + 96[95m][0m
+                  [95mmem[[0m[94m_2098[0m + 292[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2098[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2098[0m + 96[95m][0m) + 192
+                  [95mmem[[0m[94m_2098[0m + (32[1m * [0m[95mmem[[0m[94m_2098[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2098[0m + 96[95m][0m) + 388[95m][0m = 0
+                  require ext_code.size(0xba12222222228d8ba445958a75a0704d566bf2c8)
+                  call 0xba12222222228d8ba445958a75a0704d566bf2c8.[95mmem[[0m[95mmem[[0m64[95m][0m[95m len [0m4[95m][0m with:
+                       gas gas_remaining [38;5;8mwei[0m
+                      args [95mmem[[0m[95mmem[[0m64[95m][0m + 4[95m len [0m[94m_2098[0m + (32[1m * [0m[95mmem[[0m[94m_2098[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2098[0m + 96[95m][0m) + -[95mmem[[0m64[95m][0m + 416[95m][0m
+          else:
+              [94ms[0m = 0
+              [94midx[0m = floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 129
+              [32mwhile [0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m) + 129[1m > [0m[94midx[0m[32m:[0m
+                  [38;5;8maddr([0m[32mstor7[0m[32m[[0m[94ms[0m[32m][0m[38;5;8m)[0m = [95mmem[[0m[94midx[0m + 12[95m len [0m20[95m][0m
+                  [94ms[0m = [94ms[0m + 1
+                  [94midx[0m = [94midx[0m + 32
+                  [32mcontinue [0m
+              [94midx[0m = Mask(251, 0, (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m) + 31)[1m >> [0m5
+              [32mwhile [0m[32mstor7[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                  [38;5;8muint256([0m[32mstor7[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                  [94midx[0m = [94midx[0m + 1
+                  [32mcontinue [0m
+              [32mstor8[0m[32m.length[0m = [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m
+              [95mmem[[0m0[95m][0m = 8
+              if not [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m:
+                  [94midx[0m = 0
+                  [32mwhile [0m[32mstor8[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8muint256([0m[32mstor8[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                      [94midx[0m = [94midx[0m + 1
+                      [32mcontinue [0m
+                  [32mstor1[0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                  [32mstor2[0m = cd[100]
+                  [94m_2100[0m = [95mmem[[0m64[95m][0m
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 32[95m len [0m64[95m][0m = call.data[calldata.size len 64]
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 96[95m][0m = 2
+                  [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + 192
+                  if 0[1m >= [0m[95mmem[[0m[94m_2100[0m[95m][0m:
+                      revert with 0, 50
+                  if [38;5;8maddr([0mcd[68][38;5;8m)[0m[1m < [0m0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2:
+                      [95mmem[[0m[94m_2100[0m + 32[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 1[1m >= [0m[95mmem[[0m[94m_2100[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2100[0m + 64[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 0[1m >= [0m[95mmem[[0m[94m_2100[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2100[0m + 128[95m][0m = cd[100]
+                      if 1[1m >= [0m[95mmem[[0m[94m_2100[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2100[0m + 160[95m][0m = 50000 * 10^18
+                  else:
+                      [95mmem[[0m[94m_2100[0m + 32[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 1[1m >= [0m[95mmem[[0m[94m_2100[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2100[0m + 64[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 0[1m >= [0m[95mmem[[0m[94m_2100[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2100[0m + 128[95m][0m = 50000 * 10^18
+                      if 1[1m >= [0m[95mmem[[0m[94m_2100[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2100[0m + 160[95m][0m = cd[100]
+                  [95mmem[[0m[94m_2100[0m + 192[95m][0m = 0x5c38449e00000000000000000000000000000000000000000000000000000000
+                  [95mmem[[0m[94m_2100[0m + 196[95m][0m = this.address
+                  [95mmem[[0m[94m_2100[0m + 228[95m][0m = 128
+                  [95mmem[[0m[94m_2100[0m + 324[95m][0m = [95mmem[[0m[94m_2100[0m[95m][0m
+                  [94midx[0m = 0
+                  [94ms[0m = [94m_2100[0m + 32
+                  [94mt[0m = [94m_2100[0m + 356
+                  [32mwhile [0m[94midx[0m[1m < [0m[95mmem[[0m[94m_2100[0m[95m][0m[32m:[0m
+                      [95mmem[[0m[94mt[0m[95m][0m = [95mmem[[0m[94ms[0m + 12[95m len [0m20[95m][0m
+                      [94midx[0m = [94midx[0m + 1
+                      [94ms[0m = [94ms[0m + 32
+                      [94mt[0m = [94mt[0m + 32
+                      [32mcontinue [0m
+                  [95mmem[[0m[94m_2100[0m + 260[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2100[0m[95m][0m) + 160
+                  [95mmem[[0m[94m_2100[0m + (32[1m * [0m[95mmem[[0m[94m_2100[0m[95m][0m) + 356[95m][0m = [95mmem[[0m[94m_2100[0m + 96[95m][0m
+                  [95mmem[[0m[94m_2100[0m + (32[1m * [0m[95mmem[[0m[94m_2100[0m[95m][0m) + 388[95m len [0m32[1m * [0m[95mmem[[0m[94m_2100[0m + 96[95m][0m[95m][0m = [95mmem[[0m[94m_2100[0m + 128[95m len [0m32[1m * [0m[95mmem[[0m[94m_2100[0m + 96[95m][0m[95m][0m
+                  [94mvar81001[0m = [95mmem[[0m[94m_2100[0m + 96[95m][0m
+                  [95mmem[[0m[94m_2100[0m + 292[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2100[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2100[0m + 96[95m][0m) + 192
+                  [95mmem[[0m[94m_2100[0m + (32[1m * [0m[95mmem[[0m[94m_2100[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2100[0m + 96[95m][0m) + 388[95m][0m = 0
+                  require ext_code.size(0xba12222222228d8ba445958a75a0704d566bf2c8)
+                  call 0xba12222222228d8ba445958a75a0704d566bf2c8.[95mmem[[0m[95mmem[[0m64[95m][0m[95m len [0m4[95m][0m with:
+                       gas gas_remaining [38;5;8mwei[0m
+                      args [95mmem[[0m[95mmem[[0m64[95m][0m + 4[95m len [0m[94m_2100[0m + (32[1m * [0m[95mmem[[0m[94m_2100[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2100[0m + 96[95m][0m) + -[95mmem[[0m64[95m][0m + 416[95m][0m
+              else:
+                  [94ms[0m = 0
+                  [94midx[0m = floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 161
+                  [32mwhile [0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m) + 161[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8maddr([0m[32mstor8[0m[32m[[0m[94ms[0m[32m][0m[38;5;8m)[0m = [95mmem[[0m[94midx[0m + 12[95m len [0m20[95m][0m
+                      [94ms[0m = [94ms[0m + 1
+                      [94midx[0m = [94midx[0m + 32
+                      [32mcontinue [0m
+                  [94midx[0m = Mask(251, 0, (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m) + 31)[1m >> [0m5
+                  [32mwhile [0m[32mstor8[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8muint256([0m[32mstor8[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                      [94midx[0m = [94midx[0m + 1
+                      [32mcontinue [0m
+                  [32mstor1[0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                  [32mstor2[0m = cd[100]
+                  [94m_2422[0m = [95mmem[[0m64[95m][0m
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 32[95m len [0m64[95m][0m = call.data[calldata.size len 64]
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 96[95m][0m = 2
+                  [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + 192
+                  if 0[1m >= [0m[95mmem[[0m[94m_2422[0m[95m][0m:
+                      revert with 0, 50
+                  if [38;5;8maddr([0mcd[68][38;5;8m)[0m[1m < [0m0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2:
+                      [95mmem[[0m[94m_2422[0m + 32[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 1[1m >= [0m[95mmem[[0m[94m_2422[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2422[0m + 64[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 0[1m >= [0m[95mmem[[0m[94m_2422[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2422[0m + 128[95m][0m = cd[100]
+                      if 1[1m >= [0m[95mmem[[0m[94m_2422[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2422[0m + 160[95m][0m = 50000 * 10^18
+                  else:
+                      [95mmem[[0m[94m_2422[0m + 32[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 1[1m >= [0m[95mmem[[0m[94m_2422[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2422[0m + 64[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 0[1m >= [0m[95mmem[[0m[94m_2422[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2422[0m + 128[95m][0m = 50000 * 10^18
+                      if 1[1m >= [0m[95mmem[[0m[94m_2422[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2422[0m + 160[95m][0m = cd[100]
+                  [95mmem[[0m[94m_2422[0m + 192[95m][0m = 0x5c38449e00000000000000000000000000000000000000000000000000000000
+                  [95mmem[[0m[94m_2422[0m + 196[95m][0m = this.address
+                  [95mmem[[0m[94m_2422[0m + 228[95m][0m = 128
+                  [95mmem[[0m[94m_2422[0m + 324[95m][0m = [95mmem[[0m[94m_2422[0m[95m][0m
+                  [94midx[0m = 0
+                  [94ms[0m = [94m_2422[0m + 32
+                  [94mt[0m = [94m_2422[0m + 356
+                  [32mwhile [0m[94midx[0m[1m < [0m[95mmem[[0m[94m_2422[0m[95m][0m[32m:[0m
+                      [95mmem[[0m[94mt[0m[95m][0m = [95mmem[[0m[94ms[0m + 12[95m len [0m20[95m][0m
+                      [94midx[0m = [94midx[0m + 1
+                      [94ms[0m = [94ms[0m + 32
+                      [94mt[0m = [94mt[0m + 32
+                      [32mcontinue [0m
+                  [95mmem[[0m[94m_2422[0m + 260[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2422[0m[95m][0m) + 160
+                  [95mmem[[0m[94m_2422[0m + (32[1m * [0m[95mmem[[0m[94m_2422[0m[95m][0m) + 356[95m][0m = [95mmem[[0m[94m_2422[0m + 96[95m][0m
+                  [95mmem[[0m[94m_2422[0m + (32[1m * [0m[95mmem[[0m[94m_2422[0m[95m][0m) + 388[95m len [0m32[1m * [0m[95mmem[[0m[94m_2422[0m + 96[95m][0m[95m][0m = [95mmem[[0m[94m_2422[0m + 128[95m len [0m32[1m * [0m[95mmem[[0m[94m_2422[0m + 96[95m][0m[95m][0m
+                  [95mmem[[0m[94m_2422[0m + 292[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2422[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2422[0m + 96[95m][0m) + 192
+                  [95mmem[[0m[94m_2422[0m + (32[1m * [0m[95mmem[[0m[94m_2422[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2422[0m + 96[95m][0m) + 388[95m][0m = 0
+                  require ext_code.size(0xba12222222228d8ba445958a75a0704d566bf2c8)
+                  call 0xba12222222228d8ba445958a75a0704d566bf2c8.[95mmem[[0m[95mmem[[0m64[95m][0m[95m len [0m4[95m][0m with:
+                       gas gas_remaining [38;5;8mwei[0m
+                      args [95mmem[[0m[95mmem[[0m64[95m][0m + 4[95m len [0m[94m_2422[0m + (32[1m * [0m[95mmem[[0m[94m_2422[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2422[0m + 96[95m][0m) + -[95mmem[[0m64[95m][0m + 416[95m][0m
+      else:
+          [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 161[95m len [0m32[1m * [0m[32m('cd', 132).length[0m[95m][0m = call.data[calldata.size len 32[1m * [0m[32m('cd', 132).length[0m]
+          [94midx[0m = 0
+          [32mwhile [0m[94midx[0m[1m < [0m[32m('cd', 132).length[0m[32m:[0m
+              if [94midx[0m[1m >= [0m[95mmem[[0m96[95m][0m:
+                  revert with 0, 50
+              if [94midx[0m[1m >= [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m:
+                  revert with 0, 50
+              [95mmem[[0m(32[1m * [0m[94midx[0m) + floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 129[95m][0m = [95mmem[[0m(32[1m * [0m[94midx[0m) + 140[95m len [0m20[95m][0m
+              if [94midx[0m[1m >= [0m[95mmem[[0m96[95m][0m:
+                  revert with 0, 50
+              require ext_code.size([95mmem[[0m(32[1m * [0m[94midx[0m) + 140[95m len [0m20[95m][0m)
+              static call [95mmem[[0m(32[1m * [0m[94midx[0m) + 140[95m len [0m20[95m][0m.underlying() with:
+                      gas gas_remaining [38;5;8mwei[0m
+              [95mmem[[0m[95mmem[[0m64[95m][0m[95m][0m = ext_call.return_data[0]
+              if not ext_call.success:
+                  revert with ext_call.return_data[0 len return_data.size]
+              [94m_937[0m = [95mmem[[0m64[95m][0m
+              [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + ceil32(return_data.size)
+              require return_data.size[1m >=′ [0m32
+              require [95mmem[[0m[94m_937[0m[95m][0m[1m == [0m[95mmem[[0m[94m_937[0m + 12[95m len [0m20[95m][0m
+              if [94midx[0m[1m >= [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m:
+                  revert with 0, 50
+              [95mmem[[0m(32[1m * [0m[94midx[0m) + floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 161[95m][0m = [95mmem[[0m[94m_937[0m + 12[95m len [0m20[95m][0m
+              if [94midx[0m[1m == [0m-1:
+                  revert with 0, 17
+              [94midx[0m = [94midx[0m + 1
+              [32mcontinue [0m
+          [32mstor7[0m[32m.length[0m = [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m
+          if not [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m:
+              [94midx[0m = 0
+              [32mwhile [0m[32mstor7[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                  [38;5;8muint256([0m[32mstor7[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                  [94midx[0m = [94midx[0m + 1
+                  [32mcontinue [0m
+              [32mstor8[0m[32m.length[0m = [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m
+              [95mmem[[0m0[95m][0m = 8
+              if not [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m:
+                  [94midx[0m = 0
+                  [32mwhile [0m[32mstor8[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8muint256([0m[32mstor8[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                      [94midx[0m = [94midx[0m + 1
+                      [32mcontinue [0m
+                  [32mstor1[0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                  [32mstor2[0m = cd[100]
+                  [94m_1715[0m = [95mmem[[0m64[95m][0m
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 32[95m len [0m64[95m][0m = call.data[calldata.size len 64]
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 96[95m][0m = 2
+                  [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + 192
+                  if 0[1m >= [0m[95mmem[[0m[94m_1715[0m[95m][0m:
+                      revert with 0, 50
+                  if [38;5;8maddr([0mcd[68][38;5;8m)[0m[1m < [0m0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2:
+                      [95mmem[[0m[94m_1715[0m + 32[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 1[1m >= [0m[95mmem[[0m[94m_1715[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1715[0m + 64[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 0[1m >= [0m[95mmem[[0m[94m_1715[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1715[0m + 128[95m][0m = cd[100]
+                      if 1[1m >= [0m[95mmem[[0m[94m_1715[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1715[0m + 160[95m][0m = 50000 * 10^18
+                  else:
+                      [95mmem[[0m[94m_1715[0m + 32[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 1[1m >= [0m[95mmem[[0m[94m_1715[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1715[0m + 64[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 0[1m >= [0m[95mmem[[0m[94m_1715[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1715[0m + 128[95m][0m = 50000 * 10^18
+                      if 1[1m >= [0m[95mmem[[0m[94m_1715[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_1715[0m + 160[95m][0m = cd[100]
+                  [95mmem[[0m[94m_1715[0m + 192[95m][0m = 0x5c38449e00000000000000000000000000000000000000000000000000000000
+                  [95mmem[[0m[94m_1715[0m + 196[95m][0m = this.address
+                  [95mmem[[0m[94m_1715[0m + 228[95m][0m = 128
+                  [95mmem[[0m[94m_1715[0m + 324[95m][0m = [95mmem[[0m[94m_1715[0m[95m][0m
+                  [94midx[0m = 0
+                  [94ms[0m = [94m_1715[0m + 32
+                  [94mt[0m = [94m_1715[0m + 356
+                  [32mwhile [0m[94midx[0m[1m < [0m[95mmem[[0m[94m_1715[0m[95m][0m[32m:[0m
+                      [95mmem[[0m[94mt[0m[95m][0m = [95mmem[[0m[94ms[0m + 12[95m len [0m20[95m][0m
+                      [94midx[0m = [94midx[0m + 1
+                      [94ms[0m = [94ms[0m + 32
+                      [94mt[0m = [94mt[0m + 32
+                      [32mcontinue [0m
+                  [95mmem[[0m[94m_1715[0m + 260[95m][0m = (32[1m * [0m[95mmem[[0m[94m_1715[0m[95m][0m) + 160
+                  [95mmem[[0m[94m_1715[0m + (32[1m * [0m[95mmem[[0m[94m_1715[0m[95m][0m) + 356[95m][0m = [95mmem[[0m[94m_1715[0m + 96[95m][0m
+                  [95mmem[[0m[94m_1715[0m + (32[1m * [0m[95mmem[[0m[94m_1715[0m[95m][0m) + 388[95m len [0m32[1m * [0m[95mmem[[0m[94m_1715[0m + 96[95m][0m[95m][0m = [95mmem[[0m[94m_1715[0m + 128[95m len [0m32[1m * [0m[95mmem[[0m[94m_1715[0m + 96[95m][0m[95m][0m
+                  [94mvar79001[0m = [95mmem[[0m[94m_1715[0m + 96[95m][0m
+                  [95mmem[[0m[94m_1715[0m + 292[95m][0m = (32[1m * [0m[95mmem[[0m[94m_1715[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_1715[0m + 96[95m][0m) + 192
+                  [95mmem[[0m[94m_1715[0m + (32[1m * [0m[95mmem[[0m[94m_1715[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_1715[0m + 96[95m][0m) + 388[95m][0m = 0
+                  require ext_code.size(0xba12222222228d8ba445958a75a0704d566bf2c8)
+                  call 0xba12222222228d8ba445958a75a0704d566bf2c8.[95mmem[[0m[95mmem[[0m64[95m][0m[95m len [0m4[95m][0m with:
+                       gas gas_remaining [38;5;8mwei[0m
+                      args [95mmem[[0m[95mmem[[0m64[95m][0m + 4[95m len [0m[94m_1715[0m + (32[1m * [0m[95mmem[[0m[94m_1715[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_1715[0m + 96[95m][0m) + -[95mmem[[0m64[95m][0m + 416[95m][0m
+              else:
+                  [94ms[0m = 0
+                  [94midx[0m = floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 161
+                  [32mwhile [0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m) + 161[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8maddr([0m[32mstor8[0m[32m[[0m[94ms[0m[32m][0m[38;5;8m)[0m = [95mmem[[0m[94midx[0m + 12[95m len [0m20[95m][0m
+                      [94ms[0m = [94ms[0m + 1
+                      [94midx[0m = [94midx[0m + 32
+                      [32mcontinue [0m
+                  [94midx[0m = Mask(251, 0, (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m) + 31)[1m >> [0m5
+                  [32mwhile [0m[32mstor8[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8muint256([0m[32mstor8[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                      [94midx[0m = [94midx[0m + 1
+                      [32mcontinue [0m
+                  [32mstor1[0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                  [32mstor2[0m = cd[100]
+                  [94m_2102[0m = [95mmem[[0m64[95m][0m
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 32[95m len [0m64[95m][0m = call.data[calldata.size len 64]
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 96[95m][0m = 2
+                  [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + 192
+                  if 0[1m >= [0m[95mmem[[0m[94m_2102[0m[95m][0m:
+                      revert with 0, 50
+                  if [38;5;8maddr([0mcd[68][38;5;8m)[0m[1m < [0m0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2:
+                      [95mmem[[0m[94m_2102[0m + 32[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 1[1m >= [0m[95mmem[[0m[94m_2102[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2102[0m + 64[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 0[1m >= [0m[95mmem[[0m[94m_2102[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2102[0m + 128[95m][0m = cd[100]
+                      if 1[1m >= [0m[95mmem[[0m[94m_2102[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2102[0m + 160[95m][0m = 50000 * 10^18
+                  else:
+                      [95mmem[[0m[94m_2102[0m + 32[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 1[1m >= [0m[95mmem[[0m[94m_2102[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2102[0m + 64[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 0[1m >= [0m[95mmem[[0m[94m_2102[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2102[0m + 128[95m][0m = 50000 * 10^18
+                      if 1[1m >= [0m[95mmem[[0m[94m_2102[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2102[0m + 160[95m][0m = cd[100]
+                  [95mmem[[0m[94m_2102[0m + 192[95m][0m = 0x5c38449e00000000000000000000000000000000000000000000000000000000
+                  [95mmem[[0m[94m_2102[0m + 196[95m][0m = this.address
+                  [95mmem[[0m[94m_2102[0m + 228[95m][0m = 128
+                  [95mmem[[0m[94m_2102[0m + 324[95m][0m = [95mmem[[0m[94m_2102[0m[95m][0m
+                  [94midx[0m = 0
+                  [94ms[0m = [94m_2102[0m + 32
+                  [94mt[0m = [94m_2102[0m + 356
+                  [32mwhile [0m[94midx[0m[1m < [0m[95mmem[[0m[94m_2102[0m[95m][0m[32m:[0m
+                      [95mmem[[0m[94mt[0m[95m][0m = [95mmem[[0m[94ms[0m + 12[95m len [0m20[95m][0m
+                      [94midx[0m = [94midx[0m + 1
+                      [94ms[0m = [94ms[0m + 32
+                      [94mt[0m = [94mt[0m + 32
+                      [32mcontinue [0m
+                  [95mmem[[0m[94m_2102[0m + 260[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2102[0m[95m][0m) + 160
+                  [95mmem[[0m[94m_2102[0m + (32[1m * [0m[95mmem[[0m[94m_2102[0m[95m][0m) + 356[95m][0m = [95mmem[[0m[94m_2102[0m + 96[95m][0m
+                  [95mmem[[0m[94m_2102[0m + (32[1m * [0m[95mmem[[0m[94m_2102[0m[95m][0m) + 388[95m len [0m32[1m * [0m[95mmem[[0m[94m_2102[0m + 96[95m][0m[95m][0m = [95mmem[[0m[94m_2102[0m + 128[95m len [0m32[1m * [0m[95mmem[[0m[94m_2102[0m + 96[95m][0m[95m][0m
+                  [95mmem[[0m[94m_2102[0m + 292[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2102[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2102[0m + 96[95m][0m) + 192
+                  [95mmem[[0m[94m_2102[0m + (32[1m * [0m[95mmem[[0m[94m_2102[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2102[0m + 96[95m][0m) + 388[95m][0m = 0
+                  require ext_code.size(0xba12222222228d8ba445958a75a0704d566bf2c8)
+                  call 0xba12222222228d8ba445958a75a0704d566bf2c8.[95mmem[[0m[95mmem[[0m64[95m][0m[95m len [0m4[95m][0m with:
+                       gas gas_remaining [38;5;8mwei[0m
+                      args [95mmem[[0m[95mmem[[0m64[95m][0m + 4[95m len [0m[94m_2102[0m + (32[1m * [0m[95mmem[[0m[94m_2102[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2102[0m + 96[95m][0m) + -[95mmem[[0m64[95m][0m + 416[95m][0m
+          else:
+              [94ms[0m = 0
+              [94midx[0m = floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 129
+              [32mwhile [0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m) + 129[1m > [0m[94midx[0m[32m:[0m
+                  [38;5;8maddr([0m[32mstor7[0m[32m[[0m[94ms[0m[32m][0m[38;5;8m)[0m = [95mmem[[0m[94midx[0m + 12[95m len [0m20[95m][0m
+                  [94ms[0m = [94ms[0m + 1
+                  [94midx[0m = [94midx[0m + 32
+                  [32mcontinue [0m
+              [94midx[0m = Mask(251, 0, (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m) + 31)[1m >> [0m5
+              [32mwhile [0m[32mstor7[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                  [38;5;8muint256([0m[32mstor7[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                  [94midx[0m = [94midx[0m + 1
+                  [32mcontinue [0m
+              [32mstor8[0m[32m.length[0m = [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m
+              [95mmem[[0m0[95m][0m = 8
+              if not [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m:
+                  [94midx[0m = 0
+                  [32mwhile [0m[32mstor8[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8muint256([0m[32mstor8[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                      [94midx[0m = [94midx[0m + 1
+                      [32mcontinue [0m
+                  [32mstor1[0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                  [32mstor2[0m = cd[100]
+                  [94m_2104[0m = [95mmem[[0m64[95m][0m
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 32[95m len [0m64[95m][0m = call.data[calldata.size len 64]
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 96[95m][0m = 2
+                  [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + 192
+                  if 0[1m >= [0m[95mmem[[0m[94m_2104[0m[95m][0m:
+                      revert with 0, 50
+                  if [38;5;8maddr([0mcd[68][38;5;8m)[0m[1m < [0m0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2:
+                      [95mmem[[0m[94m_2104[0m + 32[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 1[1m >= [0m[95mmem[[0m[94m_2104[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2104[0m + 64[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 0[1m >= [0m[95mmem[[0m[94m_2104[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2104[0m + 128[95m][0m = cd[100]
+                      if 1[1m >= [0m[95mmem[[0m[94m_2104[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2104[0m + 160[95m][0m = 50000 * 10^18
+                  else:
+                      [95mmem[[0m[94m_2104[0m + 32[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 1[1m >= [0m[95mmem[[0m[94m_2104[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2104[0m + 64[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 0[1m >= [0m[95mmem[[0m[94m_2104[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2104[0m + 128[95m][0m = 50000 * 10^18
+                      if 1[1m >= [0m[95mmem[[0m[94m_2104[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2104[0m + 160[95m][0m = cd[100]
+                  [95mmem[[0m[94m_2104[0m + 192[95m][0m = 0x5c38449e00000000000000000000000000000000000000000000000000000000
+                  [95mmem[[0m[94m_2104[0m + 196[95m][0m = this.address
+                  [95mmem[[0m[94m_2104[0m + 228[95m][0m = 128
+                  [95mmem[[0m[94m_2104[0m + 324[95m][0m = [95mmem[[0m[94m_2104[0m[95m][0m
+                  [94midx[0m = 0
+                  [94ms[0m = [94m_2104[0m + 32
+                  [94mt[0m = [94m_2104[0m + 356
+                  [32mwhile [0m[94midx[0m[1m < [0m[95mmem[[0m[94m_2104[0m[95m][0m[32m:[0m
+                      [95mmem[[0m[94mt[0m[95m][0m = [95mmem[[0m[94ms[0m + 12[95m len [0m20[95m][0m
+                      [94midx[0m = [94midx[0m + 1
+                      [94ms[0m = [94ms[0m + 32
+                      [94mt[0m = [94mt[0m + 32
+                      [32mcontinue [0m
+                  [95mmem[[0m[94m_2104[0m + 260[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2104[0m[95m][0m) + 160
+                  [95mmem[[0m[94m_2104[0m + (32[1m * [0m[95mmem[[0m[94m_2104[0m[95m][0m) + 356[95m][0m = [95mmem[[0m[94m_2104[0m + 96[95m][0m
+                  [95mmem[[0m[94m_2104[0m + (32[1m * [0m[95mmem[[0m[94m_2104[0m[95m][0m) + 388[95m len [0m32[1m * [0m[95mmem[[0m[94m_2104[0m + 96[95m][0m[95m][0m = [95mmem[[0m[94m_2104[0m + 128[95m len [0m32[1m * [0m[95mmem[[0m[94m_2104[0m + 96[95m][0m[95m][0m
+                  [95mmem[[0m[94m_2104[0m + 292[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2104[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2104[0m + 96[95m][0m) + 192
+                  [95mmem[[0m[94m_2104[0m + (32[1m * [0m[95mmem[[0m[94m_2104[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2104[0m + 96[95m][0m) + 388[95m][0m = 0
+                  require ext_code.size(0xba12222222228d8ba445958a75a0704d566bf2c8)
+                  call 0xba12222222228d8ba445958a75a0704d566bf2c8.[95mmem[[0m[95mmem[[0m64[95m][0m[95m len [0m4[95m][0m with:
+                       gas gas_remaining [38;5;8mwei[0m
+                      args [95mmem[[0m[95mmem[[0m64[95m][0m + 4[95m len [0m[94m_2104[0m + (32[1m * [0m[95mmem[[0m[94m_2104[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2104[0m + 96[95m][0m) + -[95mmem[[0m64[95m][0m + 416[95m][0m
+              else:
+                  [94ms[0m = 0
+                  [94midx[0m = floor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 161
+                  [32mwhile [0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m) + 161[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8maddr([0m[32mstor8[0m[32m[[0m[94ms[0m[32m][0m[38;5;8m)[0m = [95mmem[[0m[94midx[0m + 12[95m len [0m20[95m][0m
+                      [94ms[0m = [94ms[0m + 1
+                      [94midx[0m = [94midx[0m + 32
+                      [32mcontinue [0m
+                  [94midx[0m = Mask(251, 0, (32[1m * [0m[95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + (32[1m * [0m[32m('cd', 132).length[0m) + 129[95m][0m) + 31)[1m >> [0m5
+                  [32mwhile [0m[32mstor8[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
+                      [38;5;8muint256([0m[32mstor8[0m[32m[[0m[94midx[0m[32m][0m[38;5;8m)[0m = 0
+                      [94midx[0m = [94midx[0m + 1
+                      [32mcontinue [0m
+                  [32mstor1[0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                  [32mstor2[0m = cd[100]
+                  [94m_2424[0m = [95mmem[[0m64[95m][0m
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 32[95m len [0m64[95m][0m = call.data[calldata.size len 64]
+                  [95mmem[[0m[95mmem[[0m64[95m][0m + 96[95m][0m = 2
+                  [95mmem[[0m64[95m][0m = [95mmem[[0m64[95m][0m + 192
+                  if 0[1m >= [0m[95mmem[[0m[94m_2424[0m[95m][0m:
+                      revert with 0, 50
+                  if [38;5;8maddr([0mcd[68][38;5;8m)[0m[1m < [0m0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2:
+                      [95mmem[[0m[94m_2424[0m + 32[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 1[1m >= [0m[95mmem[[0m[94m_2424[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2424[0m + 64[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 0[1m >= [0m[95mmem[[0m[94m_2424[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2424[0m + 128[95m][0m = cd[100]
+                      if 1[1m >= [0m[95mmem[[0m[94m_2424[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2424[0m + 160[95m][0m = 50000 * 10^18
+                  else:
+                      [95mmem[[0m[94m_2424[0m + 32[95m][0m = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                      if 1[1m >= [0m[95mmem[[0m[94m_2424[0m[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2424[0m + 64[95m][0m = [38;5;8maddr([0mcd[68][38;5;8m)[0m
+                      if 0[1m >= [0m[95mmem[[0m[94m_2424[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2424[0m + 128[95m][0m = 50000 * 10^18
+                      if 1[1m >= [0m[95mmem[[0m[94m_2424[0m + 96[95m][0m:
+                          revert with 0, 50
+                      [95mmem[[0m[94m_2424[0m + 160[95m][0m = cd[100]
+                  [95mmem[[0m[94m_2424[0m + 192[95m][0m = 0x5c38449e00000000000000000000000000000000000000000000000000000000
+                  [95mmem[[0m[94m_2424[0m + 196[95m][0m = this.address
+                  [95mmem[[0m[94m_2424[0m + 228[95m][0m = 128
+                  [95mmem[[0m[94m_2424[0m + 324[95m][0m = [95mmem[[0m[94m_2424[0m[95m][0m
+                  [94midx[0m = 0
+                  [94ms[0m = [94m_2424[0m + 32
+                  [94mt[0m = [94m_2424[0m + 356
+                  [32mwhile [0m[94midx[0m[1m < [0m[95mmem[[0m[94m_2424[0m[95m][0m[32m:[0m
+                      [95mmem[[0m[94mt[0m[95m][0m = [95mmem[[0m[94ms[0m + 12[95m len [0m20[95m][0m
+                      [94midx[0m = [94midx[0m + 1
+                      [94ms[0m = [94ms[0m + 32
+                      [94mt[0m = [94mt[0m + 32
+                      [32mcontinue [0m
+                  [95mmem[[0m[94m_2424[0m + 260[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2424[0m[95m][0m) + 160
+                  [95mmem[[0m[94m_2424[0m + (32[1m * [0m[95mmem[[0m[94m_2424[0m[95m][0m) + 356[95m][0m = [95mmem[[0m[94m_2424[0m + 96[95m][0m
+                  [95mmem[[0m[94m_2424[0m + (32[1m * [0m[95mmem[[0m[94m_2424[0m[95m][0m) + 388[95m len [0m32[1m * [0m[95mmem[[0m[94m_2424[0m + 96[95m][0m[95m][0m = [95mmem[[0m[94m_2424[0m + 128[95m len [0m32[1m * [0m[95mmem[[0m[94m_2424[0m + 96[95m][0m[95m][0m
+                  [95mmem[[0m[94m_2424[0m + 292[95m][0m = (32[1m * [0m[95mmem[[0m[94m_2424[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2424[0m + 96[95m][0m) + 192
+                  [95mmem[[0m[94m_2424[0m + (32[1m * [0m[95mmem[[0m[94m_2424[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2424[0m + 96[95m][0m) + 388[95m][0m = 0
+                  require ext_code.size(0xba12222222228d8ba445958a75a0704d566bf2c8)
+                  call 0xba12222222228d8ba445958a75a0704d566bf2c8.[95mmem[[0m[95mmem[[0m64[95m][0m[95m len [0m4[95m][0m with:
+                       gas gas_remaining [38;5;8mwei[0m
+                      args [95mmem[[0m[95mmem[[0m64[95m][0m + 4[95m len [0m[94m_2424[0m + (32[1m * [0m[95mmem[[0m[94m_2424[0m[95m][0m) + (32[1m * [0m[95mmem[[0m[94m_2424[0m + 96[95m][0m) + -[95mmem[[0m64[95m][0m + 416[95m][0m
+  if not ext_call.success:
+      revert with ext_call.return_data[0 len return_data.size]
+
+
