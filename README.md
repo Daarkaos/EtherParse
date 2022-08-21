@@ -46,10 +46,10 @@ python3 parseether.py --tx 0xab486012f21be741c9e674ffda227e30518e8a1e37a5f1d58d0
 
 Parameters:
 
-* First item
+* tx &#8594;
 * Second item
-3. Third item
-4. Fourth item
+* Third item
+* Fourth item
 
 ## Examples
 
