@@ -1,12 +1,12 @@
 <html>
 <head>
-  <script src="//unpkg.com/three"></script>
-  <script src="//unpkg.com/three/examples/js/renderers/CSS2DRenderer.js"></script>
-  <script src="//unpkg.com/3d-force-graph"></script>
-  <title>Dashboard TX_Parse</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible"
+  content="IE-edge">
+  <script src="//unpkg.com/force-graph"></script>
+  <title>Dashboard ETHERPARSE</title>
   <!-- STYLESHEET -->
-  <link rel="stylesheet" href="dist/css/style.css">
-  <!--JS to save var in localstorage-->
+  <link rel= "stylesheet" href="/webserver/dist/css/style_index.css">
   <script type="text/javascript">
     function GetFileSizeNameAndType()
         {
@@ -21,40 +21,76 @@
         }
     }
   </script>
-
 </head>
+
 
 <body>
   <div class="Header">
-    <h1>EtherParse</h1>
+    <img src="/webserver/dist/images/TestTitle.png">
   </div>
-
-  <div class="container info-box">
+  <hr>
+  <div class="container">
+    <div class="topSection">
     <div class="info-section-title">
-      <p>Info from internal tx and tokens transfered</p>
-        <hr>
+     
+      <p class="infoText">Info from internal tx and tokens transfered</p>
+       
     </div>
     <div class="tx_information">
-      <p>InternalTX</p>
+    
+      <label for="TX">Go to webserver/json/data and select the txhash.json:</label><br>
+      <input type="file" id="file" onchange="GetFileSizeNameAndType()" />
 
       <button class="btn-ether">
-        <a id="set-mitre-link" target="_blank" href="/internaltx.html">
-          <h4>Graph<span id="set-mitre-id"></span></h4>
+        <a href="webserver/internaltx.html"><font color="white"> See Internal Tx</font>
+        
         </a>
       </button>
 
-      <p>Tokens</p>
+      <button class="btn-Token">
+        <a href="webserver/tokens.html"><font color="white">Token Transfer</font>
 
-      <button class="btn-ether">
-        <a id="set-mitre-link" target="_blank" href="tokens.html">
-          <h4>Graph<span id="set-mitre-id"></span></h4>
         </a>
       </button>
   </div>
-  <br>
-  <br>
-    <label for="TX">Go to webserver/json/data and select the txhash.json:</label><br>
-    <input type="file" id="file" onchange="GetFileSizeNameAndType()" />
+  </div>
+
+  <div class="containerinfo-box">
+    <div class="info-section-title">
+   
+    </div>
+
+    <div class="more-information">
+    
+    </div>
+
+  </div>
+  </div>
 
 </body>
+<br>
+<br>
+
+<hr>
+<p class="InfoAux">This project is made possible by the data from the EtherScan and Alchemy. For more information/accuracy checkout the official sites below.</p>
+<footer>
+ <br>
+    <div class="git">
+    <a href="https://github.com/Daarkaos/TX_Ether/"><img src="webserver/dist/images/git.png"/>
+    <br>
+   
+    </div>
+
+    <div class = "etherScan">
+      <a href="https://etherscan.io/"><img src="webserver/dist/images/etherscan-500.png"></a>
+      <br>
+      
+    </div>
+    
+    <div class = "alchemylogo">
+      <a href="https://dashboard.alchemyapi.io/"><img src="webserver/dist/images/alchemy2.png" ></a>
+      <br>
+    </div>
+      
+</footer>
 </html>

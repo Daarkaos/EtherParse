@@ -14,7 +14,7 @@ class myHandler(BaseHTTPRequestHandler):
 	#Handler for the GET requests
 	def do_GET(self):
 		if self.path=="/":
-			self.path="/index2.html"
+			self.path="webserver/index.html"
 
 		try:
 			#Check the file extension required and
