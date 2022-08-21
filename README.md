@@ -91,13 +91,13 @@ Output for a "small transaction":
 
 * You can find the json file of the transaction in the path:
 ``` bash
-./json/txhash.json
+.webserver/json/
 ```
-And see some examples [here](json/)
+And see some examples [here](webserver/json/)
 
 
 * You can find the contracts downloaded in the path:
 ``` bash
-./contracts/addrhash.bytecode
+./contracts/addrhash
 ```
 And see some examples [here](contracts/)
