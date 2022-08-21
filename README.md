@@ -46,10 +46,10 @@ python3 parseether.py --tx 0xab486012f21be741c9e674ffda227e30518e8a1e37a5f1d58d0
 
 Parameters:
 
-* tx &#8594;
-* Second item
-* Third item
-* Fourth item
+* tx &#8594; <b>Required.</b> Use this parameter to indicate the hash of the transaction.
+* quiet &#8594; <b>Optional.</b> Use this parameter if you don't want to see the API output
+* web &#8594; <b>Optional.</b> Use this parameter to run a web server and get graphic information
+* contract &#8594; <b>Optional.</b> Use this parameter to get information about contracts
 
 ## Examples
 
