@@ -7,6 +7,7 @@ Tested with:
 Operating System: <b>Ubuntu 22.04 LTS</b>
 
 Python3 version: <b>Python 3.10.4</b>
+
 Python2 version: <b>Python 2.7.18</b>
 
 
@@ -42,6 +43,13 @@ To execute it:
 ``` bash
 python3 parseether.py --tx 0xab486012f21be741c9e674ffda227e30518e8a1e37a5f1d58d0b0d41f6e76530
 ```
+
+Parameters:
+
+1. First item
+2. Second item
+3. Third item
+4. Fourth item
 
 ## Examples
 
