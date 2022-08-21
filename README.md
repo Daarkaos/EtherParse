@@ -46,8 +46,8 @@ python3 parseether.py --tx 0xab486012f21be741c9e674ffda227e30518e8a1e37a5f1d58d0
 
 Parameters:
 
-1. First item
-2. Second item
+* First item
+* Second item
 3. Third item
 4. Fourth item
 
