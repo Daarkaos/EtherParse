@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="/webserver/dist/images/TestTitle.png" height="100px"/>
+	<img src="/webserver/dist/images/TestTitle.png" height="150px"/>
 </p>
 
 Tested with:
