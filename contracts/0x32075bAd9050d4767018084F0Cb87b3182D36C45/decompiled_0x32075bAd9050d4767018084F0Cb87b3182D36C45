@@ -294,7 +294,6 @@
               [94midx[0m = [94midx[0m + 1
               [32mcontinue [0m
           [32mstor7[0m[32m.length[0m = [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m
-          [95mmem[[0m0[95m][0m = 7
           if not [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m:
               [94midx[0m = 0
               [32mwhile [0m[32mstor7[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m
@@ -596,7 +595,6 @@
               [94midx[0m = [94midx[0m + 1
               [32mcontinue [0m
           [32mstor7[0m[32m.length[0m = [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m
-          [95mmem[[0m0[95m][0m = 7
           if not [95mmem[[0mfloor32([32m('cd', 132).length[0m) + ceil32(return_data.size) + 97[95m][0m:
               [94midx[0m = 0
               [32mwhile [0m[32mstor7[0m[32m.length[0m[1m > [0m[94midx[0m[32m:[0m

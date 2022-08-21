@@ -18,13 +18,13 @@ def main(argv):
    contract = False
    api = True
    try:
-      opts, args = getopt.getopt(argv,"ht:wca",["tx=","web","contract","quiet"])
+      opts, args = getopt.getopt(argv,"ht:wcq",["tx=","web","contract","quiet"])
    except getopt.GetoptError:
-      print ('parseether.py -tx <hashtx> -w (optional) -c (optional)')
+      print ('parseether.py -tx <hashtx> -w (optional) -c (optional) -q (optional)')
       sys.exit(2)
    for opt, arg in opts:
       if opt == '-h':
-         print ('parseether.py -tx <hashtx> -w (optional) -c (optional) -a (optional')
+         print ('parseether.py -tx <hashtx> -w (optional) -c (optional) -q (optional')
          print ('if you want parse data to web server use -w/--web')
          print ('if you want download the contracts use -c/--contract')
          print ('if you dont want to get the data from transacction use -a/--api')
@@ -107,7 +107,7 @@ tokens_valid = False
 tokens = Get_tokens_transfered_from_tx(EtherHTML = EtherHTML)
 tx_info_clean['tokens'] = tokens
 
-if tokens == "":
+if tokens != "":
     tokens_valid = True
 
 # Test if contract exit 
@@ -192,11 +192,11 @@ if data_arg[1] == True:
     web_data = Transform_data_to_web(tx_info_clean = tx_info_clean)
 
     if internal_tx_valid:
-        print ('internal detected')
+        print(colored('[*] Parsing internal tx...', 'green'))
         with open("webserver/json/internaltx/" + hashtx + '.json', 'w') as json_file:
             json.dump(web_data[0], json_file)
     if tokens_valid:
-        print ('tokens detected')
+        print(colored('[*] Parsing tokens...', 'green'))
         with open("webserver/json/tokens/" + hashtx + '.json', 'w') as json_file:
             json.dump(web_data[1], json_file)
     
