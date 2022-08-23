@@ -1,5 +1,6 @@
 # File for functions.
 import sys
+import re
 import requests
 from bs4 import BeautifulSoup
 from termcolor import colored
@@ -124,3 +125,40 @@ def Transform_data_to_web(tx_info_clean):
         tokens["links"] = list_links_tokens
 
     return (internal, tokens)
+
+
+def calculate_tokens(web_data):
+    
+    total_tokens = {}
+
+    for element in web_data['links']:
+        
+        data_tokens = re.sub("\(.*?\)","",element["value"])
+        data_tokens = data_tokens.replace("  "," ")
+        data_tokens = data_tokens.split(" ", 1)
+        amount = ""
+        for m in data_tokens[0]:
+            if m.isdigit():
+                amount = amount + m
+        amount = int(amount)
+        name_token = data_tokens[1]
+
+        if element["source"] not in total_tokens:
+                total_tokens[element["source"]] = {"received": {}, "send": {}}
+
+        if element["target"] not in total_tokens:
+                total_tokens[element["target"]] = {"received": {}, "send": {}}
+
+        # Amount Tokens
+        if name_token in (total_tokens[element["source"]]["send"]):
+            total_tokens[element["source"]]["send"][name_token] = total_tokens[element["source"]]["send"][name_token] + amount
+        else:
+            total_tokens[element["source"]]["send"][name_token] = amount
+        
+        if name_token in (total_tokens[element["target"]]["received"]):
+            total_tokens[element["target"]]["received"][name_token] = total_tokens[element["target"]]["received"][name_token] + amount
+        else:
+            total_tokens[element["target"]]["received"][name_token] = amount
+        
+    return (total_tokens)
+

@@ -4,6 +4,7 @@ import argparse
 import getopt
 import os
 import sys
+import re
 import json
 from config import EtherKey, AlchemyKey
 from etherscan import Etherscan
@@ -103,12 +104,13 @@ tx_info_clean['to'] = info_addr[1]
 tx_info_clean['time'] = time
 
 # Getting info from tokens transfered
-tokens_valid = False
 tokens = Get_tokens_transfered_from_tx(EtherHTML = EtherHTML)
 tx_info_clean['tokens'] = tokens
+tokens_valid = tokens
 
-if tokens != "":
-    tokens_valid = True
+
+print (tokens_valid)
+print (internal_tx_valid)
 
 # Test if contract exit 
 
@@ -183,35 +185,41 @@ if data_arg[3] == True:
     tx_info_clean_json = json.dumps(tx_info_clean)
     print (tx_info_clean_json)
 
-# Parse data to create graphs --- ONLY WEB.
 
-if data_arg[1] == True:
+print(colored('[*] Starting to parse data to files...', 'green'))
 
-    print(colored('[*] Starting to parse data to web server...', 'green'))
+web_data = Transform_data_to_web(tx_info_clean = tx_info_clean)
 
-    web_data = Transform_data_to_web(tx_info_clean = tx_info_clean)
+#print (web_data)
 
+
+if internal_tx_valid:
     for element in web_data[0]['links']:
 
         if int(element['value']) != 0:
             value = int(element['value']) / 1000000000000000000000
-            element['value'] = str(value)[0:3] + 'K Ether'
+            element['value'] = str(value)[0:6] + 'K Ether'
 
-        print (element)
+    print(colored('[*] Parsing internal tx...', 'green'))
+    with open("webserver/json/internaltx/" + hashtx + '.json', 'w') as json_file:
+        json.dump(web_data[0], json_file)
 
-    if internal_tx_valid:
-        print(colored('[*] Parsing internal tx...', 'green'))
-        with open("webserver/json/internaltx/" + hashtx + '.json', 'w') as json_file:
-            json.dump(web_data[0], json_file)
-    if tokens_valid:
-        print(colored('[*] Parsing tokens...', 'green'))
-        with open("webserver/json/tokens/" + hashtx + '.json', 'w') as json_file:
-            json.dump(web_data[1], json_file)
+if tokens_valid:
+    print(colored('[*] Parsing tokens...', 'green'))
+    with open("webserver/json/tokens/" + hashtx + '.json', 'w') as json_file:
+        json.dump(web_data[1], json_file)
+
+    total_tokens = calculate_tokens(web_data=web_data[1])
+
     
-    with open("webserver/json/" + hashtx + '.json', 'w') as json_file:
-        json.dump(tx_info_clean, json_file)
+with open("webserver/json/" + hashtx + '.json', 'w') as json_file:
+    json.dump(tx_info_clean, json_file)
 
+
+# Parse data to create graphs --- ONLY WEB.
+
+if data_arg[1] == True:
     print(colored('[*] Starting the web server...', 'green'))
     
-   # os.system('python2 webserver/webserver.py')
+    os.system('python2 webserver/webserver.py')
 
