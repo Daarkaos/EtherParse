@@ -57,7 +57,8 @@ def Get_tokens_transfered_from_tx(EtherHTML, internal_tx):
             if internal_tx:
                 print(colored("NO tokens detected!", "red"))
                 return (False)
-
+            else:
+                tokens = tokens[0].text
         else:
             tokens = tokens[0].text
     else:
