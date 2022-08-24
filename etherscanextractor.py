@@ -50,9 +50,14 @@ def Get_tokens_transfered_from_tx(EtherHTML, internal_tx):
     tokens_transf = []
     tokens = EtherHTML.find_all(id="wrapperContent")
     if tokens:
-        print (len(tokens))
+        #print (len(tokens))
         if len(tokens) >= 2:
                 tokens = tokens[1].text
+        elif len(tokens) == 1:
+            if internal_tx:
+                print(colored("NO tokens detected!", "red"))
+                return (False)
+
         else:
             tokens = tokens[0].text
     else:
