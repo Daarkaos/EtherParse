@@ -46,12 +46,13 @@ def Get_info_addr(EtherAddrfromHTML, EtherAddrtoHTML):
     return (type_addr_from, type_addr_to, type_addr_from_contract, type_addr_to_contract)
 
 ##### Tokens transfered
-def Get_tokens_transfered_from_tx(EtherHTML):
+def Get_tokens_transfered_from_tx(EtherHTML, internal_tx):
     tokens_transf = []
     tokens = EtherHTML.find_all(id="wrapperContent")
     if tokens:
-        if len(tokens) == 2:   
-            tokens = tokens[1].text
+        print (len(tokens))
+        if len(tokens) >= 2:
+                tokens = tokens[1].text
         else:
             tokens = tokens[0].text
     else:
@@ -138,9 +139,9 @@ def calculate_tokens(web_data):
         data_tokens = data_tokens.split(" ", 1)
         amount = ""
         for m in data_tokens[0]:
-            if m.isdigit():
+            if m.isdigit() or m ==".":
                 amount = amount + m
-        amount = int(amount)
+        amount = float(amount)
         name_token = data_tokens[1]
 
         if element["source"] not in total_tokens:

@@ -83,7 +83,7 @@ tx_info_clean['to'] = info_addr[1]
 tx_info_clean['time'] = time
 
 # Getting info from tokens transfered
-tokens = Get_tokens_transfered_from_tx(EtherHTML = EtherHTML)
+tokens = Get_tokens_transfered_from_tx(EtherHTML = EtherHTML, internal_tx = internal_tx_valid)
 tx_info_clean['tokens'] = tokens
 tokens_valid = tokens
 
