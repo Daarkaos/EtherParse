@@ -1,55 +1,28 @@
 # MSC
 # Import data from Ethereum TX.
-import argparse
-import getopt
 import os
 import sys
-import re
 import json
 from config import EtherKey, AlchemyKey
 from etherscan import Etherscan
 from web3 import Web3, HTTPProvider
 from etherscanextractor import *
 from alchemy_API import *
+from extras import *
 from termcolor import colored
-
-def main(argv):
-   tx = ''
-   web = False
-   contract = False
-   api = True
-   try:
-      opts, args = getopt.getopt(argv,"ht:wcq",["tx=","web","contract","quiet"])
-   except getopt.GetoptError:
-      print ('parseether.py -tx <hashtx> -w (optional) -c (optional) -q (optional)')
-      sys.exit(2)
-   for opt, arg in opts:
-      if opt == '-h':
-         print ('parseether.py -tx <hashtx> -w (optional) -c (optional) -q (optional')
-         print ('if you want parse data to web server use -w/--web')
-         print ('if you want download the contracts use -c/--contract')
-         print ('if you dont want to get the data from transacction use -a/--api')
-         sys.exit()
-      elif opt in ("-t", "--tx"):
-         tx = arg
-      elif opt in ("-w", "--web"):
-         web = True
-      elif opt in ("-c", "--contract"):
-         contract = True
-      elif opt in ("-q", "--quiet"):
-         api = False
-
-   return (tx, web, contract, api)
 
 # Call functions to read arguments
 
 data_arg = main(sys.argv[1:])
 hashtx = data_arg[0]
 
-# Get data from Web3:
+# Configure the API keys
 
 apiKey = AlchemyKey  # From Alchemy
 eth = Etherscan(EtherKey)  # From Etherscan
+
+# Get Data from transaction with web3
+
 web3 = Web3(Web3.HTTPProvider('https://eth-mainnet.alchemyapi.io/v2/'+apiKey))
 try:
     transaction = web3.eth.get_transaction(hashtx)
@@ -58,9 +31,14 @@ except:
     print(colored('Check the indicated hash and the API key.', 'red'))
     sys.exit()
 
+# Add link from EtherScan to dict 
+
 print(colored('[*] Getting information about the transaction...', 'green'))
 tx_info_clean = {}
 tx_info_clean['link'] = "https://etherscan.io/tx/" + hashtx
+
+# Select important data from transaction
+
 for element in transaction:
     if element == 'hash':
         value = hashtx
@@ -81,7 +59,8 @@ EtherAddrfromHTML = Get_addr_from_etherscan(addrtx = tx_info_clean['from'])
 EtherAddrtoHTML = Get_addr_from_etherscan(addrtx = tx_info_clean['to'])
 info_addr = Get_info_addr(EtherAddrfromHTML = EtherAddrfromHTML, EtherAddrtoHTML = EtherAddrtoHTML)
 
-# Getting info from internal tx
+# Getting and parse info from internal tx
+
 internal_tx_valid = False
 try:
     tx_internal = eth.get_internal_txs_by_txhash(txhash = hashtx)
@@ -107,10 +86,6 @@ tx_info_clean['time'] = time
 tokens = Get_tokens_transfered_from_tx(EtherHTML = EtherHTML)
 tx_info_clean['tokens'] = tokens
 tokens_valid = tokens
-
-
-print (tokens_valid)
-print (internal_tx_valid)
 
 # Test if contract exit 
 
@@ -144,19 +119,7 @@ if data_arg[2] == True:
         if not isdir:
             os.mkdir("contracts/" + from_clean)
 
-        print(colored('[*] Writting code in Contracts/' + from_clean + '/', 'green'))
-        f = open('contracts/' + from_clean + '/' + to_clean + '.bytecode', "w")
-        f.write(code_from)
-        f.close()
-        print (colored('Done *', 'green'))
-
-        print(colored('[*] Doing decompilation', 'green'))
-
-        os.system('panoramix ' + code_from + '> contracts/' + from_clean + '/decompiled_' + from_clean)
-
-        print(colored('[*] Doing static analysis', 'green'))
-
-        os.system('evm-cfg-builder contracts/' + from_clean + '/' + from_clean + '.bytecode --export-dot contracts/' + from_clean)
+        study_contract(from_clean = from_clean, code_from = code_from)
     
     if code_to_valid:
 
@@ -165,33 +128,13 @@ if data_arg[2] == True:
         if not isdir:
             os.mkdir("contracts/" + to_clean)
 
-        print(colored('[*] Writting code in Contracts/' + to_clean + '/', 'green'))
-        f = open('contracts/' + to_clean + '/' + to_clean + '.bytecode', "w")
-        f.write(code_to)
-        f.close()
-        print (colored('Done *', 'green'))
+        study_contract(to_clean = to_clean, code_to = code_to)
 
-        print(colored('[*] Doing decompilation', 'green'))
-
-        os.system('panoramix ' + code_to + '> contracts/' + to_clean + '/decompiled_' + to_clean)
-
-        print(colored('[*] Doing static analysis', 'green'))
-
-        os.system('evm-cfg-builder contracts/' + to_clean + '/' + to_clean + '.bytecode --export-dot contracts/' + to_clean)
-
-#tx_info_clean_json = json.dumps(tx_info_clean)
-
-if data_arg[3] == True:
-    tx_info_clean_json = json.dumps(tx_info_clean)
-    print (tx_info_clean_json)
-
+# Send data to files
 
 print(colored('[*] Starting to parse data to files...', 'green'))
 
 web_data = Transform_data_to_web(tx_info_clean = tx_info_clean)
-
-#print (web_data)
-
 
 if internal_tx_valid:
     for element in web_data[0]['links']:
@@ -205,16 +148,23 @@ if internal_tx_valid:
         json.dump(web_data[0], json_file)
 
 if tokens_valid:
+
+    total_tokens = calculate_tokens(web_data=web_data[1])
+    web_data[1]["total_tokens"] = total_tokens
     print(colored('[*] Parsing tokens...', 'green'))
     with open("webserver/json/tokens/" + hashtx + '.json', 'w') as json_file:
         json.dump(web_data[1], json_file)
 
-    total_tokens = calculate_tokens(web_data=web_data[1])
 
-    
 with open("webserver/json/" + hashtx + '.json', 'w') as json_file:
     json.dump(tx_info_clean, json_file)
 
+
+#tx_info_clean_json = json.dumps(tx_info_clean)
+
+if data_arg[3] == True:
+    tx_info_clean_json = json.dumps(tx_info_clean)
+    print (tx_info_clean_json)
 
 # Parse data to create graphs --- ONLY WEB.
 
