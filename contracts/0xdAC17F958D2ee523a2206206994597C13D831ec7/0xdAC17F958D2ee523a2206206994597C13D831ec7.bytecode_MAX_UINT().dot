@@ -1,0 +1,22 @@
+digraph{
+2333[label="0x91d:JUMPDEST
+0x91e:CALLVALUE
+0x91f:ISZERO
+0x920:PUSH2 0x928
+0x923:JUMPI"]
+2333 -> 2340
+2333 -> 2344
+2340[label="0x924:PUSH1 0x0
+0x926:DUP1
+0x927:REVERT"]
+2344[label="0x928:JUMPDEST
+0x929:PUSH2 0x930
+0x92c:PUSH2 0x1d91
+0x92f:JUMP"]
+2344 -> 7569
+7569[label="0x1d91:JUMPDEST
+0x1d92:PUSH32 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+0x1db3:DUP2
+0x1db4:JUMP"]
+
+}

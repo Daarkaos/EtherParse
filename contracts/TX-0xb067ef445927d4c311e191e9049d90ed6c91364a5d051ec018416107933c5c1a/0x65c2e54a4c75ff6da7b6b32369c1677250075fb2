@@ -1,0 +1,77 @@
+==== Dependence on predictable environment variable ====
+SWC ID: 116
+Severity: Low
+Contract: 0x65c2e54a4c75ff6da7b6b32369c1677250075fb2
+Function name: _function_0x7649b957
+PC address: 4346
+Estimated Gas Usage: 1286 - 1381
+A control flow decision is made based on The block.timestamp environment variable.
+The block.timestamp environment variable is used to determine a control flow decision. Note that the values of variables like coinbase, gaslimit, block number and timestamp are predictable and can be manipulated by a malicious miner. Also keep in mind that attackers know hashes of earlier blocks. Don't use any of those environment variables as sources of randomness and be aware that use of these variables introduces a certain level of trust into miners.
+--------------------
+Initial State:
+
+Account: [ATTACKER], balance: 0x0, nonce:0, storage:{}
+Account: [SOMEGUY], balance: 0x0, nonce:0, storage:{}
+
+Transaction Sequence:
+
+Caller: [SOMEGUY], function: unknown, txdata: 0x7649b957, decoded_data: , value: 0x0
+
+==== Dependence on predictable environment variable ====
+SWC ID: 116
+Severity: Low
+Contract: 0x65c2e54a4c75ff6da7b6b32369c1677250075fb2
+Function name: _function_0x7649b957
+PC address: 4358
+Estimated Gas Usage: 1300 - 1395
+A control flow decision is made based on The block.timestamp environment variable.
+The block.timestamp environment variable is used to determine a control flow decision. Note that the values of variables like coinbase, gaslimit, block number and timestamp are predictable and can be manipulated by a malicious miner. Also keep in mind that attackers know hashes of earlier blocks. Don't use any of those environment variables as sources of randomness and be aware that use of these variables introduces a certain level of trust into miners.
+--------------------
+Initial State:
+
+Account: [ATTACKER], balance: 0x2000013, nonce:0, storage:{}
+Account: [SOMEGUY], balance: 0x0, nonce:0, storage:{}
+
+Transaction Sequence:
+
+Caller: [ATTACKER], function: unknown, txdata: 0x7649b957, decoded_data: , value: 0x0
+
+==== Dependence on predictable environment variable ====
+SWC ID: 116
+Severity: Low
+Contract: 0x65c2e54a4c75ff6da7b6b32369c1677250075fb2
+Function name: _function_0xa7c60160
+PC address: 5491
+Estimated Gas Usage: 1310 - 1405
+A control flow decision is made based on The block.timestamp environment variable.
+The block.timestamp environment variable is used to determine a control flow decision. Note that the values of variables like coinbase, gaslimit, block number and timestamp are predictable and can be manipulated by a malicious miner. Also keep in mind that attackers know hashes of earlier blocks. Don't use any of those environment variables as sources of randomness and be aware that use of these variables introduces a certain level of trust into miners.
+--------------------
+Initial State:
+
+Account: [ATTACKER], balance: 0x0, nonce:0, storage:{}
+Account: [SOMEGUY], balance: 0x0, nonce:0, storage:{}
+
+Transaction Sequence:
+
+Caller: [CREATOR], function: unknown, txdata: 0xa7c60160, decoded_data: , value: 0x0
+
+==== Dependence on predictable environment variable ====
+SWC ID: 116
+Severity: Low
+Contract: 0x65c2e54a4c75ff6da7b6b32369c1677250075fb2
+Function name: _function_0xa7c60160
+PC address: 5503
+Estimated Gas Usage: 1324 - 1419
+A control flow decision is made based on The block.timestamp environment variable.
+The block.timestamp environment variable is used to determine a control flow decision. Note that the values of variables like coinbase, gaslimit, block number and timestamp are predictable and can be manipulated by a malicious miner. Also keep in mind that attackers know hashes of earlier blocks. Don't use any of those environment variables as sources of randomness and be aware that use of these variables introduces a certain level of trust into miners.
+--------------------
+Initial State:
+
+Account: [ATTACKER], balance: 0x0, nonce:0, storage:{}
+Account: [SOMEGUY], balance: 0x0, nonce:0, storage:{}
+
+Transaction Sequence:
+
+Caller: [CREATOR], function: unknown, txdata: 0xa7c60160, decoded_data: , value: 0x0
+
+

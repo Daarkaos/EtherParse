@@ -1,0 +1,7 @@
+digraph{
+406[label="0x196:JUMPDEST
+0x197:PUSH1 0x0
+0x199:DUP1
+0x19a:REVERT"]
+
+}

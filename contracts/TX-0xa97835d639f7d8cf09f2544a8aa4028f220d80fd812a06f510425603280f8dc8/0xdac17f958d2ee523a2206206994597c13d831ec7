@@ -1,0 +1,39 @@
+==== Exception State ====
+SWC ID: 110
+Severity: Medium
+Contract: 0xdac17f958d2ee523a2206206994597c13d831ec7
+Function name: gasprice_bit_ether(int128) or transferFrom(address,address,uint256)
+PC address: 10989
+Estimated Gas Usage: 6090 - 7745
+An assertion violation was triggered.
+It is possible to trigger an assertion violation. Note that Solidity assert() statements should only be used to check invariants. Review the transaction trace generated for this issue and either make sure your program logic is correct, or use require() instead of assert() if your goal is to constrain user inputs or enforce preconditions. Remember to validate inputs from both callers (for instance, via passed arguments) and callees (for instance, via return values).
+--------------------
+Initial State:
+
+Account: [ATTACKER], balance: 0x0, nonce:0, storage:{}
+Account: [SOMEGUY], balance: 0x0, nonce:0, storage:{}
+
+Transaction Sequence:
+
+Caller: [CREATOR], function: gasprice_bit_ether(int128), txdata: 0x23b872dd000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000080000000000000000000400000000000000000002, decoded_data: (0,), value: 0x0
+
+==== Exception State ====
+SWC ID: 110
+Severity: Medium
+Contract: 0xdac17f958d2ee523a2206206994597c13d831ec7
+Function name: many_msg_babbage(bytes1) or transfer(address,uint256)
+PC address: 10989
+Estimated Gas Usage: 6369 - 7834
+An assertion violation was triggered.
+It is possible to trigger an assertion violation. Note that Solidity assert() statements should only be used to check invariants. Review the transaction trace generated for this issue and either make sure your program logic is correct, or use require() instead of assert() if your goal is to constrain user inputs or enforce preconditions. Remember to validate inputs from both callers (for instance, via passed arguments) and callees (for instance, via return values).
+--------------------
+Initial State:
+
+Account: [ATTACKER], balance: 0x0, nonce:0, storage:{}
+Account: [SOMEGUY], balance: 0x0, nonce:0, storage:{}
+
+Transaction Sequence:
+
+Caller: [CREATOR], function: many_msg_babbage(bytes1), txdata: 0xa9059cbb0000000000000000000000000000000000000000000000000000000000000000019686440402e2bd2880010000000000000000420a082a208486800000000001, decoded_data: ("b'\\x00'",), value: 0x0
+
+

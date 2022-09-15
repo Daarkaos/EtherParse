@@ -21,7 +21,7 @@ def main(argv):
          print ('parseether.py -tx <hashtx> -w (optional) -c (optional) -q (optional) -v (optional)')
          print ('if you want parse data to web server use -w/--web')
          print ('if you want download the contracts use -c/--contract')
-         print ('if you dont want to get the data from transacction use -a/--api')
+         print ('if you do not want to get the data from transaction use -a/--api')
          sys.exit()
       elif opt in ("-t", "--tx"):
          tx = arg

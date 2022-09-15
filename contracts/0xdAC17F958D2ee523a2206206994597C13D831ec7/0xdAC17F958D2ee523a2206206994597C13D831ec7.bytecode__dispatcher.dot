@@ -1,0 +1,277 @@
+digraph{
+0[label="0x0:PUSH1 0x60
+0x2:PUSH1 0x40
+0x4:MSTORE
+0x5:PUSH1 0x4
+0x7:CALLDATASIZE
+0x8:LT
+0x9:PUSH2 0x196
+0xc:JUMPI"]
+0 -> 13
+0 -> 406
+13[label="0xd:PUSH1 0x0
+0xf:CALLDATALOAD
+0x10:PUSH29 0x100000000000000000000000000000000000000000000000000000000
+0x2e:SWAP1
+0x2f:DIV
+0x30:PUSH4 0xffffffff
+0x35:AND
+0x36:DUP1
+0x37:PUSH4 0x6fdde03
+0x3c:EQ
+0x3d:PUSH2 0x19b
+0x40:JUMPI"]
+13 -> 65
+13 -> 411
+65[label="0x41:DUP1
+0x42:PUSH4 0x753c30c
+0x47:EQ
+0x48:PUSH2 0x229
+0x4b:JUMPI"]
+65 -> 76
+65 -> 553
+76[label="0x4c:DUP1
+0x4d:PUSH4 0x95ea7b3
+0x52:EQ
+0x53:PUSH2 0x262
+0x56:JUMPI"]
+76 -> 87
+76 -> 610
+87[label="0x57:DUP1
+0x58:PUSH4 0xe136b19
+0x5d:EQ
+0x5e:PUSH2 0x2a4
+0x61:JUMPI"]
+87 -> 98
+87 -> 676
+98[label="0x62:DUP1
+0x63:PUSH4 0xecb93c0
+0x68:EQ
+0x69:PUSH2 0x2d1
+0x6c:JUMPI"]
+98 -> 109
+98 -> 721
+109[label="0x6d:DUP1
+0x6e:PUSH4 0x18160ddd
+0x73:EQ
+0x74:PUSH2 0x30a
+0x77:JUMPI"]
+109 -> 120
+109 -> 778
+120[label="0x78:DUP1
+0x79:PUSH4 0x23b872dd
+0x7e:EQ
+0x7f:PUSH2 0x333
+0x82:JUMPI"]
+120 -> 131
+120 -> 819
+131[label="0x83:DUP1
+0x84:PUSH4 0x26976e3f
+0x89:EQ
+0x8a:PUSH2 0x394
+0x8d:JUMPI"]
+131 -> 142
+131 -> 916
+142[label="0x8e:DUP1
+0x8f:PUSH4 0x27e235e3
+0x94:EQ
+0x95:PUSH2 0x3e9
+0x98:JUMPI"]
+142 -> 153
+142 -> 1001
+153[label="0x99:DUP1
+0x9a:PUSH4 0x313ce567
+0x9f:EQ
+0xa0:PUSH2 0x436
+0xa3:JUMPI"]
+153 -> 164
+153 -> 1078
+164[label="0xa4:DUP1
+0xa5:PUSH4 0x35390714
+0xaa:EQ
+0xab:PUSH2 0x45f
+0xae:JUMPI"]
+164 -> 175
+164 -> 1119
+175[label="0xaf:DUP1
+0xb0:PUSH4 0x3eaaf86b
+0xb5:EQ
+0xb6:PUSH2 0x488
+0xb9:JUMPI"]
+175 -> 186
+175 -> 1160
+186[label="0xba:DUP1
+0xbb:PUSH4 0x3f4ba83a
+0xc0:EQ
+0xc1:PUSH2 0x4b1
+0xc4:JUMPI"]
+186 -> 197
+186 -> 1201
+197[label="0xc5:DUP1
+0xc6:PUSH4 0x59bf1abe
+0xcb:EQ
+0xcc:PUSH2 0x4c6
+0xcf:JUMPI"]
+197 -> 208
+197 -> 1222
+208[label="0xd0:DUP1
+0xd1:PUSH4 0x5c658165
+0xd6:EQ
+0xd7:PUSH2 0x517
+0xda:JUMPI"]
+208 -> 219
+208 -> 1303
+219[label="0xdb:DUP1
+0xdc:PUSH4 0x5c975abb
+0xe1:EQ
+0xe2:PUSH2 0x583
+0xe5:JUMPI"]
+219 -> 230
+219 -> 1411
+230[label="0xe6:DUP1
+0xe7:PUSH4 0x70a08231
+0xec:EQ
+0xed:PUSH2 0x5b0
+0xf0:JUMPI"]
+230 -> 241
+230 -> 1456
+241[label="0xf1:DUP1
+0xf2:PUSH4 0x8456cb59
+0xf7:EQ
+0xf8:PUSH2 0x5fd
+0xfb:JUMPI"]
+241 -> 252
+241 -> 1533
+252[label="0xfc:DUP1
+0xfd:PUSH4 0x893d20e8
+0x102:EQ
+0x103:PUSH2 0x612
+0x106:JUMPI"]
+252 -> 263
+252 -> 1554
+263[label="0x107:DUP1
+0x108:PUSH4 0x8da5cb5b
+0x10d:EQ
+0x10e:PUSH2 0x667
+0x111:JUMPI"]
+263 -> 274
+263 -> 1639
+274[label="0x112:DUP1
+0x113:PUSH4 0x95d89b41
+0x118:EQ
+0x119:PUSH2 0x6bc
+0x11c:JUMPI"]
+274 -> 285
+274 -> 1724
+285[label="0x11d:DUP1
+0x11e:PUSH4 0xa9059cbb
+0x123:EQ
+0x124:PUSH2 0x74a
+0x127:JUMPI"]
+285 -> 296
+285 -> 1866
+296[label="0x128:DUP1
+0x129:PUSH4 0xc0324c77
+0x12e:EQ
+0x12f:PUSH2 0x78c
+0x132:JUMPI"]
+296 -> 307
+296 -> 1932
+307[label="0x133:DUP1
+0x134:PUSH4 0xcc872b66
+0x139:EQ
+0x13a:PUSH2 0x7b8
+0x13d:JUMPI"]
+307 -> 318
+307 -> 1976
+318[label="0x13e:DUP1
+0x13f:PUSH4 0xdb006a75
+0x144:EQ
+0x145:PUSH2 0x7db
+0x148:JUMPI"]
+318 -> 329
+318 -> 2011
+329[label="0x149:DUP1
+0x14a:PUSH4 0xdd62ed3e
+0x14f:EQ
+0x150:PUSH2 0x7fe
+0x153:JUMPI"]
+329 -> 340
+329 -> 2046
+340[label="0x154:DUP1
+0x155:PUSH4 0xdd644f72
+0x15a:EQ
+0x15b:PUSH2 0x86a
+0x15e:JUMPI"]
+340 -> 351
+340 -> 2154
+351[label="0x15f:DUP1
+0x160:PUSH4 0xe47d6060
+0x165:EQ
+0x166:PUSH2 0x893
+0x169:JUMPI"]
+351 -> 362
+351 -> 2195
+362[label="0x16a:DUP1
+0x16b:PUSH4 0xe4997dc5
+0x170:EQ
+0x171:PUSH2 0x8e4
+0x174:JUMPI"]
+362 -> 373
+362 -> 2276
+373[label="0x175:DUP1
+0x176:PUSH4 0xe5b5019a
+0x17b:EQ
+0x17c:PUSH2 0x91d
+0x17f:JUMPI"]
+373 -> 384
+373 -> 2333
+384[label="0x180:DUP1
+0x181:PUSH4 0xf2fde38b
+0x186:EQ
+0x187:PUSH2 0x946
+0x18a:JUMPI"]
+384 -> 395
+384 -> 2374
+395[label="0x18b:DUP1
+0x18c:PUSH4 0xf3bdc228
+0x191:EQ
+0x192:PUSH2 0x97f
+0x195:JUMPI"]
+395 -> 406
+395 -> 2431
+406[label="Call _fallback"]
+411[label="Call name()"]
+553[label="Call deprecate(address)"]
+610[label="Call approve(address,uint256)"]
+676[label="Call deprecated()"]
+721[label="Call addBlackList(address)"]
+778[label="Call totalSupply()"]
+819[label="Call transferFrom(address,address,uint256)"]
+916[label="Call upgradedAddress()"]
+1001[label="Call balances(address)"]
+1078[label="Call decimals()"]
+1119[label="Call maximumFee()"]
+1160[label="Call _totalSupply()"]
+1201[label="Call unpause()"]
+1222[label="Call getBlackListStatus(address)"]
+1303[label="Call allowed(address,address)"]
+1411[label="Call paused()"]
+1456[label="Call balanceOf(address)"]
+1533[label="Call pause()"]
+1554[label="Call getOwner()"]
+1639[label="Call owner()"]
+1724[label="Call symbol()"]
+1866[label="Call transfer(address,uint256)"]
+1932[label="Call setParams(uint256,uint256)"]
+1976[label="Call issue(uint256)"]
+2011[label="Call redeem(uint256)"]
+2046[label="Call allowance(address,address)"]
+2154[label="Call basisPointsRate()"]
+2195[label="Call isBlackListed(address)"]
+2276[label="Call removeBlackList(address)"]
+2333[label="Call MAX_UINT()"]
+2374[label="Call transferOwnership(address)"]
+2431[label="Call destroyBlackFunds(address)"]
+
+}

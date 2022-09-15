@@ -1,0 +1,366 @@
+[38;5;8m# Palkeoramix decompiler. [0m
+
+[95mconst [0mMAX_UINT = [1m-1[0m
+
+[32mdef [0mstorage:
+  [32mpaused[0m is uint8 [38;5;8mat storage 0[0m[38;5;8m offset 160[0m
+  [32mstor0[0m is uint128 [38;5;8mat storage 0[0m[38;5;8m offset 160[0m
+  [32mowner[0m is addr [38;5;8mat storage 0[0m[38;5;8m[0m
+  [32m_totalSupply[0m is uint256 [38;5;8mat storage 1[0m[38;5;8m[0m
+  [32mbalances[0m is mapping of uint256 [38;5;8mat storage 2[0m
+  [32mbasisPointsRate[0m is uint256 [38;5;8mat storage 3[0m[38;5;8m[0m
+  [32mmaximumFee[0m is uint256 [38;5;8mat storage 4[0m[38;5;8m[0m
+  [32mallowed[0m is mapping of uint256 [38;5;8mat storage 5[0m
+  [32mstor6[0m is mapping of uint8 [38;5;8mat storage 6[0m
+  [32mname[0m is array of uint256 [38;5;8mat storage 7[0m
+  [32msymbol[0m is array of uint256 [38;5;8mat storage 8[0m
+  [32mdecimals[0m is uint256 [38;5;8mat storage 9[0m[38;5;8m[0m
+  [32mdeprecated[0m is uint8 [38;5;8mat storage 10[0m[38;5;8m offset 160[0m
+  [32mstor10[0m is uint128 [38;5;8mat storage 10[0m[38;5;8m offset 160[0m
+  [32mupgradedAddress[0m is addr [38;5;8mat storage 10[0m[38;5;8m[0m
+
+[95mdef [0mname(): [38;5;8m# not payable[0m
+  return [32mname[0m[32m[[0m0 [95mlen[0m [32mname[0m[32m.length[0m[32m][0m
+
+[95mdef [0mdeprecated(): [38;5;8m# not payable[0m
+  return bool([32mdeprecated[0m)
+
+[95mdef [0mupgradedAddress(): [38;5;8m# not payable[0m
+  return [32mupgradedAddress[0m
+
+[95mdef [0mbalances(address [32m_param1[0m): [38;5;8m# not payable[0m
+  return [32mbalances[0m[32m[[0m[32m_param1[0m[32m][0m
+
+[95mdef [0mdecimals(): [38;5;8m# not payable[0m
+  return [32mdecimals[0m
+
+[95mdef [0mmaximumFee(): [38;5;8m# not payable[0m
+  return [32mmaximumFee[0m
+
+[95mdef [0m_totalSupply(): [38;5;8m# not payable[0m
+  return [32m_totalSupply[0m
+
+[95mdef [0mgetBlackListStatus(address [32m_addr[0m): [38;5;8m# not payable[0m
+  return bool([32mstor6[0m[32m[[0m[38;5;8maddr([0m[32m_addr[0m[38;5;8m)[0m[32m][0m)
+
+[95mdef [0mallowed(address [32m_param1[0m, address [32m_param2[0m): [38;5;8m# not payable[0m
+  return [32mallowed[0m[32m[[0m[32m_param1[0m[32m][0m[32m[[0m[32m_param2[0m[32m][0m
+
+[95mdef [0mpaused(): [38;5;8m# not payable[0m
+  return bool([32mpaused[0m)
+
+[95mdef [0mgetOwner(): [38;5;8m# not payable[0m
+  return [32mowner[0m
+
+[95mdef [0mowner(): [38;5;8m# not payable[0m
+  return [32mowner[0m
+
+[95mdef [0msymbol(): [38;5;8m# not payable[0m
+  return [32msymbol[0m[32m[[0m0 [95mlen[0m [32msymbol[0m[32m.length[0m[32m][0m
+
+[95mdef [0mbasisPointsRate(): [38;5;8m# not payable[0m
+  return [32mbasisPointsRate[0m
+
+[95mdef [0misBlackListed(address [32m_param1[0m): [38;5;8m# not payable[0m
+  return bool([32mstor6[0m[32m[[0m[32m_param1[0m[32m][0m)
+
+[38;5;8m#
+#  Regular functions
+#[0m
+
+[95mdef [0m_fallback()[95m payable[0m: [38;5;8m# default function[0m
+  revert
+
+[95mdef [0mtransferOwnership(address [32m_newOwner[0m): [38;5;8m# not payable[0m
+  require caller[1m == [0m[32mowner[0m
+  if [32m_newOwner[0m:
+      [32mowner[0m = [32m_newOwner[0m
+
+[95mdef [0munpause(): [38;5;8m# not payable[0m
+  require caller[1m == [0m[32mowner[0m
+  require [32mpaused[0m
+  Mask(96, 0, [32mstor0[0m[32m.field_160[0m) = 0
+  [38;5;8mlog Unpause()[0m
+
+[95mdef [0mpause(): [38;5;8m# not payable[0m
+  require caller[1m == [0m[32mowner[0m
+  require not [32mpaused[0m
+  Mask(96, 0, [32mstor0[0m[32m.field_160[0m) = 1
+  [38;5;8mlog Pause()[0m
+
+[95mdef [0mdeprecate(address [32m_upgradedAddress[0m): [38;5;8m# not payable[0m
+  require caller[1m == [0m[32mowner[0m
+  [32mstor10[0m = 1
+  [32mupgradedAddress[0m = [32m_upgradedAddress[0m
+  [38;5;8mlog Deprecate(address newAddress=_upgradedAddress)[0m
+
+[95mdef [0maddBlackList(address [32m_evilUser[0m): [38;5;8m# not payable[0m
+  require caller[1m == [0m[32mowner[0m
+  [32mstor6[0m[32m[[0m[38;5;8maddr([0m[32m_evilUser[0m[38;5;8m)[0m[32m][0m = 1
+  [38;5;8mlog AddedBlackList(address user=_evilUser)[0m
+
+[95mdef [0mremoveBlackList(address [32m_clearedUser[0m): [38;5;8m# not payable[0m
+  require caller[1m == [0m[32mowner[0m
+  [32mstor6[0m[32m[[0m[38;5;8maddr([0m[32m_clearedUser[0m[38;5;8m)[0m[32m][0m = 0
+  [38;5;8mlog RemovedBlackList(address user=_clearedUser)[0m
+
+[95mdef [0mtotalSupply(): [38;5;8m# not payable[0m
+  if not [32mdeprecated[0m:
+      return [32m_totalSupply[0m
+  require ext_code.size([32mupgradedAddress[0m)
+  call [32mupgradedAddress[0m.totalSupply() with:
+       gas gas_remaining - 710 [38;5;8mwei[0m
+  require ext_call.success
+  return ext_call.return_data[0]
+
+[95mdef [0mbalanceOf(address [32m_owner[0m): [38;5;8m# not payable[0m
+  if not [32mdeprecated[0m:
+      return [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_owner[0m[38;5;8m)[0m[32m][0m
+  require ext_code.size([32mupgradedAddress[0m)
+  call [32mupgradedAddress[0m.balanceOf([38;5;8maddress[0m tokenOwner) with:
+       gas gas_remaining - 710 [38;5;8mwei[0m
+      args [32m_owner[0m
+  require ext_call.success
+  return ext_call.return_data[0]
+
+[95mdef [0mredeem(uint256 [32m_tokens[0m): [38;5;8m# not payable[0m
+  require caller[1m == [0m[32mowner[0m
+  require [32m_totalSupply[0m[1m >= [0m[32m_tokens[0m
+  require [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m[1m >= [0m[32m_tokens[0m
+  [32m_totalSupply[0m -= [32m_tokens[0m
+  [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m -= [32m_tokens[0m
+  [38;5;8mlog Redeem(uint256 amount=_tokens)[0m
+
+[95mdef [0mallowance(address [32m_owner[0m, address [32m_spender[0m): [38;5;8m# not payable[0m
+  if not [32mdeprecated[0m:
+      return [32mallowed[0m[32m[[0m[38;5;8maddr([0m[32m_owner[0m[38;5;8m)[0m[32m][0m[32m[[0m[38;5;8maddr([0m[32m_spender[0m[38;5;8m)[0m[32m][0m
+  require ext_code.size([32mupgradedAddress[0m)
+  call [32mupgradedAddress[0m.allowance([38;5;8maddress[0m tokenOwner, [38;5;8maddress[0m spender) with:
+       gas gas_remaining - 710 [38;5;8mwei[0m
+      args [38;5;8maddr([0m[32m_owner[0m[38;5;8m)[0m, [32m_spender[0m
+  require ext_call.success
+  return ext_call.return_data[0]
+
+[95mdef [0missue(uint256 [32m_amount[0m): [38;5;8m# not payable[0m
+  require caller[1m == [0m[32mowner[0m
+  require [32m_totalSupply[0m + [32m_amount[0m[1m > [0m[32m_totalSupply[0m
+  require [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m + [32m_amount[0m[1m > [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m
+  [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m += [32m_amount[0m
+  [32m_totalSupply[0m += [32m_amount[0m
+  [38;5;8mlog Issue(uint256 amount=_amount)[0m
+
+[95mdef [0msetParams(uint256 [32m_newBasisPoints[0m, uint256 [32m_newMaxFee[0m): [38;5;8m# not payable[0m
+  require caller[1m == [0m[32mowner[0m
+  require [32m_newBasisPoints[0m[1m < [0m20
+  require [32m_newMaxFee[0m[1m < [0m50
+  [32mbasisPointsRate[0m = [32m_newBasisPoints[0m
+  if not [32m_newMaxFee[0m:
+      [32mmaximumFee[0m = 0
+  else:
+      require [32m_newMaxFee[0m
+      require [32m_newMaxFee[0m[1m * [0m10^[32mdecimals[0m[1m / [0m[32m_newMaxFee[0m[1m == [0m10^[32mdecimals[0m
+      [32mmaximumFee[0m = [32m_newMaxFee[0m[1m * [0m10^[32mdecimals[0m
+  [38;5;8mlog Params([0m
+  [38;5;8m      uint256 feeBasisPoints=basisPointsRate,[0m
+  [38;5;8m      uint256 maxFee=maximumFee)[0m
+
+[95mdef [0mapprove(address [32m_spender[0m, uint256 [32m_value[0m): [38;5;8m# not payable[0m
+  require calldata.size[1m >= [0m68
+  if [32mdeprecated[0m:
+      require ext_code.size([32mupgradedAddress[0m)
+      call [32mupgradedAddress[0m.approveByLegacy([38;5;8maddress[0m param1, [38;5;8maddress[0m param2, [38;5;8muint256[0m param3) with:
+           gas gas_remaining - 710 [38;5;8mwei[0m
+          args caller, [38;5;8maddr([0m[32m_spender[0m[38;5;8m)[0m, [32m_value[0m
+      require ext_call.success
+  else:
+      require calldata.size[1m >= [0m68
+      if [32m_value[0m:
+          require not [32mallowed[0m[32m[[0mcaller[32m][0m[32m[[0m[38;5;8maddr([0m[32m_spender[0m[38;5;8m)[0m[32m][0m
+      [32mallowed[0m[32m[[0mcaller[32m][0m[32m[[0m[38;5;8maddr([0m[32m_spender[0m[38;5;8m)[0m[32m][0m = [32m_value[0m
+      [38;5;8mlog Approval([0m
+      [38;5;8m      address tokenOwner=_value,[0m
+      [38;5;8m      address spender=caller,[0m
+      [38;5;8m      uint256 tokens=_spender)[0m
+
+[95mdef [0mdestroyBlackFunds(address [32m_blackListedUser[0m): [38;5;8m# not payable[0m
+  require caller[1m == [0m[32mowner[0m
+  require [32mstor6[0m[32m[[0m[38;5;8maddr([0m[32m_blackListedUser[0m[38;5;8m)[0m[32m][0m
+  if not [32mdeprecated[0m:
+      [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_blackListedUser[0m[38;5;8m)[0m[32m][0m = 0
+      [32m_totalSupply[0m -= [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_blackListedUser[0m[38;5;8m)[0m[32m][0m
+      [38;5;8mlog DestroyedBlackFunds([0m
+      [38;5;8m      address blackListedUser=addr(_blackListedUser),[0m
+      [38;5;8m      uint256 balance=balances[addr(_blackListedUser)])[0m
+  else:
+      require ext_code.size([32mupgradedAddress[0m)
+      call [32mupgradedAddress[0m.balanceOf([38;5;8maddress[0m tokenOwner) with:
+           gas gas_remaining - 710 [38;5;8mwei[0m
+          args [32m_blackListedUser[0m
+      require ext_call.success
+      [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_blackListedUser[0m[38;5;8m)[0m[32m][0m = 0
+      [32m_totalSupply[0m -= ext_call.return_data[0]
+      [38;5;8mlog DestroyedBlackFunds([0m
+      [38;5;8m      address blackListedUser=addr(_blackListedUser),[0m
+      [38;5;8m      uint256 balance=ext_call.return_data[0])[0m
+
+[95mdef [0mtransfer(address [32m_to[0m, uint256 [32m_value[0m): [38;5;8m# not payable[0m
+  require not [32mpaused[0m
+  require not [32mstor6[0m[32m[[0mcaller[32m][0m
+  if [32mdeprecated[0m:
+      require ext_code.size([32mupgradedAddress[0m)
+      call [32mupgradedAddress[0m.transferByLegacy([38;5;8maddress[0m param1, [38;5;8maddress[0m param2, [38;5;8muint256[0m param3) with:
+           gas gas_remaining - 710 [38;5;8mwei[0m
+          args caller, [38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m, [32m_value[0m
+      require ext_call.success
+  else:
+      require calldata.size[1m >= [0m68
+      if not [32m_value[0m:
+          if 0[1m <= [0m[32mmaximumFee[0m:
+              require 0[1m <= [0m[32m_value[0m
+              require [32m_value[0m[1m <= [0m[32mbalances[0m[32m[[0mcaller[32m][0m
+              [32mbalances[0m[32m[[0mcaller[32m][0m -= [32m_value[0m
+              require [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m + [32m_value[0m[1m >= [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m
+              [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m += [32m_value[0m
+              [38;5;8mlog Transfer([0m
+              [38;5;8m      address from=_value,[0m
+              [38;5;8m      address to=caller,[0m
+              [38;5;8m      uint256 tokens=_to)[0m
+          else:
+              require [32mmaximumFee[0m[1m <= [0m[32m_value[0m
+              require [32m_value[0m[1m <= [0m[32mbalances[0m[32m[[0mcaller[32m][0m
+              [32mbalances[0m[32m[[0mcaller[32m][0m -= [32m_value[0m
+              require [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m + [32m_value[0m - [32mmaximumFee[0m[1m >= [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m
+              [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m = [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m + [32m_value[0m - [32mmaximumFee[0m
+              if [32mmaximumFee[0m[1m > [0m0:
+                  require [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m + [32mmaximumFee[0m[1m >= [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m
+                  [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m += [32mmaximumFee[0m
+                  [38;5;8mlog Transfer([0m
+                  [38;5;8m      address from=maximumFee,[0m
+                  [38;5;8m      address to=caller,[0m
+                  [38;5;8m      uint256 tokens=owner)[0m
+              [38;5;8mlog Transfer([0m
+              [38;5;8m      address from=(_value - maximumFee),[0m
+              [38;5;8m      address to=caller,[0m
+              [38;5;8m      uint256 tokens=_to)[0m
+      else:
+          require [32m_value[0m
+          require [32m_value[0m[1m * [0m[32mbasisPointsRate[0m[1m / [0m[32m_value[0m[1m == [0m[32mbasisPointsRate[0m
+          if [32m_value[0m[1m * [0m[32mbasisPointsRate[0m[1m / [0m10000[1m <= [0m[32mmaximumFee[0m:
+              require [32m_value[0m[1m * [0m[32mbasisPointsRate[0m[1m / [0m10000[1m <= [0m[32m_value[0m
+              require [32m_value[0m[1m <= [0m[32mbalances[0m[32m[[0mcaller[32m][0m
+              [32mbalances[0m[32m[[0mcaller[32m][0m -= [32m_value[0m
+              require [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m + [32m_value[0m - ([32m_value[0m[1m * [0m[32mbasisPointsRate[0m[1m / [0m10000)[1m >= [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m
+              [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m = [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m + [32m_value[0m - ([32m_value[0m[1m * [0m[32mbasisPointsRate[0m[1m / [0m10000)
+              if [32m_value[0m[1m * [0m[32mbasisPointsRate[0m[1m / [0m10000[1m > [0m0:
+                  require [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m + ([32m_value[0m[1m * [0m[32mbasisPointsRate[0m[1m / [0m10000)[1m >= [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m
+                  [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m += [32m_value[0m[1m * [0m[32mbasisPointsRate[0m[1m / [0m10000
+                  [38;5;8mlog Transfer([0m
+                  [38;5;8m      address from=(_value * basisPointsRate / 10000),[0m
+                  [38;5;8m      address to=caller,[0m
+                  [38;5;8m      uint256 tokens=owner)[0m
+              [38;5;8mlog Transfer([0m
+              [38;5;8m      address from=(_value - (_value * basisPointsRate / 10000)),[0m
+              [38;5;8m      address to=caller,[0m
+              [38;5;8m      uint256 tokens=_to)[0m
+          else:
+              require [32mmaximumFee[0m[1m <= [0m[32m_value[0m
+              require [32m_value[0m[1m <= [0m[32mbalances[0m[32m[[0mcaller[32m][0m
+              [32mbalances[0m[32m[[0mcaller[32m][0m -= [32m_value[0m
+              require [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m + [32m_value[0m - [32mmaximumFee[0m[1m >= [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m
+              [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m = [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m + [32m_value[0m - [32mmaximumFee[0m
+              if [32mmaximumFee[0m[1m > [0m0:
+                  require [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m + [32mmaximumFee[0m[1m >= [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m
+                  [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m += [32mmaximumFee[0m
+                  [38;5;8mlog Transfer([0m
+                  [38;5;8m      address from=maximumFee,[0m
+                  [38;5;8m      address to=caller,[0m
+                  [38;5;8m      uint256 tokens=owner)[0m
+              [38;5;8mlog Transfer([0m
+              [38;5;8m      address from=(_value - maximumFee),[0m
+              [38;5;8m      address to=caller,[0m
+              [38;5;8m      uint256 tokens=_to)[0m
+
+[95mdef [0mtransferFrom(address [32m_from[0m, address [32m_to[0m, uint256 [32m_value[0m): [38;5;8m# not payable[0m
+  require not [32mpaused[0m
+  require not [32mstor6[0m[32m[[0m[38;5;8maddr([0m[32m_from[0m[38;5;8m)[0m[32m][0m
+  if [32mdeprecated[0m:
+      require ext_code.size([32mupgradedAddress[0m)
+      call [32mupgradedAddress[0m.transferFromByLegacy([38;5;8maddress[0m param1, [38;5;8maddress[0m param2, [38;5;8maddress[0m param3, [38;5;8muint256[0m param4) with:
+           gas gas_remaining - 710 [38;5;8mwei[0m
+          args 0, [38;5;8muint32([0mcaller[38;5;8m)[0m, [38;5;8maddr([0m[32m_from[0m[38;5;8m)[0m, [38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m, [32m_value[0m
+      require ext_call.success
+  else:
+      require calldata.size[1m >= [0m100
+      if not [32m_value[0m:
+          if [32mallowed[0m[32m[[0m[38;5;8maddr([0m[32m_from[0m[38;5;8m)[0m[32m][0m[32m[[0mcaller[32m][0m[1m < [0m-1:
+              require [32m_value[0m[1m <= [0m[32mallowed[0m[32m[[0m[38;5;8maddr([0m[32m_from[0m[38;5;8m)[0m[32m][0m[32m[[0mcaller[32m][0m
+              [32mallowed[0m[32m[[0m[38;5;8maddr([0m[32m_from[0m[38;5;8m)[0m[32m][0m[32m[[0mcaller[32m][0m -= [32m_value[0m
+          if 0[1m <= [0m[32mmaximumFee[0m:
+              require 0[1m <= [0m[32m_value[0m
+              require [32m_value[0m[1m <= [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_from[0m[38;5;8m)[0m[32m][0m
+              [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_from[0m[38;5;8m)[0m[32m][0m -= [32m_value[0m
+              require [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m + [32m_value[0m[1m >= [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m
+              [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m += [32m_value[0m
+              [38;5;8mlog Transfer([0m
+              [38;5;8m      address from=_value,[0m
+              [38;5;8m      address to=_from,[0m
+              [38;5;8m      uint256 tokens=_to)[0m
+          else:
+              require [32mmaximumFee[0m[1m <= [0m[32m_value[0m
+              require [32m_value[0m[1m <= [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_from[0m[38;5;8m)[0m[32m][0m
+              [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_from[0m[38;5;8m)[0m[32m][0m -= [32m_value[0m
+              require [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m + [32m_value[0m - [32mmaximumFee[0m[1m >= [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m
+              [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m = [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m + [32m_value[0m - [32mmaximumFee[0m
+              if [32mmaximumFee[0m[1m > [0m0:
+                  require [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m + [32mmaximumFee[0m[1m >= [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m
+                  [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m += [32mmaximumFee[0m
+                  [38;5;8mlog Transfer([0m
+                  [38;5;8m      address from=maximumFee,[0m
+                  [38;5;8m      address to=_from,[0m
+                  [38;5;8m      uint256 tokens=owner)[0m
+              [38;5;8mlog Transfer([0m
+              [38;5;8m      address from=(_value - maximumFee),[0m
+              [38;5;8m      address to=_from,[0m
+              [38;5;8m      uint256 tokens=_to)[0m
+      else:
+          require [32m_value[0m
+          require [32m_value[0m[1m * [0m[32mbasisPointsRate[0m[1m / [0m[32m_value[0m[1m == [0m[32mbasisPointsRate[0m
+          if [32mallowed[0m[32m[[0m[38;5;8maddr([0m[32m_from[0m[38;5;8m)[0m[32m][0m[32m[[0mcaller[32m][0m[1m < [0m-1:
+              require [32m_value[0m[1m <= [0m[32mallowed[0m[32m[[0m[38;5;8maddr([0m[32m_from[0m[38;5;8m)[0m[32m][0m[32m[[0mcaller[32m][0m
+              [32mallowed[0m[32m[[0m[38;5;8maddr([0m[32m_from[0m[38;5;8m)[0m[32m][0m[32m[[0mcaller[32m][0m -= [32m_value[0m
+          if [32m_value[0m[1m * [0m[32mbasisPointsRate[0m[1m / [0m10000[1m <= [0m[32mmaximumFee[0m:
+              require [32m_value[0m[1m * [0m[32mbasisPointsRate[0m[1m / [0m10000[1m <= [0m[32m_value[0m
+              require [32m_value[0m[1m <= [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_from[0m[38;5;8m)[0m[32m][0m
+              [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_from[0m[38;5;8m)[0m[32m][0m -= [32m_value[0m
+              require [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m + [32m_value[0m - ([32m_value[0m[1m * [0m[32mbasisPointsRate[0m[1m / [0m10000)[1m >= [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m
+              [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m = [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m + [32m_value[0m - ([32m_value[0m[1m * [0m[32mbasisPointsRate[0m[1m / [0m10000)
+              if [32m_value[0m[1m * [0m[32mbasisPointsRate[0m[1m / [0m10000[1m > [0m0:
+                  require [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m + ([32m_value[0m[1m * [0m[32mbasisPointsRate[0m[1m / [0m10000)[1m >= [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m
+                  [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m += [32m_value[0m[1m * [0m[32mbasisPointsRate[0m[1m / [0m10000
+                  [38;5;8mlog Transfer([0m
+                  [38;5;8m      address from=(_value * basisPointsRate / 10000),[0m
+                  [38;5;8m      address to=_from,[0m
+                  [38;5;8m      uint256 tokens=owner)[0m
+              [38;5;8mlog Transfer([0m
+              [38;5;8m      address from=(_value - (_value * basisPointsRate / 10000)),[0m
+              [38;5;8m      address to=_from,[0m
+              [38;5;8m      uint256 tokens=_to)[0m
+          else:
+              require [32mmaximumFee[0m[1m <= [0m[32m_value[0m
+              require [32m_value[0m[1m <= [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_from[0m[38;5;8m)[0m[32m][0m
+              [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_from[0m[38;5;8m)[0m[32m][0m -= [32m_value[0m
+              require [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m + [32m_value[0m - [32mmaximumFee[0m[1m >= [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m
+              [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m = [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32m_to[0m[38;5;8m)[0m[32m][0m + [32m_value[0m - [32mmaximumFee[0m
+              if [32mmaximumFee[0m[1m > [0m0:
+                  require [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m + [32mmaximumFee[0m[1m >= [0m[32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m
+                  [32mbalances[0m[32m[[0m[38;5;8maddr([0m[32mstor0[0m[32m.field_0[0m[38;5;8m)[0m[32m][0m += [32mmaximumFee[0m
+                  [38;5;8mlog Transfer([0m
+                  [38;5;8m      address from=maximumFee,[0m
+                  [38;5;8m      address to=_from,[0m
+                  [38;5;8m      uint256 tokens=owner)[0m
+              [38;5;8mlog Transfer([0m
+              [38;5;8m      address from=(_value - maximumFee),[0m
+              [38;5;8m      address to=_from,[0m
+              [38;5;8m      uint256 tokens=_to)[0m
+
+

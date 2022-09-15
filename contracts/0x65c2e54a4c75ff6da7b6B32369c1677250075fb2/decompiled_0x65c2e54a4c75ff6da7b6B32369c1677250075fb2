@@ -1,0 +1,136 @@
+[38;5;8m# Palkeoramix decompiler. [0m
+
+[32mdef [0mstorage:
+  [32mstor3608[0m is addr [38;5;8mat storage 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc[0m[38;5;8m[0m
+  [32mstorB531[0m is addr [38;5;8mat storage 0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103[0m[38;5;8m[0m
+
+[95mdef [0madmin(): [38;5;8m# not payable[0m
+  if caller[1m == [0m[32mstorB531[0m:
+      return [32mstorB531[0m
+  [93mdelegate[0m [32mstor3608[0m with:
+     funct call.data[0 len 4]
+       gas gas_remaining [38;5;8mwei[0m
+      args call.data[4 len calldata.size - 4]
+  if not delegate.return_code:
+      revert with ext_call.return_data[0 len return_data.size]
+  return ext_call.return_data[0 len return_data.size]
+
+[95mdef [0mimplementation(): [38;5;8m# not payable[0m
+  if caller[1m == [0m[32mstorB531[0m:
+      return [32mstor3608[0m
+  [93mdelegate[0m [32mstor3608[0m with:
+     funct call.data[0 len 4]
+       gas gas_remaining [38;5;8mwei[0m
+      args call.data[4 len calldata.size - 4]
+  if not delegate.return_code:
+      revert with ext_call.return_data[0 len return_data.size]
+  return ext_call.return_data[0 len return_data.size]
+
+[95mdef [0m_fallback()[95m payable[0m: [38;5;8m# default function[0m
+  if caller[1m == [0m[32mstorB531[0m:
+      revert with 0x8c379a000000000000000000000000000000000000000000000000000000000, 
+                  'TransparentUpgradeableProxy: admin cannot fallback to proxy target'
+  [93mdelegate[0m [32mstor3608[0m with:
+     funct call.data[0 len 4]
+       gas gas_remaining [38;5;8mwei[0m
+      args call.data[4 len calldata.size - 4]
+  if not delegate.return_code:
+      revert with ext_call.return_data[0 len return_data.size]
+  return ext_call.return_data[0 len return_data.size]
+
+[95mdef [0mupgradeTo(address [32m_implementation[0m): [38;5;8m# not payable[0m
+  require calldata.size - 4[1m >=′ [0m32
+  require [32m_implementation[0m[1m == [0m[32m_implementation[0m
+  if [32mstorB531[0m != caller:
+      [93mdelegate[0m [32mstor3608[0m with:
+         funct call.data[0 len 4]
+           gas gas_remaining [38;5;8mwei[0m
+          args call.data[4 len calldata.size - 4]
+      if not delegate.return_code:
+          revert with ext_call.return_data[0 len return_data.size]
+      return ext_call.return_data[0 len return_data.size]
+  if not ext_code.size([32m_implementation[0m):
+      revert with 0, 'ERC1967: new implementation is not a contract'
+  [32mstor3608[0m = [32m_implementation[0m
+  [38;5;8mlog Upgraded(address nextVersion=_implementation)[0m
+
+[95mdef [0mchangeAdmin(address [32m_admin[0m): [38;5;8m# not payable[0m
+  require calldata.size - 4[1m >=′ [0m32
+  require [32m_admin_[0m[1m == [0m[32m_admin_[0m
+  if [32mstorB531[0m != caller:
+      [93mdelegate[0m [32mstor3608[0m with:
+         funct call.data[0 len 4]
+           gas gas_remaining [38;5;8mwei[0m
+          args call.data[4 len calldata.size - 4]
+      if not delegate.return_code:
+          revert with ext_call.return_data[0 len return_data.size]
+      return ext_call.return_data[0 len return_data.size]
+  [38;5;8mlog AdminChanged([0m
+  [38;5;8m      address from=storB531,[0m
+  [38;5;8m      address to=_admin_)[0m
+  if not [32m_admin_[0m:
+      revert with 0x8c379a000000000000000000000000000000000000000000000000000000000, 'ERC1967: new admin is the zero address'
+  [32mstorB531[0m = [32m_admin_[0m
+
+[95mdef [0mupgradeToAndCall(address [32m_implementation[0m, bytes [32m_data[0m)[95m payable[0m: 
+  require calldata.size - 4[1m >=′ [0m64
+  require [32m_implementation[0m[1m == [0m[32m_implementation[0m
+  require [32m_data[0m[1m <= [0m18446744073709551615
+  require [32m_data[0m + 35[1m <′ [0mcalldata.size
+  require [32m_data.length[0m[1m <= [0m18446744073709551615
+  require [32m_data[0m + [32m_data.length[0m + 36[1m <= [0mcalldata.size
+  if [32mstorB531[0m != caller:
+      [93mdelegate[0m [32mstor3608[0m with:
+         funct call.data[0 len 4]
+           gas gas_remaining [38;5;8mwei[0m
+          args call.data[4 len calldata.size - 4]
+      if not delegate.return_code:
+          revert with ext_call.return_data[0 len return_data.size]
+      return ext_call.return_data[0 len return_data.size]
+  [95mmem[[0m128[95m len [0m[32m_data.length[0m[95m][0m = [32m_data[[0mall[32m][0m
+  [95mmem[[0m[32m_data.length[0m + 128[95m][0m = 0
+  if not ext_code.size([32m_implementation[0m):
+      revert with 0, 'ERC1967: new implementation is not a contract'
+  [32mstor3608[0m = [32m_implementation[0m
+  [38;5;8mlog Upgraded(address nextVersion=_implementation)[0m
+  [95mmem[[0mceil32([32m_data.length[0m) + 128[95m][0m = 39
+  [95mmem[[0mceil32([32m_data.length[0m) + 160[95m len [0m39[95m][0m = 0xfe416464726573733a206c6f772d6c6576656c2064656c65676174652063616c6c206661696c65
+  if not ext_code.size([32m_implementation[0m):
+      revert with 0, 'Address: delegate call to non-contract'
+  [95mmem[[0mceil32([32m_data.length[0m) + 224[95m len [0mceil32([32m_data.length[0m)[95m][0m = [32m_data[[0mall[32m][0m, [95mmem[[0m[32m_data.length[0m + 128[95m len [0mceil32([32m_data.length[0m) - [32m_data.length[0m[95m][0m
+  if ceil32([32m_data.length[0m)[1m > [0m[32m_data.length[0m:
+      [95mmem[[0m[32m_data.length[0m + ceil32([32m_data.length[0m) + 224[95m][0m = 0
+  [93mdelegate[0m [32m_implementation[0m.[95mmem[[0mceil32([32m_data.length[0m) + 224[95m len [0m4[95m][0m with:
+       gas gas_remaining [38;5;8mwei[0m
+      args [95mmem[[0mceil32([32m_data.length[0m) + 228[95m len [0m[32m_data.length[0m - 4[95m][0m
+  if not return_data.size:
+      if delegate.return_code:
+          stop
+      if [32m_data.length[0m:
+          revert with [32m_data[[0mall[32m][0m
+      [95mmem[[0mceil32([32m_data.length[0m) + 224[95m][0m = 0x8c379a000000000000000000000000000000000000000000000000000000000
+      [95mmem[[0mceil32([32m_data.length[0m) + 228[95m][0m = 32
+      [95mmem[[0mceil32([32m_data.length[0m) + 260[95m][0m = Mask(8[1m * [0m-ceil32([32m_data.length[0m) + [32m_data.length[0m + 32, 0, 0), [95mmem[[0m[32m_data.length[0m + 160[95m len [0m-[32m_data.length[0m + ceil32([32m_data.length[0m)[95m][0m
+      [95mmem[[0mceil32([32m_data.length[0m) + 292[95m len [0mceil32(Mask(8[1m * [0m-ceil32([32m_data.length[0m) + [32m_data.length[0m + 32, 0, 0), [95mmem[[0m[32m_data.length[0m + 160[95m len [0m-[32m_data.length[0m + ceil32([32m_data.length[0m)[95m][0m)[95m][0m = [95mmem[[0mceil32([32m_data.length[0m) + 160[95m len [0mceil32(Mask(8[1m * [0m-ceil32([32m_data.length[0m) + [32m_data.length[0m + 32, 0, 0), [95mmem[[0m[32m_data.length[0m + 160[95m len [0m-[32m_data.length[0m + ceil32([32m_data.length[0m)[95m][0m)[95m][0m
+      if ceil32(Mask(8[1m * [0m-ceil32([32m_data.length[0m) + [32m_data.length[0m + 32, 0, 0), [95mmem[[0m[32m_data.length[0m + 160[95m len [0m-[32m_data.length[0m + ceil32([32m_data.length[0m)[95m][0m)[1m > [0mMask(8[1m * [0m-ceil32([32m_data.length[0m) + [32m_data.length[0m + 32, 0, 0), [95mmem[[0m[32m_data.length[0m + 160[95m len [0m-[32m_data.length[0m + ceil32([32m_data.length[0m)[95m][0m:
+          [95mmem[[0mMask(8[1m * [0m-ceil32([32m_data.length[0m) + [32m_data.length[0m + 32, 0, 0), [95mmem[[0m[32m_data.length[0m + 160[95m len [0m-[32m_data.length[0m + ceil32([32m_data.length[0m)[95m][0m + ceil32([32m_data.length[0m) + 292[95m][0m = 0
+      revert with memory
+        from ceil32([32m_data.length[0m) + 224
+         [93mlen[0m ceil32(Mask(8[1m * [0m-ceil32([32m_data.length[0m) + [32m_data.length[0m + 32, 0, 0), [95mmem[[0m[32m_data.length[0m + 160[95m len [0m-[32m_data.length[0m + ceil32([32m_data.length[0m)[95m][0m) + 68
+  [95mmem[[0mceil32([32m_data.length[0m) + 224[95m][0m = return_data.size
+  [95mmem[[0mceil32([32m_data.length[0m) + 256[95m len [0mreturn_data.size[95m][0m = ext_call.return_data[0 len return_data.size]
+  if delegate.return_code:
+      stop
+  if return_data.size:
+      revert with ext_call.return_data[0 len return_data.size]
+  [95mmem[[0mceil32([32m_data.length[0m) + ceil32(return_data.size) + 225[95m][0m = 0x8c379a000000000000000000000000000000000000000000000000000000000
+  [95mmem[[0mceil32([32m_data.length[0m) + ceil32(return_data.size) + 229[95m][0m = 32
+  [95mmem[[0mceil32([32m_data.length[0m) + ceil32(return_data.size) + 261[95m][0m = Mask(8[1m * [0m-ceil32([32m_data.length[0m) + [32m_data.length[0m + 32, 0, 0), [95mmem[[0m[32m_data.length[0m + 160[95m len [0m-[32m_data.length[0m + ceil32([32m_data.length[0m)[95m][0m
+  [95mmem[[0mceil32([32m_data.length[0m) + ceil32(return_data.size) + 293[95m len [0mceil32(Mask(8[1m * [0m-ceil32([32m_data.length[0m) + [32m_data.length[0m + 32, 0, 0), [95mmem[[0m[32m_data.length[0m + 160[95m len [0m-[32m_data.length[0m + ceil32([32m_data.length[0m)[95m][0m)[95m][0m = [95mmem[[0mceil32([32m_data.length[0m) + 160[95m len [0mceil32(Mask(8[1m * [0m-ceil32([32m_data.length[0m) + [32m_data.length[0m + 32, 0, 0), [95mmem[[0m[32m_data.length[0m + 160[95m len [0m-[32m_data.length[0m + ceil32([32m_data.length[0m)[95m][0m)[95m][0m
+  if ceil32(Mask(8[1m * [0m-ceil32([32m_data.length[0m) + [32m_data.length[0m + 32, 0, 0), [95mmem[[0m[32m_data.length[0m + 160[95m len [0m-[32m_data.length[0m + ceil32([32m_data.length[0m)[95m][0m)[1m > [0mMask(8[1m * [0m-ceil32([32m_data.length[0m) + [32m_data.length[0m + 32, 0, 0), [95mmem[[0m[32m_data.length[0m + 160[95m len [0m-[32m_data.length[0m + ceil32([32m_data.length[0m)[95m][0m:
+      [95mmem[[0mMask(8[1m * [0m-ceil32([32m_data.length[0m) + [32m_data.length[0m + 32, 0, 0), [95mmem[[0m[32m_data.length[0m + 160[95m len [0m-[32m_data.length[0m + ceil32([32m_data.length[0m)[95m][0m + ceil32([32m_data.length[0m) + ceil32(return_data.size) + 293[95m][0m = 0
+  revert with memory
+    from ceil32([32m_data.length[0m) + ceil32(return_data.size) + 225
+     [93mlen[0m ceil32(Mask(8[1m * [0m-ceil32([32m_data.length[0m) + [32m_data.length[0m + 32, 0, 0), [95mmem[[0m[32m_data.length[0m + 160[95m len [0m-[32m_data.length[0m + ceil32([32m_data.length[0m)[95m][0m) + 68
+
+

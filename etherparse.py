@@ -75,7 +75,7 @@ try:
     internal_tx_valid = True
 
 except:
-    print(colored("NO internal transacction detected!", "red"))
+    print(colored("NO internal transaction detected!", "red"))
     tx_info_clean['internal_tx'] = False
 
 # Parse data
@@ -84,7 +84,8 @@ tx_info_clean['from'] = info_addr[0]
 tx_info_clean['to'] = info_addr[1]
 tx_info_clean['time'] = time
 
-# Getting info from tokens transfered
+# Getting info from tokens transferred
+
 tokens = Get_tokens_transfered_from_tx(EtherHTML = EtherHTML, internal_tx = internal_tx_valid)
 tx_info_clean['tokens'] = tokens
 tokens_valid = tokens
