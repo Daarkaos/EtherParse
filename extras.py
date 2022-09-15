@@ -1,5 +1,6 @@
 import getopt
 import os
+import sys
 from termcolor import colored
 
 # Def for args
@@ -9,14 +10,15 @@ def main(argv):
    web = False
    contract = False
    api = True
+   vulns = False
    try:
-      opts, args = getopt.getopt(argv,"ht:wcq",["tx=","web","contract","quiet"])
+      opts, args = getopt.getopt(argv,"ht:wcqv",["tx=","web","contract","quiet", "vulns"])
    except getopt.GetoptError:
       print ('parseether.py -tx <hashtx> -w (optional) -c (optional) -q (optional)')
       sys.exit(2)
    for opt, arg in opts:
       if opt == '-h':
-         print ('parseether.py -tx <hashtx> -w (optional) -c (optional) -q (optional')
+         print ('parseether.py -tx <hashtx> -w (optional) -c (optional) -q (optional) -v (optional)')
          print ('if you want parse data to web server use -w/--web')
          print ('if you want download the contracts use -c/--contract')
          print ('if you dont want to get the data from transacction use -a/--api')
@@ -29,8 +31,9 @@ def main(argv):
          contract = True
       elif opt in ("-q", "--quiet"):
          api = False
-
-   return (tx, web, contract, api)
+      elif opt in ("-v", "--vulns"):
+         vulns = True
+   return (tx, web, contract, api, vulns)
 
 
 # Study the contracts
@@ -49,3 +52,25 @@ def study_contract(to_clean, code_to):
    print(colored('[*] Doing static analysis', 'green'))
 
    os.system('evm-cfg-builder contracts/' + to_clean + '/' + to_clean + '.bytecode --export-dot contracts/' + to_clean)
+
+
+def mythril_to_contracts(list_of_contracts, hashtx):
+
+   os.system('sudo docker pull mythril/myth > /dev/null')
+
+   for contract in list_of_contracts:
+
+      print(colored('[*] Analyzing ' + contract, 'green'))
+
+      output = os.system('sudo docker run mythril/myth analyze -a ' + contract + ' --execution-timeout 120 --infura-id 766eb96c39924776be0db442edc40365 > contracts/TX-' + hashtx + '/' + contract)
+
+      if output != 0:
+
+         print(colored('VULNERABILITY DETECTED! - ' + contract, 'red'))
+      
+      else:
+
+         os.remove('contracts/TX-' + hashtx + '/' + contract)
+
+
+

@@ -69,6 +69,8 @@ def Get_tokens_transfered_from_tx(EtherHTML, internal_tx):
         token_from = token[token.find('From=')+6:token.find('To=')]
         token_to = token[token.find('To=')+4:token.find('For=')]
         token_for = token[token.find('For=')+5:]
+        token_from = token_from.replace(" ", "")
+        token_to = token_to.replace(" ", "")
         dict_tokens = {"from": token_from, "to": token_to, "for": token_for}
         tokens_transf.append(dict_tokens)
 

@@ -1,5 +1,7 @@
 # MSC
 # Import data from Ethereum TX.
+from hashlib import blake2b
+from lib2to3.pgen2 import token
 import os
 import sys
 import json
@@ -172,4 +174,53 @@ if data_arg[1] == True:
     print(colored('[*] Starting the web server...', 'green'))
     
     os.system('python2 webserver/webserver.py')
+
+
+if data_arg[4] == True:
+
+#  Detects security vulnerabilities in smart contracts with Mythril
+
+    list_of_contracts = []
+
+    if code_from_valid:
+        list_of_contracts.append(from_clean.lower())
+
+    if code_to_valid:
+        list_of_contracts.append(to_clean.lower())
+
+    if internal_tx_valid:
+
+        for internal in web_data[0]['nodes']:
+
+            internal = internal['id']
+
+            if internal != "" and internal not in list_of_contracts:
+
+                contract = eth_getCode(addrtx=internal, apiKey=apiKey)
+
+                if contract != "0x":
+                    list_of_contracts.append(str(internal))
+
+    if tokens_valid:
+
+        for hashtoken in web_data[1]['nodes']:
+
+            hashtoken = hashtoken['id']
+
+            if hashtoken != "" and hashtoken not in list_of_contracts and "0x" in hashtoken:
+                
+                contract = eth_getCode(addrtx=hashtoken, apiKey=apiKey)
+
+                if contract != "0x":
+                    list_of_contracts.append(str(hashtoken))
+
+    isdir = os.path.isdir("contracts/TX-" + hashtx)
+
+    if not isdir:
+
+        os.mkdir("contracts/TX-" + hashtx)
+
+    mythril_to_contracts(list_of_contracts=list_of_contracts, hashtx=hashtx)
+
+
 
