@@ -13,15 +13,15 @@ from alchemy_API import *
 from extras import *
 from termcolor import colored
 
-# Call functions to read arguments
-
-data_arg = main(sys.argv[1:])
-hashtx = data_arg[0]
-
 # Configure the API keys
 
 apiKey = AlchemyKey  # From Alchemy
 eth = Etherscan(EtherKey)  # From Etherscan
+
+# Call functions to read arguments
+
+data_arg = main(sys.argv[1:])
+hashtx = data_arg[0]
 
 # Get Data from transaction with web3
 
