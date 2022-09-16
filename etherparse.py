@@ -169,17 +169,9 @@ if data_arg[3] == True:
     tx_info_clean_json = json.dumps(tx_info_clean)
     print (tx_info_clean_json)
 
-# Parse data to create graphs --- ONLY WEB.
-
-if data_arg[1] == True:
-    print(colored('[*] Starting the web server...', 'green'))
-    
-    os.system('python2 webserver/webserver.py')
-
+#  Detects security vulnerabilities in smart contracts with Mythril ONLY --vulns
 
 if data_arg[4] == True:
-
-#  Detects security vulnerabilities in smart contracts with Mythril
 
     list_of_contracts = []
 
@@ -223,5 +215,10 @@ if data_arg[4] == True:
 
     mythril_to_contracts(list_of_contracts=list_of_contracts, hashtx=hashtx)
 
+# Parse data to create graphs --- ONLY WEB.
 
+if data_arg[1] == True:
+    print(colored('[*] Starting the web server...', 'green'))
+    
+    os.system('python2 webserver/webserver.py')
 
