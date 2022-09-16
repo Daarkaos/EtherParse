@@ -14,7 +14,7 @@ def main(argv):
    try:
       opts, args = getopt.getopt(argv,"ht:wcqv",["tx=","web","contract","quiet", "vulns"])
    except getopt.GetoptError:
-      print ('parseether.py -tx <hashtx> -w (optional) -c (optional) -q (optional)')
+      print ('parseether.py -tx <hashtx> -w (optional) -c (optional) -q (optional) -v (optional)')
       sys.exit(2)
    for opt, arg in opts:
       if opt == '-h':
