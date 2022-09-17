@@ -65,7 +65,7 @@ python3 parseether.py --tx 0xab486012f21be741c9e674ffda227e30518e8a1e37a5f1d58d0
 Output:
 
 <p align="center">
-	<img src="/webserver/dist/images/example_execution.png" height="150px"/>
+	<img src="/webserver/dist/images/example_execution.png" height="165px"/>
 </p>
 
 ``` bash
