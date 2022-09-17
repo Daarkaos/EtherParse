@@ -33,13 +33,15 @@ pip install -r requirements.txt
 
 ## Usage
 
-In `Etherparse.py`, yo need to configure your [Etherscan.io](https://etherscan.io/) and [Alchemy.com](https://www.alchemy.com/) API key:
+In `Etherparse.py`, you need to configure your [Etherscan.io](https://etherscan.io/) and [Alchemy.com](https://www.alchemy.com/) API key:
 
 ``` python
 
 apiKey = "YOUR API KEY"  # From Alchemy
 eth = Etherscan("YOUR API KEY")  # From Etherscan
 ```
+In `extras.py`, you need to configure your [Infura.io](https://infura.io/) API key:
+
 To execute it:
 
 ``` bash
