@@ -1,0 +1,4 @@
+etherscan-python
+web3
+bs4
+termcolor

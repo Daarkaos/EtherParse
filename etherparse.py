@@ -1,7 +1,5 @@
 # MSC
 # Import data from Ethereum TX.
-from hashlib import blake2b
-from lib2to3.pgen2 import token
 import os
 import sys
 import json
