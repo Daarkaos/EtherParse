@@ -21,6 +21,8 @@ You should register on [Etherscan.io](https://etherscan.io/) and [generate an AP
 
 You should register on [Alchemy.com](https://www.alchemy.com/) and [generate an APP to get the API key](https://dashboard.alchemyapi.io/apps) to use.
 
+You should register on [Infura.io](https://infura.io/) and [generate an APP to get the API key](https://infura.io/dashboard) to use.
+
 Once you have registered and have the necessary API keys, you must download the requirements for this, we will have to use the following steps.
 
 ``` bash
