@@ -15,7 +15,7 @@ Account: [SOMEGUY], balance: 0x0, nonce:0, storage:{}
 
 Transaction Sequence:
 
-Caller: [SOMEGUY], function: unknown, txdata: 0x00000004, decoded_data: , value: 0x0
+Caller: [SOMEGUY], function: unknown, txdata: 0x00020000, decoded_data: , value: 0x0
 
 ==== Multiple Calls in a Single Transaction ====
 SWC ID: 113
@@ -34,6 +34,6 @@ Account: [SOMEGUY], balance: 0x0, nonce:0, storage:{}
 
 Transaction Sequence:
 
-Caller: [SOMEGUY], function: razor_balance(bool), txdata: 0x00000002, value: 0x0
+Caller: [SOMEGUY], function: unknown, txdata: 0x00000010, decoded_data: , value: 0x0
 
 

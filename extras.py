@@ -1,7 +1,10 @@
 import getopt
 import os
 import sys
+from config import InfuraKey
 from termcolor import colored
+
+InfuraApi = InfuraKey
 
 # Def for args
 
@@ -63,7 +66,7 @@ def mythril_to_contracts(list_of_contracts, hashtx):
 
       print(colored('[*] Analyzing ' + contract, 'green'))
 
-      output = os.system('sudo docker run mythril/myth analyze -a ' + contract + ' --execution-timeout 120 --infura-id 766eb96c39924776be0db442edc40365 > contracts/TX-' + hashtx + '/' + contract)
+      output = os.system('sudo docker run mythril/myth analyze -a ' + contract + ' --execution-timeout 120 --infura-id ' + InfuraApi + ' > contracts/TX-' + hashtx + '/' + contract)
 
       if output != 0:
 
