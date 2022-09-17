@@ -31,6 +31,13 @@ git clone https://github.com/Daarkaos/EtherScanParse.git
 pip install -r requirements.txt
 ```
 
+Make sure you have the following technologies correctly installed:
+
+* Docker
+* [Panoramix](https://github.com/palkeo/panoramix)
+* [EVM CFG BUILDER](https://github.com/crytic/evm_cfg_builder)
+
+
 ## Usage
 
 In `Etherparse.py`, you need to configure your [Etherscan.io](https://etherscan.io/) and [Alchemy.com](https://www.alchemy.com/) API key:
