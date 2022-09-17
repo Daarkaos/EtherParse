@@ -92,15 +92,12 @@ Output for a "small transaction":
 
 ## Files
 
-* You can find the json file of the transaction in the path:
+* You can find the json file of the transaction in the following [path](webserver/json/):
 ``` bash
 .webserver/json/
 ```
-And see some examples [here](webserver/json/)
 
-
-* You can find the contracts downloaded in the path:
+* You can find the outputs of the analyzed contracts in the following [path](contracts/):
 ``` bash
-./contracts/addrhash
+./contracts/
 ```
-And see some examples [here](contracts/)
