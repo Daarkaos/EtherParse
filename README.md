@@ -75,7 +75,7 @@ python3 etherparse.py --tx 0xab486012f21be741c9e674ffda227e30518e8a1e37a5f1d58d0
 Output for a vulnerability scan:
 
 <p align="center">
-	<img src="/webserver/dist/images/Example_vulns.png" height="75px"/>
+	<img src="/webserver/dist/images/example_vulns.png" height="75px"/>
 </p>
 
 ``` bash
