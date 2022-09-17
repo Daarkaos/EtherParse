@@ -48,7 +48,7 @@ To execute it:
 python3 parseether.py --tx 0xab486012f21be741c9e674ffda227e30518e8a1e37a5f1d58d0b0d41f6e76530
 ```
 
-Parameters:
+### Parameters:
 
 * tx &#8594; <b>Required.</b> Use this parameter to indicate the hash of the transaction.
 * quiet &#8594; <b>Optional.</b> Use this parameter if you don't want to see the API output
