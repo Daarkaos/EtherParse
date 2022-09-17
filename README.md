@@ -62,7 +62,7 @@ python3 parseether.py --tx 0xab486012f21be741c9e674ffda227e30518e8a1e37a5f1d58d0
 python3 parseether.py --tx 0xab486012f21be741c9e674ffda227e30518e8a1e37a5f1d58d0b0d41f6e76530
 ```
 
-Output for a complet transaction:
+Output:
 
 <p align="center">
 	<img src="/images/Output1.png" height="50px"/>
@@ -72,7 +72,7 @@ Output for a complet transaction:
 python3 etherparse.py --tx 0xab486012f21be741c9e674ffda227e30518e8a1e37a5f1d58d0b0d41f6e76530 -q -v
 ````
 
-Output for a vulnerability scan:
+Output:
 
 <p align="center">
 	<img src="/webserver/dist/images/example_vulns.png" height="350px"/>
