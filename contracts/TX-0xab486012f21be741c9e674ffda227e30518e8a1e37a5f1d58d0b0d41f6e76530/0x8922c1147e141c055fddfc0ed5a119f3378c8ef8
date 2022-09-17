@@ -15,7 +15,7 @@ Account: [SOMEGUY], balance: 0x0, nonce:0, storage:{}
 
 Transaction Sequence:
 
-Caller: [ATTACKER], function: unknown, txdata: 0x01020101, decoded_data: , value: 0x0
+Caller: [ATTACKER], function: unknown, txdata: 0x02010101, decoded_data: , value: 0x0
 
 ==== Multiple Calls in a Single Transaction ====
 SWC ID: 113
@@ -34,6 +34,6 @@ Account: [SOMEGUY], balance: 0x0, nonce:0, storage:{}
 
 Transaction Sequence:
 
-Caller: [ATTACKER], function: unknown, txdata: 0x01010202, decoded_data: , value: 0x0
+Caller: [ATTACKER], function: unknown, txdata: 0x01010102, decoded_data: , value: 0x0
 
 

@@ -34,6 +34,6 @@ Account: [SOMEGUY], balance: 0x0, nonce:0, storage:{}
 
 Transaction Sequence:
 
-Caller: [CREATOR], function: unknown, txdata: 0x, decoded_data: , value: 0x0
+Caller: [SOMEGUY], function: unknown, txdata: 0x, decoded_data: , value: 0x0
 
 
