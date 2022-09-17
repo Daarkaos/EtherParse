@@ -42,6 +42,11 @@ eth = Etherscan("YOUR API KEY")  # From Etherscan
 ```
 In `extras.py`, you need to configure your [Infura.io](https://infura.io/) API key:
 
+``` python
+
+InfuraApi = InfuraKey # From Infura
+```
+
 To execute it:
 
 ``` bash
