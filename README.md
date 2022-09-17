@@ -33,7 +33,7 @@ pip install -r requirements.txt
 
 Make sure you have the following technologies correctly installed:
 
-* Docker
+* [Docker](https://docs.docker.com/engine/install/ubuntu/)
 * [Panoramix](https://github.com/palkeo/panoramix)
 * [EVM CFG BUILDER](https://github.com/crytic/evm_cfg_builder)
 
