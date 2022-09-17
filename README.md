@@ -78,17 +78,6 @@ Output:
 	<img src="/webserver/dist/images/example_vulns.png" height="350px"/>
 </p>
 
-``` bash
-python3 parseether.py --tx 0x1d2703235da5f5057d1f28fb877924659f1834c049d1fa977aa4a123973a8de3
-```
-
-Output for a "small transaction":
-
-<p align="center">
-	<img src="/images/Output3.png" height="75px"/>
-</p>
-
-
 
 ## Files
 
