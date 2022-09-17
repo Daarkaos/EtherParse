@@ -44,7 +44,7 @@ In `extras.py`, you need to configure your [Infura.io](https://infura.io/) API k
 
 ``` python
 
-InfuraApi = InfuraKey # From Infura
+InfuraApi = "YOUR API KEY" # From Infura
 ```
 
 To execute it:
