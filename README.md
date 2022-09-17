@@ -33,7 +33,7 @@ pip install -r requirements.txt
 
 ## Usage
 
-In `python`, create a client with your personal [Etherscan.io](https://etherscan.io/) and [Alchemy.com](https://www.alchemy.com/) API key:
+In `Etherparse.py`, yo need to configure your [Etherscan.io](https://etherscan.io/) and [Alchemy.com](https://www.alchemy.com/) API key:
 
 ``` python
 
@@ -52,6 +52,7 @@ Parameters:
 * quiet &#8594; <b>Optional.</b> Use this parameter if you don't want to see the API output
 * web &#8594; <b>Optional.</b> Use this parameter to run a web server and get graphic information
 * contract &#8594; <b>Optional.</b> Use this parameter to get information about contracts
+* vulns &#8594; <b>Optional.</b> Use this to detect security vulnerabilities in smart contracts
 
 ## Examples
 
